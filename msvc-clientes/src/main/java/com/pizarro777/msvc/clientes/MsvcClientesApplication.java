@@ -1,4 +1,4 @@
-package com.pizarro777.msvc.clientes.msvc_clientes;
+package com.pizarro777.msvc.clientes;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
