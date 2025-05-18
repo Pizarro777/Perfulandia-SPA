@@ -28,6 +28,6 @@ public class detalleBoletaModel {
     private Long idProducto;
 
     @Column(name = "idBoleta")
-    private Long idBoleta;
+    private Long idBoletas;
 
 }

@@ -1,6 +1,7 @@
 package com.msvc.detalleBoleta.msvc_detalleBoleta.dtos;
 
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter

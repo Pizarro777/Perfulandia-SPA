@@ -10,6 +10,7 @@ public interface detalleBoletaService {
     List<DetalleBoletaDTO> findAll();
     detalleBoletaModel findById(Long idDetalleBoleta);
     detalleBoletaModel save(detalleBoletaModel detalleBoletaModel);
+    List<detalleBoletaModel> findAllByBoletasId(Long idBoletas);
     List<detalleBoletaModel> findAllByProductoId(Long idProducto);
 
 }
