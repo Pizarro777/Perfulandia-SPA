@@ -25,17 +25,17 @@ public class BoletasController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Boletas> findById(@PathVariable Long id){
+    public ResponseEntity<BoletasDTO> findById(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Boletas> save(@RequestBody @Valid Boletas boletas){
+    public ResponseEntity<BoletasDTO> save(@RequestBody @Valid BoletasDTO boletas){
         return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.save(boletas));
     }
 
     @GetMapping("/producto/{id}")
-    public ResponseEntity<List<Boletas>> findByIdProducto(@PathVariable Long id){
+    public ResponseEntity<List<BoletasDTO> findByIdProducto(@PathVariable Long id){
         return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.findByProductoId(id));
     }
 
