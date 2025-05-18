@@ -34,8 +34,8 @@ public class GlobalExceptionHandler {
                 .body(this.createErrorDTO(HttpStatus.BAD_REQUEST.value(), new Date(), errorMap));
     }
 
-    @ExceptionHandler(MedicoException.class)
-    public ResponseEntity<ErrorDTO> handleMedicoException(MedicoException exception){
+    @ExceptionHandler(BoletasException.class)
+    public ResponseEntity<ErrorDTO> handleMedicoException(BoletasException exception){
 
         if(exception.getMessage().contains("no se encuentra en la base de datos")) {
             // Esto nos sirve para cuando no existe en la base de datos el medico
@@ -51,6 +51,5 @@ public class GlobalExceptionHandler {
                     .body(this.createErrorDTO(HttpStatus.CONFLICT.value(), new Date(), errorMap));
         }
     }
-
 
 }
