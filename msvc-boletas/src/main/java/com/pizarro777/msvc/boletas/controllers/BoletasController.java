@@ -1,7 +1,7 @@
 package com.pizarro777.msvc.boletas.controllers;
 
 import com.pizarro777.msvc.boletas.dtos.BoletasDTO;
-import com.pizarro777.msvc.boletas.services.BoletasService;
+import com.pizarro777.msvc.boletas.services.BoletasServicelmpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,7 +17,7 @@ import java.util.List;
 public class BoletasController {
 
     @Autowired
-    private BoletasService boletasService;
+    private BoletasServicelmpl boletasService;
 
     @GetMapping
     public ResponseEntity<List<BoletasDTO>> findAll(){
