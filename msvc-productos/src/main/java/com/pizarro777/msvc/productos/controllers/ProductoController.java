@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("api/productos")
 @Validated
 public class ProductoController {
-    private final ProductoService service;
 
 
 }
