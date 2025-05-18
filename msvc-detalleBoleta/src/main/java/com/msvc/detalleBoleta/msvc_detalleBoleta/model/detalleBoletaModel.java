@@ -24,4 +24,10 @@ public class detalleBoletaModel {
     @Column(name = "cantidad")
     private Integer cantidad;
 
+    @Column(name = "idProducto")
+    private Long idProducto;
+
+    @Column(name = "idBoleta")
+    private Long idBoleta;
+
 }
