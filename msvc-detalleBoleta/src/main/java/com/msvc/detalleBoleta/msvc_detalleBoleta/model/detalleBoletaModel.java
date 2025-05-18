@@ -21,11 +21,7 @@ public class detalleBoletaModel {
     @NotNull(message = "El campo precio no puede ser vacio")
     private Double precioUnitario;
 
-    @Column(name = "cantidad", nullable = false)
-    @NotNull(message = "El campo cantidad no puede ser vacio")
+    @Column(name = "cantidad")
     private Integer cantidad;
-
-    @Column(name = "idProducto", nullable = false)
-    @NotNull(message = "El campo idProducto no puede ser vacio")
 
 }
