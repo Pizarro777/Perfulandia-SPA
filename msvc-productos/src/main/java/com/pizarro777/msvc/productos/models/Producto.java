@@ -26,6 +26,7 @@ public class Producto {
     private Long idProducto;
 
     /* Se utiliza para evitar que se ingresen datos en blanco */
+    @Column(nullable = false)
     @NotBlank(message = "El nombre es obligatorio.")
     private String nombre;
 
