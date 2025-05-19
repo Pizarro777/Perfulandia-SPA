@@ -8,9 +8,9 @@ import java.util.List;
 @Repository
 public interface ProveedorRepository extends JpaRepository<proveedorModel, Long> {
 
-    List<proveedorModel> findByIpdroveedorDetalleBoleta(Long idProveedor);
+    List<proveedorModel> findByIdProveedor(Long idProveedor);
 
-    List<proveedorModel> findByIdproveedor(Long idProducto);
+    List<proveedorModel> findByIdProducto(Long idProducto);
 
     List<proveedorModel> findAllByIdBoletas(Long idBoletas);
 }
