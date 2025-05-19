@@ -1,16 +1,22 @@
 package com.pizarro777.msvc.clientes.services;
 
-import com.pizarro777.msvc.clientes.dtos.ClienteDTO;
-import org.springframework.web.client.RestTemplate;
 
+import com.pizarro777.msvc.clientes.models.Cliente;
+import com.pizarro777.msvc.clientes.repositories.ClienteRepository;
+import org.springframework.stereotype.Service;
+
+@Service
 public class ClienteService {
-    private final RestTemplate restTemplate;
+    private final ClienteRepository clienteRepository;
 
-    public ClienteService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
+    public ClienteService(ClienteRepository clienteRepository){
+        this.clienteRepository = clienteRepository;
     }
 
-    public ClienteDTO getClientePorId(Long id){
-        return restTemplate.getForObject("https://localhost:8080/api/clientes/" + id, ClienteDTO.class);
+    /* Crear o Actualizar Cliente */
+    public Cliente crearCliente(Cliente cliente){
+        return clienteRepository.save(cliente);
     }
+
+
 }
