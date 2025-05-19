@@ -7,10 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -30,5 +27,10 @@ public class detalleBoletaController {
     @GetMapping("{idDetalleBoleta}")
     public ResponseEntity<List<detalleBoletaModel>> findById(@PathVariable Long idDetalleBoleta) {
         return ResponseEntity.status(HttpStatus.OK).body(this.detalleBoletaService.findById(idDetalleBoleta));
+    }
+
+    @PostMapping
+    public ResponseEntity<detalleBoletaModel> save(@RequestBody @Validated detalleBoletaModel detalleBoletaMdoel) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(this.detalleBoletaService.save(detalleBoletaMdoel));
     }
 }
