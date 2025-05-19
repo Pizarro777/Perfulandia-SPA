@@ -25,6 +25,9 @@ public class Producto {
     @NotBlank(message = "El nombre es obligatorio.")
     private String nombre;
 
+    @NotBlank(message = "La marca es obligatoria.")
+    private String marca;
+
     @Size(max = 255, min = 0, message = "La cantidad de caracteres no pueden superar los 255.")
     private String descripcion;
 
