@@ -3,6 +3,7 @@ package com.pizarro777.msvc.productos.controllers;
 import com.pizarro777.msvc.productos.models.Producto;
 import com.pizarro777.msvc.productos.repositories.ProductoRepository;
 import com.pizarro777.msvc.productos.services.ProductoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ public class ProductoController {
 
     private final ProductoService productoService;
 
+    @Autowired
     public ProductoController(ProductoService productoService) {
         this.productoService = productoService;
     }
@@ -30,7 +32,7 @@ public class ProductoController {
         return productoService.listarActivos();
     }
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id){
         return productoService.buscarPorId(id)
                 .map(ResponseEntity::ok)

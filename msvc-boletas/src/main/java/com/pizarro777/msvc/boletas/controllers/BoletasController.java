@@ -16,9 +16,6 @@ import java.util.List;
 @Validated
 public class BoletasController {
 
-    @Autowired
-    private BoletasServicelmpl boletasService;
-
     @GetMapping
     public ResponseEntity<List<BoletasDTO>> findAll(){
         return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.findAll());
