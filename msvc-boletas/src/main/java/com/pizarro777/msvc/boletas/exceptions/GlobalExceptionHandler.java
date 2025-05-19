@@ -34,22 +34,4 @@ public class GlobalExceptionHandler {
                 .body(this.createErrorDTO(HttpStatus.BAD_REQUEST.value(), new Date(), errorMap));
     }
 
-    @ExceptionHandler(BoletasException.class)
-    public ResponseEntity<ErrorDTO> handleMedicoException(BoletasException exception){
-
-        if(exception.getMessage().contains("no se encuentra en la base de datos")) {
-            // Esto nos sirve para cuando no existe en la base de datos de la boleta
-            Map<String, String> errorMap = Collections.singletonMap("Boleta no encontrada", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                    .body(this.createErrorDTO(HttpStatus.NOT_FOUND.value(), new Date(), errorMap));
-
-
-        }else{
-            // Esto nos sirve para cuando la boleta ya existe en nuestra base de datos
-            Map<String, String> errorMap = Collections.singletonMap("Boleta existente", exception.getMessage());
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(this.createErrorDTO(HttpStatus.CONFLICT.value(), new Date(), errorMap));
-        }
-    }
-
 }
