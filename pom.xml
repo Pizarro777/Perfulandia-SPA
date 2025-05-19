@@ -20,6 +20,7 @@
         <module>msvc-detalleBoleta</module>
         <module>msvc-boletas</module>
         <module>msvc-productos</module>
+        <module>msvc-proveedor</module>
     </modules>
     <properties>
         <maven.compiler.source>21</maven.compiler.source>
