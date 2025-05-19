@@ -32,7 +32,7 @@ public class ProductoController {
         return productoService.listarActivos();
     }
 
-    @PostMapping
+    @GetMapping
     public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id){
         return productoService.buscarPorId(id)
                 .map(ResponseEntity::ok)
