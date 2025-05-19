@@ -9,30 +9,39 @@ import java.util.Optional;
 @Service
 public class ProductoService {
 
-    private final ProductoRepository productoRepository;
+    private final ProductoRepository repository;
 
-    public ProductoService(ProductoRepository productoRepository) {
-        this.productoRepository = productoRepository;
+    public ProductoService(ProductoRepository repository) {
+        this.repository = repository;
     }
 
-    public List<Producto> listarTodos(){
-        return productoRepository.findAll();
+    /* Crear o Actualizar Producto */
+    public Producto crearProducto(Producto producto){
+        return repository.save(producto);
     }
 
+    /* Listar Por Id */
+    public Producto obtenerPorId(Long id){
+        Optional<Producto> producto = repository.findById(id);
+        return producto.orElseThrow(()-> new RuntimeException("No se encontro el id de la base de datos: "+ id));
+    }
+
+    /* Listar por Activos */
     public List<Producto> listarActivos(){
-        return productoRepository.findByActivoTrue();
+        return repository.findByActivoTrue();
     }
 
-    public Producto guardar(Producto producto){
-        return productoRepository.save(producto);
+    /* Listar todos */
+    public List<Producto> listarTodos(){
+        return repository.findAll();
     }
 
-    public Optional<Producto> buscarPorId(Long idProducto){
-        return productoRepository.findById(idProducto);
+    /* Listar por stock (pendiente)*/
+
+    /* Eliminar Producto */
+    public void eliminar(long id){
+        repository.deleteById(id);
     }
 
-    public void eliminar(long idProducto){
-        productoRepository.deleteById(idProducto);
-    }
 
 }

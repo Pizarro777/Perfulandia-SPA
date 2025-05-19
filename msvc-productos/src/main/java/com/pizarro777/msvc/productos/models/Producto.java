@@ -1,30 +1,25 @@
 package com.pizarro777.msvc.productos.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
-/**
-*
-* @author Pizarro777
-* */
 @Entity
 @Getter @Setter @ToString
 @NoArgsConstructor @AllArgsConstructor
 public class Producto {
 
-    /*
-     * Seleccion de los atrubutos de la clase, se utuliza @ID para decirle al programa
-     * cual es el id y que este no se pueda repetir
-     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
-    private Long idProducto;
+    private Long id;
 
     /* Se utiliza para evitar que se ingresen datos en blanco */
     @NotBlank(message = "El nombre es obligatorio.")
@@ -39,6 +34,6 @@ public class Producto {
     @PositiveOrZero
     private Integer stock;
 
-    private Boolean activo = true;
+    private Boolean activo ;
 
 }

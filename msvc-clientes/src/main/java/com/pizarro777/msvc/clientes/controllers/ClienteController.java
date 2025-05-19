@@ -26,5 +26,5 @@ public class ClienteController {
         return ClienteService.listarTodos();
     }
 
-    @GetMapping()
+
 }
