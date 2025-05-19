@@ -1,6 +1,8 @@
 package com.pizarro777.msvc.boletas.controllers;
 
 import com.pizarro777.msvc.boletas.dtos.BoletasDTO;
+import com.pizarro777.msvc.boletas.models.Boletas;
+import com.pizarro777.msvc.boletas.services.BoletasService;
 import com.pizarro777.msvc.boletas.services.BoletasServicelmpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,24 +18,16 @@ import java.util.List;
 @Validated
 public class BoletasController {
 
+    @Autowired
+    private BoletasService boletasService;
+
     @GetMapping
-    public ResponseEntity<List<BoletasDTO>> findAll(){
-        return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.findAll());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<BoletasDTO> findById(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.findById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<BoletasDTO> save(@RequestBody @Valid BoletasDTO boletas){
-        return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.save(boletas));
-    }
-
-    @GetMapping("/producto/{id}")
-    public ResponseEntity<List<BoletasDTO> findByIdProducto(@PathVariable Long id){
-        return ResponseEntity.status(HttpStatus.OK).body(this.boletasService.findByProductoId(id));
+    public ResponseEntity<List<Boletas>> listar(){
+        List<Boletas> boletas = boletasService.findAll();
+        if (boletas.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(boletas);
     }
 
 }
