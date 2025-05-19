@@ -18,7 +18,6 @@ public class detalleBoletaModel {
     private Long idDetalleBoleta;
 
     @Column(name = "precioUnitario", nullable = false)
-    @NotNull(message = "El campo precio no puede ser vacio")
     private Double precioUnitario;
 
     @Column(name = "cantidad")

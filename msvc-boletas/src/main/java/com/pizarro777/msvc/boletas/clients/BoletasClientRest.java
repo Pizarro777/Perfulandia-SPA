@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface BoletasClientRest {
 
     @GetMapping("/{id}")
-    Boletas findById@PathVariable Long id);
+    Boletas obtenerBoletaPorId(@PathVariable Long id);
 
 }
