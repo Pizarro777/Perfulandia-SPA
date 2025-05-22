@@ -30,6 +30,4 @@ public class BoletasController {
         return ResponseEntity.ok(boletas);
     }
 
-
-
 }

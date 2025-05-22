@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface BoletasService {
     List<Boletas> findAll();
-    Boletas findById(int id);
+    Boletas findById(Long id);
     Boletas save(Boletas boletas);
 }
