@@ -7,6 +7,7 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 public class Boletas {
     private Long idBoletas;
+    private String nombreBoletas;
     private String numeroBoleta;
     private int cantidadBoletas;
     private double precioBoletas;

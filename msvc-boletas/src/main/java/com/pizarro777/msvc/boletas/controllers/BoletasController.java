@@ -30,4 +30,49 @@ public class BoletasController {
         return ResponseEntity.ok(boletas);
     }
 
+    @PostMapping
+    public ResponseEntity<Boletas> guardar(@RequestBody Boletas boletas) {
+        Boletas productoNuevo = boletasService.save(boletas);
+        return ResponseEntity.status(HttpStatus.CREATED).body(productoNuevo);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Boletas> buscar(@PathVariable Long id) {
+        try {
+            Boletas boletas = boletasService.findById(id);
+            return ResponseEntity.ok(boletas);
+        }catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Boletas> actualizar(@PathVariable Long id, @RequestBody Boletas boletas) {
+        try{
+            Boletas bol = boletasService.findById(id);
+            bol.setIdBoletas(id);
+            bol.setNombreBoletas(boletas.getNombreBoletas());
+            bol.setNumeroBoleta(boletas.getNumeroBoleta());
+            bol.setCantidadBoletas(boletas.getCantidadBoletas());
+            bol.setPrecioBoletas(boletas.getPrecioBoletas());
+
+            boletasService.save(bol);
+            return ResponseEntity.ok(bol);
+        }catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boletas> eliminar(@PathVariable Long id) {
+        try {
+            boletasService.delete(id);
+            return ResponseEntity.noContent().build();
+        } catch (Exception e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+
 }
