@@ -7,5 +7,8 @@ import java.util.List;
 
 @Repository
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
+
+    /* Encuentra por Producto Activo */
     List<Producto> findByActivoTrue();
+
 }

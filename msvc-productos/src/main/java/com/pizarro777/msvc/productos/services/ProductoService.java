@@ -23,7 +23,7 @@ public class ProductoService {
     /* Listar Por Id */
     public Producto obtenerPorId(Long id){
         Optional<Producto> producto = repository.findById(id);
-        return producto.orElseThrow(()-> new RuntimeException("No se encontro el id de la base de datos: "+ id));
+        return producto.orElseThrow(()-> new RuntimeException("No se encontro el id en la base de datos: "+ id));
     }
 
     /* Listar por Activos */

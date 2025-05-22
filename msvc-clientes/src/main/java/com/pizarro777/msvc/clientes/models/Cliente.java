@@ -22,6 +22,7 @@ public class Cliente {
     @Column(nullable = false)
     @NotBlank(message = "El nombre es obligatorio.")
     private String nombre;
+    private String apellido;
     private String direccion;
     private String correo;
 }
