@@ -18,6 +18,7 @@
         <module>msvc-boletas</module>
         <module>msvc-clientes</module>
         <module>msvc-detalleBoleta</module>
+        <module>msvc-cometario</module>
         <module>msvc-boletas</module>
         <module>msvc-productos</module>
         <module>msvc-proveedor</module>
