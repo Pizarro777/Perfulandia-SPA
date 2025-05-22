@@ -14,9 +14,9 @@ import java.util.List;
 @Validated
 public class ProductoController {
 
+    @Autowired
     private final ProductoService service;
 
-    @Autowired
     public ProductoController(ProductoService service){
         this.service = service;
     }
