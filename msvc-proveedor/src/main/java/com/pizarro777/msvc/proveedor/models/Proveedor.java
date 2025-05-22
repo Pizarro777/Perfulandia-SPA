@@ -3,13 +3,10 @@ package com.pizarro777.msvc.proveedor.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Entity
-@Table(name="Proveedor")
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+
+
+@Getter @Setter @ToString
+@AllArgsConstructor @NoArgsConstructor
 public class Proveedor {
 
     @Id

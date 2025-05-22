@@ -9,7 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 public class BoletasDTO {
 
-    private String numeroBoleta;
+    private Long id;
+    private String nombreBoleta;
+    private int numeroBoleta;
     private int cantidadBoletas;
     private double precioBoletas;
 }
