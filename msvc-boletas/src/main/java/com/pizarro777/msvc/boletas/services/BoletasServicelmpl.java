@@ -11,6 +11,6 @@ public class BoletasServicelmpl implements BoletasService{
     private BoletasRepository boletasRepository;
 
     @Override
-    public
+    public list<Boletas> findAll() { return this.boletasRepository}
 
 }
