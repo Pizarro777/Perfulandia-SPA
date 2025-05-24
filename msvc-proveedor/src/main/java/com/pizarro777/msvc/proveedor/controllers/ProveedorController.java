@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.proveedor.controllers;
 
-import com.pizarro777.msvc.proveedor.models.Proveedor;
+import com.pizarro777.msvc.proveedor.models.ProveedorModel;
+import com.pizarro777.msvc.proveedor.services.ProveedorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,9 +15,12 @@ import java.util.List;
 @Validated
 public class ProveedorController {
 
+    @Autowired
+    private ProveedorService proveedorService;
+
     @GetMapping
-    public ResponseEntity<List<proveedor>> listar(){
-        List<Proveedor> boletas = proveedorService.findAll();
+    public ResponseEntity<List<ProveedorModel>> listar(){
+        List<ProveedorModel> boletas = proveedorService.findAll();
         if (boletas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -24,15 +28,15 @@ public class ProveedorController {
     }
 
     @PostMapping
-    public ResponseEntity<Proveedor> guardar(@RequestBody Proveedor proveedor) {
-        Proveedor productoNuevo = proveedorService.save(proveedor);
+    public ResponseEntity<ProveedorModel> guardar(@RequestBody ProveedorModel proveedor) {
+        ProveedorModel productoNuevo = proveedorService.save(proveedor);
         return ResponseEntity.status(HttpStatus.CREATED).body(productoNuevo);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> buscar(@PathVariable Long id) {
+    public ResponseEntity<ProveedorModel> buscar(@PathVariable Long id) {
         try {
-            Proveedor proveedor = proveedorService.findById(id);
+            ProveedorModel proveedor = proveedorService.findById(id);
             return ResponseEntity.ok(proveedor);
         }catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -41,9 +45,9 @@ public class ProveedorController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Proveedor> actualizar(@PathVariable Long id, @RequestBody Proveedor proveedor) {
+    public ResponseEntity<ProveedorModel> actualizar(@PathVariable Long id, @RequestBody ProveedorModel proveedor) {
         try{
-            Proveedor pro = proveedorService.findById(id);
+            ProveedorModel pro = proveedorService.findById(id);
             pro.setIdProveedor(id);
             pro.setTelefono(proveedor.getTelefono());
             pro.setDireccion(proveedor.getDireccion());
@@ -52,16 +56,6 @@ public class ProveedorController {
             proveedorService.save(pro);
             return ResponseEntity.ok(pro);
         }catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Proveedor> eliminar(@PathVariable Long id) {
-        try {
-            proveedorService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
     }

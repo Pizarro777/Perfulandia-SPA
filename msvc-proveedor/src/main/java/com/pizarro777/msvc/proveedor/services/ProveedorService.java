@@ -1,5 +1,7 @@
 package com.pizarro777.msvc.proveedor.services;
 
+import com.pizarro777.msvc.proveedor.models.ProveedorModel;
+import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,21 +13,24 @@ import java.util.List;
 public class ProveedorService {
 
     @Autowired
-    private proveedorRepositry proveedorRepository;
+    private ProveedorRepository proveedorRepository;
 
-    public List<proveedorModel> findAll() {
+    public List<ProveedorModel> findAll() {
         return proveedorRepository.findAll();
     }
 
-    public proveedorModel findById(Long id) {
+    public ProveedorModel findById(Long id) {
         return proveedorRepository.findById(id).orElse(null);
     }
 
-    public proveedorModel save(proveedorModel proveedorModel) {
-        return proveedorRepository.save(proveedorModel);
+    public ProveedorModel save(ProveedorModel proveedor) {
+        return proveedorRepository.save(proveedor);
     }
 
     public void deleteById(Long id) {
         proveedorRepository.deleteById(id);
     }
+
 }
+
+

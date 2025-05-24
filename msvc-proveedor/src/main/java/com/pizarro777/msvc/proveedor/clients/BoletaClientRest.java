@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 @FeignClient(name = "msvc-boletas", url = "localhost:8080")
 public interface BoletaClientRest {
+
     @GetMapping("/boletas/{idBoletas}")
     BoletasDTO obtenerBoletaPorId(@PathVariable("idBoletas") Long idBoletas);
 

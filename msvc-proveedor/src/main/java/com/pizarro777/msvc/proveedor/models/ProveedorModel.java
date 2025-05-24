@@ -10,7 +10,7 @@ import lombok.*;
 
 @Getter @Setter @ToString
 @AllArgsConstructor @NoArgsConstructor
-public class Proveedor {
+public class ProveedorModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +28,7 @@ public class Proveedor {
 
     @Column(name = "idProducto")
     private Long idProducto;
+
+    @Column(name = "idBoletas")
+    private Long idBoletas;
 }

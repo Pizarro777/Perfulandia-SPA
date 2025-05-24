@@ -1,13 +1,20 @@
 package com.pizarro777.msvc.proveedor.repositories;
 
 
-import com.pizarro777.msvc.inventarios.model.Proveedor;
+import com.pizarro777.msvc.proveedor.models.ProveedorModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 
-import java.util.Optional;
+@Repository
+public interface ProveedorRepository extends JpaRepository<ProveedorModel, Long> {
 
-public interface ProveedorRepository extends JpaRepository<Proveedor, Long> {
+    List<ProveedorModel> findByIdProveedor(Long idDProveedor);
 
-    Optional<Proveedor> findByIdProducto(Long idProducto);
+    List<ProveedorModel> findByIdProducto(Long idProducto);
+
+    List<ProveedorModel> findAllByIdBoletas(Long idBoletas);
+
 }
