@@ -1,8 +1,8 @@
 package com.pizarro777.msvc.comentario.controller;
 
 
-import com.pizarro777.msvc.comentario.model.comentario;
-import com.pizarro777.msvc.comentario.service.comentarioService;
+import com.pizarro777.msvc.comentario.model.Comentario;
+import com.pizarro777.msvc.comentario.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,24 +13,24 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/comentarios")
+@RequestMapping("/api/comentarios")
 public class comentarioController {
 
     @Autowired
-    private comentarioService comentarioService;
+    private ComentarioService comentarioService;
 
     @GetMapping
-    public ResponseEntity<List<comentario>> findAll() {
-        List<comentario> comentarios = comentarioService.findAll();
-        if (comentarios.isEmpty()) {
+    public ResponseEntity<List<Comentario>> findAll() {
+        List<Comentario> Comentarios = comentarioService.findAll();
+        if (Comentarios.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(comentarios);
+        return ResponseEntity.ok(Comentarios);
     }
 
     @GetMapping("/{idComentario}")
-    public ResponseEntity<comentario> findById(Long idComentario) {
-        comentario comentario = comentarioService.findById(idComentario);
+    public ResponseEntity<Comentario> findById(Long idComentario) {
+        Comentario comentario = comentarioService.findById(idComentario);
         if (comentario == null) {
             return ResponseEntity.notFound().build();
         }
@@ -38,11 +38,11 @@ public class comentarioController {
     }
 
     @PostMapping
-    public ResponseEntity<comentario> save(comentario comentario) {
+    public ResponseEntity<Comentario> save(Comentario comentario) {
         if (comentario.getComentario() == null || comentario.getComentario().isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        comentario savedComentario = comentarioService.save(comentario);
+        Comentario savedComentario = comentarioService.save(comentario);
         return ResponseEntity.ok(savedComentario);
     }
 }

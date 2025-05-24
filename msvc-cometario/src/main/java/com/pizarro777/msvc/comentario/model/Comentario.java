@@ -7,11 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "comentarios")
 @Getter @Setter
 @AllArgsConstructor @NoArgsConstructor
-public class comentario {
+public class Comentario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,8 +26,10 @@ public class comentario {
     @Column(name = "fecha_creacion")
     private Long idPublicacion;
 
-    @Column(name = "id_usuario")
-    private Long idUsuario;
+    @Column(name = "id_producto")
+    private Long idProducto;
 
+
+    private LocalDateTime fecha = LocalDateTime.now();
 
 }
