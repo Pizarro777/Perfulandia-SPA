@@ -1,10 +1,8 @@
 package com.pizarro777.msvc.boletas.controllers;
 
-import com.pizarro777.msvc.boletas.dtos.BoletasDTO;
-import com.pizarro777.msvc.boletas.models.Boletas;
+import com.pizarro777.msvc.boletas.models.BoletasModel;
 import com.pizarro777.msvc.boletas.services.BoletasService;
-import com.pizarro777.msvc.boletas.services.BoletasServicelmpl;
-import jakarta.validation.Valid;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +20,8 @@ public class BoletasController {
     private BoletasService boletasService;
 
     @GetMapping
-    public ResponseEntity<List<Boletas>> listar(){
-        List<Boletas> boletas = boletasService.findAll();
+    public ResponseEntity<List<BoletasModel>> listar(){
+        List<BoletasModel> boletas = boletasService.findAll();
         if (boletas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -31,15 +29,15 @@ public class BoletasController {
     }
 
     @PostMapping
-    public ResponseEntity<Boletas> guardar(@RequestBody Boletas boletas) {
-        Boletas productoNuevo = boletasService.save(boletas);
+    public ResponseEntity<BoletasModel> guardar(@RequestBody BoletasModel boletas) {
+        BoletasModel productoNuevo = boletasService.save(boletas);
         return ResponseEntity.status(HttpStatus.CREATED).body(productoNuevo);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Boletas> buscar(@PathVariable Long id) {
+    public ResponseEntity<BoletasModel> buscar(@PathVariable Long id) {
         try {
-            Boletas boletas = boletasService.findById(id);
+            BoletasModel boletas = boletasService.findById(id);
             return ResponseEntity.ok(boletas);
         }catch (Exception e) {
             return ResponseEntity.notFound().build();
@@ -48,12 +46,12 @@ public class BoletasController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Boletas> actualizar(@PathVariable Long id, @RequestBody Boletas boletas) {
+    public ResponseEntity<BoletasModel> actualizar(@PathVariable Long id, @RequestBody BoletasModel boletas) {
         try{
-            Boletas bol = boletasService.findById(id);
+            BoletasModel bol = boletasService.findById(id);
             bol.setIdBoletas(id);
             bol.setNombreBoletas(boletas.getNombreBoletas());
-            bol.setNumeroBoleta(boletas.getNumeroBoleta());
+            bol.setNumeroBoletas(boletas.getNumeroBoletas());
             bol.setCantidadBoletas(boletas.getCantidadBoletas());
             bol.setPrecioBoletas(boletas.getPrecioBoletas());
 
@@ -63,16 +61,5 @@ public class BoletasController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Boletas> eliminar(@PathVariable Long id) {
-        try {
-            boletasService.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-
 
 }

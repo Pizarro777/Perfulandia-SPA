@@ -9,7 +9,7 @@ import lombok.*;
 
 @Getter @Setter @ToString
 @AllArgsConstructor @NoArgsConstructor
-public class Boletas {
+public class BoletasModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
