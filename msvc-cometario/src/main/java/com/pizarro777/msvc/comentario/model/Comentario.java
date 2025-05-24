@@ -24,7 +24,7 @@ public class Comentario {
     private String comentario;
 
     @Column(name = "fecha_creacion")
-    private Long idPublicacion;
+    private LocalDateTime fechaCreacion;
 
     @Column(name = "id_producto")
     private Long idProducto;

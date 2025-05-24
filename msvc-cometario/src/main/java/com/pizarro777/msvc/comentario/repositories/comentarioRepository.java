@@ -11,6 +11,6 @@ import java.util.List;
 
 public interface comentarioRepository  extends JpaRepository<Comentario, Long> {
 
-    List<Comentario> findByidUsuario(Long idComentario);
+    List<Comentario> findByIdProducto(Long idProducto);
 
 }
