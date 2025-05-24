@@ -19,6 +19,7 @@ public class comentarioController {
     @Autowired
     private ComentarioService comentarioService;
 
+    /* Obtiene la lista de todos los comentarios. */
     @GetMapping
     public ResponseEntity<List<Comentario>> findAll() {
         List<Comentario> Comentarios = comentarioService.findAll();
@@ -27,7 +28,7 @@ public class comentarioController {
         }
         return ResponseEntity.ok(Comentarios);
     }
-
+    /* Busca un comentario por ID. */
     @GetMapping("/{idComentario}")
     public ResponseEntity<Comentario> findById(Long idComentario) {
         Comentario comentario = comentarioService.findById(idComentario);
@@ -36,7 +37,7 @@ public class comentarioController {
         }
         return ResponseEntity.ok(comentario);
     }
-
+    /* Guarda nuevo comentario. */
     @PostMapping
     public ResponseEntity<Comentario> save(Comentario comentario) {
         if (comentario.getComentario() == null || comentario.getComentario().isEmpty()) {
