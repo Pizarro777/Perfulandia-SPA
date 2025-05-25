@@ -10,6 +10,7 @@ import lombok.*;
 public class InventarioDto {
 
     private Long idProducto;
+    private Long idSucursal;
     private Integer cantidad;
     private String ubicacion;
 
