@@ -1,4 +1,3 @@
-Parcial 2 - FullStack
 ﻿# 🍏 Perfulandia-SPA – Gestión de Productos
 
 ![Java](https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white)  
