@@ -8,7 +8,7 @@
 ## 📖 Descripción
 
 **Perfulandia-SPA** es un servicio RESTful desarrollado con Spring Boot para la gestión de productos de una plataforma de delivery.  
-Permite crear, leer, actualizar y eliminar (CRUD) productos, validando datos y documentando automáticamente su API con OpenAPI/Swagger.
+Permite crear, leer, actualizar y eliminar (CRUD) productos, validando datos y documentando automáticamente su API.
 
 ---
 
@@ -34,7 +34,6 @@ Permite crear, leer, actualizar y eliminar (CRUD) productos, validando datos y d
 - Persistencia JPA + H2
 - DTOs 
 - Gestión de versiones de entidad con `@Version`
-- Fechas de creación/actualización con Hibernate (`@CreationTimestamp`, `@UpdateTimestamp`)
 
 ---
 
