@@ -3,11 +3,14 @@ package com.pizarro777.msvc.clientes.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Entity
 @Getter @Setter @ToString
-@NoArgsConstructor @AllArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class Cliente {
 
     @Id
@@ -16,13 +19,21 @@ public class Cliente {
     private Long id;
 
     @Column(unique = true)
-    @NotBlank(message = "Este campo es obligatorio.")
+    @Pattern(regexp = "\\d{1,8}-[\\dKk]", message = "El formato debe ser XXXXXXXX-X")
+    @NotNull(message = "Este campo es obligatorio.")
     private String rut;
 
     @Column(nullable = false)
     @NotBlank(message = "El nombre es obligatorio.")
     private String nombre;
+
+    @Column(nullable = true)
     private String apellido;
+
+    @Column(nullable = true)
     private String direccion;
+
+    @Column(nullable = false)
+    @NotBlank(message = "El nombre es obligatorio.")
     private String correo;
 }
