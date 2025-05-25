@@ -23,7 +23,7 @@ public class ClienteController {
     }
 
     /* Crear un nuevo Cliente */
-    @GetMapping
+    @PostMapping("/make")
     public ResponseEntity<Cliente> crearCliente(@RequestBody @Validated Cliente cliente){
         Cliente cli = clienteService.crearCliente(cliente);
         return ResponseEntity.status(201).body(cli);
