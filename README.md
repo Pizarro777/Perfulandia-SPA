@@ -1,4 +1,3 @@
-# Perfulandia
 Parcial 2 - FullStack
 ﻿# 🍏 Perfulandia-SPA – Gestión de Productos
 
