@@ -47,12 +47,10 @@ public class ProductoController {
         return service.listarActivos();
     }
 
-    /* Listar por stock (pendiente)*/
-
     /* Eliminar un producto por ID */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id){
-        service.eliminar(id);
+        service.eliminarProducto(id);
         return ResponseEntity.noContent().build();
     }
 

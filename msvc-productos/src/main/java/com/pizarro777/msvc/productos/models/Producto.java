@@ -1,10 +1,7 @@
 package com.pizarro777.msvc.productos.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -23,20 +20,26 @@ public class Producto {
 
     /* Se utiliza para evitar que se ingresen datos en blanco */
     @NotBlank(message = "El nombre es obligatorio.")
+    @Column(nullable = false, length = 150, unique = true)
     private String nombre;
 
     @NotBlank(message = "La marca es obligatoria.")
+    @Column(nullable = false, length = 150)
     private String marca;
 
     @Size(max = 255, min = 0, message = "La cantidad de caracteres no pueden superar los 255.")
+    @Column(nullable = true, length = 255)
     private String descripcion;
 
     @Positive
+    @Column(nullable = false)
     private Double precio;
 
     @PositiveOrZero
+    @Column(nullable = false)
     private Integer stock;
 
-    private Boolean activo ;
+    @Version
+    private Integer version;
 
 }

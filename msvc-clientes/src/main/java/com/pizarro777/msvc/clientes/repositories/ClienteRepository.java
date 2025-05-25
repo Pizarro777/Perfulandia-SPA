@@ -11,19 +11,18 @@
     public interface ClienteRepository extends JpaRepository<Cliente, Long> {
 
         /* Encuentra clientes por apellidos */
-        @Query("SELECT c FROM Cliente c WHERE c.apellidos= : apellido")
+        @Query("SELECT c FROM Cliente c WHERE c.apellido= : apellido")
         List<Cliente> findbyApellido(@Param("apellidos") String apellido);
 
 
         /* Encuentra clientes por correo */
-        @Query("SELECT c FROM Cliente c WHERE c.correos= :correo")
+        @Query("SELECT c FROM Cliente c WHERE c.correo= :correo")
         Cliente findByCorreo(@Param("correo") String correo);
 
 
         /* Encuentra clientes por nombre y apellidos */
-        @Query("SELECT c FROM Cliente c WHERE c.nombres = :nombre AND c.apellidos = :apellido")
+        @Query("SELECT c FROM Cliente c WHERE c.nombre = :nombre AND c.apellido = :apellido")
         List<Cliente> findByNombreandApellido(@Param("nombre") String nombre, @Param("apellido") String apellido);
-
 
 
     }

@@ -21,7 +21,7 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    /* Crear o Actualizar Cliente */
+    /* Crear  Cliente */
     public Cliente crearCliente(Cliente cliente){
         return clienteRepository.save(cliente);
     }
@@ -30,7 +30,6 @@ public class ClienteService {
     public Cliente obtenerPorId(Long id){
         Optional<Cliente> cliente = clienteRepository.findById(id);
         return cliente.orElseThrow(()-> new RuntimeException("No se encontro el id en la base de datos: "+ id));
-
     }
 
     /* Listar todos */
@@ -38,7 +37,25 @@ public class ClienteService {
         return clienteRepository.findAll();
     }
 
-    /* Eliminar Producto */
+    /* Actualizar Cliente */
+    public Cliente actualizarCliente(Long id, Cliente datos){
+        Cliente cli = obtenerPorId(id);
+
+
+        /* Actualiza todos los datos */
+        cli.setRut(datos.getRut());
+        cli.setNombre(datos.getNombre());
+        cli.setApellido(datos.getApellido());
+        cli.setRut(datos.getRut());
+        cli.setCorreo(datos.getCorreo());
+        cli.setDireccion(datos.getDireccion());
+
+        return clienteRepository.save(cli);
+
+
+    }
+
+    /* Eliminar Cliente */
     public void eliminar(long id){
         clienteRepository.deleteById(id);
     }

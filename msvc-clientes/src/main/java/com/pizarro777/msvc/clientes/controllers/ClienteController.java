@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/clientes")
+@RequestMapping("/api/clientes")
 @Validated
 public class ClienteController {
 
@@ -23,7 +23,7 @@ public class ClienteController {
     }
 
     /* Crear un nuevo Cliente */
-    @GetMapping
+    @PostMapping("/make")
     public ResponseEntity<Cliente> crearCliente(@RequestBody @Validated Cliente cliente){
         Cliente cli = clienteService.crearCliente(cliente);
         return ResponseEntity.status(201).body(cli);
@@ -40,6 +40,13 @@ public class ClienteController {
     @GetMapping("/todos")
     public List<Cliente> obtenerTodos(){
         return clienteService.listarTodos();
+    }
+
+    /* Actualizar Cliente  */
+    @PutMapping("/{id}")
+    public ResponseEntity<Cliente> actualizarCliente(@PathVariable Long id, @RequestBody @Validated Cliente datos){
+        Cliente cli = clienteService.actualizarCliente(id, datos);
+        return ResponseEntity.ok(cli);
     }
 
 

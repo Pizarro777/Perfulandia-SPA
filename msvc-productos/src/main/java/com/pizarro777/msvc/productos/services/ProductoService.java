@@ -39,7 +39,7 @@ public class ProductoService {
     /* Listar por stock (pendiente)*/
 
     /* Eliminar Producto */
-    public void eliminar(long id){
+    public void eliminarProducto(long id){
         repository.deleteById(id);
     }
 
