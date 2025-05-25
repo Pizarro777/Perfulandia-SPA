@@ -22,7 +22,7 @@ public class ProductoController {
     }
 
     /* Crear un nuevo Producto */
-    @PostMapping
+    @PostMapping("/make")
     public ResponseEntity<Producto> crearProducto(@RequestBody @Valid Producto producto){
         Producto prod = service.crearProducto(producto);
         return ResponseEntity.status(201).body(prod);
@@ -41,11 +41,6 @@ public class ProductoController {
         return service.listarTodos();
     }
 
-    /* Obtener productos activos */
-    @GetMapping("/activos")
-    public List<Producto> obtenerActivos(){
-        return service.listarActivos();
-    }
 
     /* Eliminar un producto por ID */
     @DeleteMapping("/{id}")

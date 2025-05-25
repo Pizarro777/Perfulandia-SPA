@@ -15,7 +15,7 @@ public class ProductoService {
         this.repository = repository;
     }
 
-    /* Crear o Actualizar Producto */
+    /* Crear Producto */
     public Producto crearProducto(Producto producto){
         return repository.save(producto);
     }
@@ -24,11 +24,6 @@ public class ProductoService {
     public Producto obtenerPorId(Long id){
         Optional<Producto> producto = repository.findById(id);
         return producto.orElseThrow(()-> new RuntimeException("No se encontro el id en la base de datos: "+ id));
-    }
-
-    /* Listar por Activos */
-    public List<Producto> listarActivos(){
-        return repository.findByActivoTrue();
     }
 
     /* Listar todos */
