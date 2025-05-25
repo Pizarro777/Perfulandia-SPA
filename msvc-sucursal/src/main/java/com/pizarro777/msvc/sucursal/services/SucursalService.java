@@ -1,5 +1,6 @@
 package com.pizarro777.msvc.sucursal.services;
 
+import com.pizarro777.msvc.sucursal.dtos.SucursalDTO;
 import com.pizarro777.msvc.sucursal.models.Sucursal;
 import com.pizarro777.msvc.sucursal.repositories.SucursalRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,21 +13,35 @@ import java.util.Optional;
 public class SucursalService {
 
     @Autowired
-    private SucursalRepository repository;
+    private SucursalRepository sucursalRepository;
 
-    public Sucursal crearSucursal(Sucursal sucursal) {
-        return repository.save(sucursal);
+    public Sucursal crearSucursalDesdeDTO(SucursalDTO sucursalDTO) {
+        Sucursal sucursal = new Sucursal();
+        sucursal.setNombre(sucursalDTO.getNombre());
+        sucursal.setDireccion(sucursalDTO.getDireccion());
+        sucursal.setCiudad(sucursalDTO.getCiudad());
+        sucursal.setActivo(sucursalDTO.getActivo() != null ? sucursalDTO.getActivo() : true);
+        return sucursalRepository.save(sucursal);
+    }
+
+    public SucursalDTO convertirASucursalDTO(Sucursal sucursal) {
+        SucursalDTO dto = new SucursalDTO();
+        dto.setNombre(sucursal.getNombre());
+        dto.setDireccion(sucursal.getDireccion());
+        dto.setCiudad(sucursal.getCiudad());
+        dto.setActivo(sucursal.getActivo());
+        return dto;
     }
 
     public Optional<Sucursal> obtenerPorId(Long id) {
-        return repository.findById(id);
+        return sucursalRepository.findById(id);
     }
 
     public List<Sucursal> listarTodas() {
-        return repository.findAll();
+        return sucursalRepository.findAll();
     }
 
     public void eliminarSucursal(Long id) {
-        repository.deleteById(id);
+        sucursalRepository.deleteById(id);
     }
 }
