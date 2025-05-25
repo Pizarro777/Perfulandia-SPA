@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/msvc-inventarios/pom.xml" />
         <option value="$PROJECT_DIR$/msvc-detalleBoleta/pom.xml" />
         <option value="$PROJECT_DIR$/msvc-cometario/pom.xml" />
+        <option value="$PROJECT_DIR$/msvc-carrito/pom.xml" />
       </list>
     </option>
   </component>
