@@ -1,5 +1,6 @@
 package com.pizarro777.msvc.carrito.service;
 
+import com.pizarro777.msvc.carrito.model.Carrito;
 import com.pizarro777.msvc.carrito.repositories.RepositoryCarrito;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

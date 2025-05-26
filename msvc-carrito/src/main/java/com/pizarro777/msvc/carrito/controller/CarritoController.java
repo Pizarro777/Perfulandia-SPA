@@ -1,10 +1,12 @@
 package com.pizarro777.msvc.carrito.controller;
 
 
+import com.pizarro777.msvc.carrito.model.Carrito;
 import com.pizarro777.msvc.carrito.service.CarritoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -38,9 +40,9 @@ public class CarritoController {
         }
 
     // Guarda un nuevo carrito
-        @GetMapping("/save")
+        @PostMapping("/save")
         public ResponseEntity<Carrito> save(Carrito carrito) {
-            if (carrito.getIdProducto() == null ) {
+            if (carrito.getItems() == null ) {
                 return ResponseEntity.badRequest().build();
             }
             Carrito guardarCarrito = carritoService.save(carrito);
