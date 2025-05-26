@@ -13,6 +13,5 @@ public class SucursalDTO {
     private String nombre;
     private String direccion;
     private String ciudad;
-    private Boolean activo = true;
 }
 

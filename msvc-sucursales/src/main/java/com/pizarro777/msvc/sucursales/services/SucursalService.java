@@ -20,7 +20,6 @@ public class SucursalService {
         sucursal.setNombre(sucursalDTO.getNombre());
         sucursal.setDireccion(sucursalDTO.getDireccion());
         sucursal.setCiudad(sucursalDTO.getCiudad());
-        sucursal.setActivo(sucursalDTO.getActivo() != null ? sucursalDTO.getActivo() : true);
         return sucursalRepository.save(sucursal);
     }
 
@@ -29,7 +28,7 @@ public class SucursalService {
         dto.setNombre(sucursal.getNombre());
         dto.setDireccion(sucursal.getDireccion());
         dto.setCiudad(sucursal.getCiudad());
-        dto.setActivo(sucursal.getActivo());
+
         return dto;
     }
 
