@@ -1,6 +1,8 @@
 package com.pizarro777.msvc.carrito.service;
 
 
+import com.pizarro777.msvc.carrito.model.Carrito;
+
 import java.util.List;
 
 public interface CarritoService {
