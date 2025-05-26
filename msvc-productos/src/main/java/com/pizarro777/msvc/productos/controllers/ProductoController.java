@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.productos.controllers;
 
 import com.pizarro777.msvc.productos.models.Producto;
+import com.pizarro777.msvc.productos.repositories.ProductoRepository;
 import com.pizarro777.msvc.productos.services.ProductoService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,8 @@ public class ProductoController {
 
     @Autowired
     private final ProductoService service;
+    @Autowired
+    private ProductoRepository productoRepository;
 
     public ProductoController(ProductoService service){
         this.service = service;
@@ -47,6 +50,15 @@ public class ProductoController {
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id){
         service.eliminarProducto(id);
         return ResponseEntity.noContent().build();
+    }
+
+
+    // ENDPOINT
+    @GetMapping("/{id}")
+    public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id){
+        return productoRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
 

@@ -13,13 +13,13 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/carritos")
+@RequestMapping("/api/carritos")
 public class CarritoController {
 
     @Autowired
     private CarritoService carritoService;
 
-    // Obtienes la lista de todos los carritos
+     // Obtienes la lista de todos los carritos
      @GetMapping
      public ResponseEntity<List<Carrito>> findAll() {
          List<Carrito> carritos = carritoService.findAll();
@@ -29,7 +29,7 @@ public class CarritoController {
             return ResponseEntity.ok(carritos);
      }
 
-    // Busca un carrito por ID
+        // Busca un carrito por ID
         @GetMapping("/{id}")
         public ResponseEntity<Carrito> findById(Long id) {
             Carrito buscarCarrito = carritoService.findById(id);
@@ -39,7 +39,7 @@ public class CarritoController {
             return ResponseEntity.ok(buscarCarrito);
         }
 
-    // Guarda un nuevo carrito
+        // Guarda un nuevo carrito
         @PostMapping("/save")
         public ResponseEntity<Carrito> save(Carrito carrito) {
             if (carrito.getItems() == null ) {
