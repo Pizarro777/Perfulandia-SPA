@@ -3,8 +3,8 @@ package com.pizarro777.msvc.comentario.controller;
 
 import com.pizarro777.msvc.comentario.model.Comentario;
 import com.pizarro777.msvc.comentario.service.ComentarioService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,7 @@ public class comentarioController {
     }
     /* Guarda nuevo comentario. */
     @PostMapping
-    public ResponseEntity<Comentario> save(@RequestBody Comentario comentario) {
+    public ResponseEntity<Comentario> save(@RequestBody @Valid Comentario comentario) {
         if (comentario.getComentario() == null || comentario.getComentario().isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
