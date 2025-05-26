@@ -15,21 +15,26 @@ import java.time.LocalDateTime;
 @AllArgsConstructor @NoArgsConstructor
 public class Comentario {
 
+    // Id del Comentario
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_comentario")
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long idComentario;
 
-    @Column(name = "comentario")
+    // Commentario
+    @Column(nullable = false, length = 500)
     private String comentario;
 
-    @Column(name = "fecha_creacion")
+    // Fecha de creacion del comentario
+    @Column(nullable = false, length = 100)
     private LocalDateTime fechaCreacion;
 
-    @Column(name = "id_producto")
+    // Id del Producto al que pertenece el comentario
+    @Column(nullable = false)
+    @NotNull(message = "El id del producto es obligatorio")
     private Long idProducto;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDateTime fecha = LocalDateTime.now();
 
 }
