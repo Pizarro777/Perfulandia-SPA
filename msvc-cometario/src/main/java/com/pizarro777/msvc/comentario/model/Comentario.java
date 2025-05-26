@@ -31,7 +31,7 @@ public class Comentario {
     // Fecha de creacion del comentario
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @Column(nullable = false, length = 100)
-    private LocalDateTime fechaCreacion;
+    private LocalDateTime fechaCreacion = LocalDateTime.now();
 
     // Id del Producto al que pertenece el comentario
     @Column(nullable = false)
