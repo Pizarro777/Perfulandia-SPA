@@ -29,6 +29,7 @@ public class Comentario {
     private String comentario;
 
     // Fecha de creacion del comentario
+    @JsonFormat(pattern = "dd-MM-yyyy")
     @Column(nullable = false, length = 100)
     private LocalDateTime fechaCreacion;
 
@@ -36,8 +37,5 @@ public class Comentario {
     @Column(nullable = false)
     @NotNull(message = "El id del producto es obligatorio")
     private Long idProducto;
-
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDateTime fecha = LocalDateTime.now();
 
 }
