@@ -2,9 +2,8 @@ package com.pizarro777.msvc.comentario.service;
 
 import com.pizarro777.msvc.comentario.clients.ProductoClientRest;
 import com.pizarro777.msvc.comentario.model.Comentario;
-import com.pizarro777.msvc.comentario.repositories.comentarioRepository;
+import com.pizarro777.msvc.comentario.repositories.ComentarioRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,11 +12,13 @@ import java.util.List;
 @Transactional
 public class ComentarioService {
 
-    @Autowired
-    private comentarioRepository comentarioRepository;
+    private final ComentarioRepository comentarioRepository;
+    private final ProductoClientRest productoClientRest;
 
-    @Autowired
-    private ProductoClientRest productoClientRest;
+    public ComentarioService(ComentarioRepository comentarioRepository, ProductoClientRest productoClientRest) {
+        this.comentarioRepository = comentarioRepository;
+        this.productoClientRest = productoClientRest;
+    }
 
     /* Obtener todos los comentarios de la base de datos */
     public List<Comentario> findAll() {
@@ -26,7 +27,8 @@ public class ComentarioService {
 
     /* Obtener un comentario por su id */
     public Comentario findById(Long idComentario) {
-        return comentarioRepository.findById(idComentario).get();
+        return comentarioRepository.findById(idComentario)
+                .orElseThrow(() -> new RuntimeException("Comentario no encontrado con id " + idComentario));
     }
 
     /* Guardar un comentario en la base de datos */
