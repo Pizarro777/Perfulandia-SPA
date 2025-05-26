@@ -31,7 +31,6 @@ public class ProveedorService {
     public void delete(Long idProveedor) {
         proveedorRepository.deleteById(idProveedor); }
 
-
 }
 
 
