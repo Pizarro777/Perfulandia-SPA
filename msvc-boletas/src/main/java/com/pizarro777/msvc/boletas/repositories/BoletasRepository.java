@@ -9,6 +9,4 @@ import java.util.List;
 @Repository
 public interface BoletasRepository extends JpaRepository<BoletasModel, Long> {
 
-    List<BoletasModel> findByActivoTrue();
-
 }

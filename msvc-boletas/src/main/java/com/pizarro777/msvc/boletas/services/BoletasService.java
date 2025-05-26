@@ -27,7 +27,9 @@ public class BoletasService {
         return boletasRepository.save(detalleBoletaModel);
     }
 
-    public void deleteById(Long id) {
+    public void eliminarBoletas(Long id) {
         boletasRepository.deleteById(id);
     }
+
+
 }

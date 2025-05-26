@@ -2,7 +2,6 @@ package com.pizarro777.msvc.boletas.controllers;
 
 import com.pizarro777.msvc.boletas.models.BoletasModel;
 import com.pizarro777.msvc.boletas.services.BoletasService;
-import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +59,12 @@ public class BoletasController {
         }catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<BoletasModel> eliminarBoletas(@PathVariable Long id) {
+        boletasService.eliminarBoletas(id);
+        return ResponseEntity.noContent().build();
     }
 
 }
