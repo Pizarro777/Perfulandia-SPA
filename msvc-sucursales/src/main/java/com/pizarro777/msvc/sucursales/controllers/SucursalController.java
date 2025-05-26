@@ -1,48 +1,62 @@
 package com.pizarro777.msvc.sucursales.controllers;
 
-import com.pizarro777.msvc.sucursales.dtos.SucursalDTO;
 import com.pizarro777.msvc.sucursales.models.Sucursal;
+import com.pizarro777.msvc.sucursales.repositories.SucursalRepository;
 import com.pizarro777.msvc.sucursales.services.SucursalService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/sucursales")
+@Validated
 public class SucursalController {
 
     @Autowired
-    private SucursalService service;
+    private final SucursalService service;
 
-    @PostMapping
-    public ResponseEntity<SucursalDTO> crear(@RequestBody @Valid SucursalDTO sucursalDTO) {
-        Sucursal sucursalCreada = service.crearSucursalDesdeDTO(sucursalDTO);
-        SucursalDTO respuestaDTO = service.convertirASucursalDTO(sucursalCreada);
-        return ResponseEntity.status(201).body(respuestaDTO);
+    private SucursalRepository sucursalRepository;
+
+    public SucursalController(SucursalService service) {
+        this.service = service;
     }
 
+    /* Crear una nueva Sucursal */
+    @PostMapping("/make")
+    public ResponseEntity<Sucursal> crearSucursal(@RequestBody @Valid Sucursal sucursal) {
+        Sucursal nueva = service.crearSucursal(sucursal);
+        return ResponseEntity.status(201).body(nueva);
+    }
+
+    /* Obtener una sucursal por ID */
     @GetMapping("/{id}")
-    public ResponseEntity<SucursalDTO> obtenerPorId(@PathVariable Long id) {
-        return service.obtenerPorId(id)
-                .map(sucursal -> ResponseEntity.ok(service.convertirASucursalDTO(sucursal)))
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Sucursal> obtenerSucursal(@PathVariable("id") Long id) {
+        Sucursal sucursal = service.obtenerPorId(id);
+        return ResponseEntity.ok(sucursal);
     }
 
-    @GetMapping
-    public List<SucursalDTO> listarTodas() {
-        List<Sucursal> sucursales = service.listarTodas();
-        return sucursales.stream()
-                .map(service::convertirASucursalDTO)
-                .collect(Collectors.toList());
+    /* Obtener todas las sucursales */
+    @GetMapping("/todas")
+    public List<Sucursal> obtenerTodas() {
+        return service.listarTodas();
     }
 
+    /* Eliminar una sucursal por ID */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminarSucursal(@PathVariable Long id) {
         service.eliminarSucursal(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // ENDPOINT directo al repositorio (replicado como en producto)
+    @GetMapping("/id/{id}")
+    public ResponseEntity<Sucursal> obtenerPorId(@PathVariable Long id) {
+        return sucursalRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 }
