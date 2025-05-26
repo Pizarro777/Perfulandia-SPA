@@ -1,12 +1,10 @@
 package com.pizarro777.msvc.proveedor.controllers;
 
 import com.pizarro777.msvc.proveedor.models.ProveedorModel;
-import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
 import com.pizarro777.msvc.proveedor.services.ProveedorService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -24,7 +24,7 @@ public class ProveedorService {
                 .orElseThrow(() -> new RuntimeException("Proveedor no encontrado con id "+ idProveedor));
     }
 
-    public static ProveedorModel save(ProveedorModel proveedorModel) {
+    public ProveedorModel save(ProveedorModel proveedorModel) {
         return proveedorRepository.save(proveedorModel);
     }
 
