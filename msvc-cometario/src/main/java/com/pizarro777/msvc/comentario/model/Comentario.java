@@ -29,7 +29,7 @@ public class Comentario {
     private String comentario;
 
     // Fecha de creacion del comentario
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false, length = 100)
     private LocalDateTime fechaCreacion = LocalDateTime.now();
 
