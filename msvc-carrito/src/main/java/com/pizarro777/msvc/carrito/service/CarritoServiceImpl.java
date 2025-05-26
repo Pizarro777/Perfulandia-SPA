@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.carrito.service;
 
 import com.pizarro777.msvc.carrito.model.Carrito;
+import com.pizarro777.msvc.carrito.model.ItemCarrito;
 import com.pizarro777.msvc.carrito.repositories.RepositoryCarrito;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
@@ -31,9 +32,7 @@ public class CarritoServiceImpl implements CarritoService{
 
     //Guarda un carrito en la base de datos
     @Override
-    public Carrito save(Carrito carrito) {
-        return repositoryCarrito.save(carrito);
-    }
+    public Carrito save(Carrito carrito) { return repositoryCarrito.save(carrito);}
 
     //Elimina un carrito por su ID
     @Override
