@@ -37,8 +37,8 @@ public class CarritoController {
             return ResponseEntity.ok(buscarCarrito);
         }
 
-        // Guarda un nuevo carrito
-        @PostMapping("/save")
+        // Crear un nuevo carrito
+        @PostMapping
         public ResponseEntity<Carrito> save(@RequestBody @Valid Carrito carrito) {
             if (carrito.getItems() == null || carrito.getItems().isEmpty()) {
                 return ResponseEntity.badRequest().build();
