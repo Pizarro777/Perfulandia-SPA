@@ -52,7 +52,7 @@ public class SucursalController {
         return ResponseEntity.noContent().build();
     }
 
-    // ENDPOINT directo al repositorio (replicado como en producto)
+    // ENDPOINT directo al repositorio
     @GetMapping("/id/{id}")
     public ResponseEntity<Sucursal> obtenerPorId(@PathVariable Long id) {
         return sucursalRepository.findById(id)
