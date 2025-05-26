@@ -31,8 +31,6 @@ public class ProductoService {
         return repository.findAll();
     }
 
-    /* Listar por stock (pendiente)*/
-
     /* Eliminar Producto */
     public void eliminarProducto(long id){
         repository.deleteById(id);

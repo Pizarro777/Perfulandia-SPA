@@ -17,7 +17,7 @@ public class ProductoController {
 
     @Autowired
     private final ProductoService service;
-    @Autowired
+
     private ProductoRepository productoRepository;
 
     public ProductoController(ProductoService service){
@@ -54,7 +54,7 @@ public class ProductoController {
 
 
     // ENDPOINT
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id){
         return productoRepository.findById(id)
                 .map(ResponseEntity::ok)
