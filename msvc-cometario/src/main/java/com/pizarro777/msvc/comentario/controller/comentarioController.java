@@ -4,11 +4,9 @@ package com.pizarro777.msvc.comentario.controller;
 import com.pizarro777.msvc.comentario.model.Comentario;
 import com.pizarro777.msvc.comentario.service.ComentarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -29,8 +27,8 @@ public class comentarioController {
         return ResponseEntity.ok(Comentarios);
     }
     /* Busca un comentario por ID. */
-    @GetMapping("/{idComentario}")
-    public ResponseEntity<Comentario> findById(Long idComentario) {
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<Comentario> findById(@PathVariable Long idComentario) {
         Comentario comentario = comentarioService.findById(idComentario);
         if (comentario == null) {
             return ResponseEntity.notFound().build();
@@ -39,7 +37,7 @@ public class comentarioController {
     }
     /* Guarda nuevo comentario. */
     @PostMapping
-    public ResponseEntity<Comentario> save(Comentario comentario) {
+    public ResponseEntity<Comentario> save(@RequestBody Comentario comentario) {
         if (comentario.getComentario() == null || comentario.getComentario().isEmpty()) {
             return ResponseEntity.badRequest().build();
         }

@@ -34,7 +34,7 @@ public class ComentarioService {
     /* Guardar un comentario en la base de datos */
     public Comentario save(Comentario comentario) {
         //Validar si el producto existe
-        productoClientRest.obtenerProductoPorId(comentario.getIdProducto());
+        productoClientRest.obtenerProducto(comentario.getIdProducto());
         return comentarioRepository.save(comentario);
     }
 

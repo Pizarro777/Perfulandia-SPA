@@ -33,7 +33,7 @@ public class ProductoController {
 
     /* Obtener un producto por ID */
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> obtenerProducto(@PathVariable Long id){
+    public ResponseEntity<Producto> obtenerProducto(@PathVariable("id") Long id){
         Producto prod = service.obtenerPorId(id);
         return ResponseEntity.ok(prod);
     }
