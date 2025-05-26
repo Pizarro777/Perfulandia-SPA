@@ -16,7 +16,7 @@ public class BoletasService {
     private BoletasRepository boletasRepository;
 
     public BoletasService(BoletasRepository repository, BoletasRepository proveedorRepository) {
-        this.boletasRepository = proveedorRepository;
+        this.boletasRepository = repository;
     }
 
     public List<BoletasModel> findAll() {return boletasRepository.findAll();}
