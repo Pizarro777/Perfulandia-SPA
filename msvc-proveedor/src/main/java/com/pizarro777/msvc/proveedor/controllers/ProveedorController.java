@@ -18,7 +18,7 @@ public class ProveedorController {
     @Autowired
     private ProveedorService proveedorService;
 
-    /* Obtiene la lista de todos los comentarios. */
+
     @GetMapping
     public ResponseEntity<List<ProveedorModel>> findAll() {
         List<ProveedorModel> Proveedores = proveedorService.findAll();
@@ -27,16 +27,16 @@ public class ProveedorController {
         }
         return ResponseEntity.ok(Proveedores);
     }
-    /* Busca un comentario por ID. */
+
     @GetMapping(value = "/{id}")
-    public ResponseEntity<ProveedorModel> findById(@PathVariable Long idComentario) {
-        ProveedorModel proveedorModel = proveedorService.findById(idComentario);
+    public ResponseEntity<ProveedorModel> findById(@PathVariable Long idProveedor) {
+        ProveedorModel proveedorModel = proveedorService.findById(idProveedor);
         if (proveedorModel == null) {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(proveedorModel);
     }
-    /* Guarda nuevo comentario. */
+
     @PostMapping
     public ResponseEntity<ProveedorModel> save(@RequestBody @Valid ProveedorModel proveedor) {
         ProveedorModel nuevoProveedor = ProveedorService.save(proveedor);
