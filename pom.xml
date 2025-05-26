@@ -21,7 +21,7 @@
         <module>msvc-sucursales</module>
         <module>msvc-productos</module>
         <module>msvc-proveedor</module>
-        <module>msvc-inventarios</module>
+        <module>msvc-inventario</module>
         <module>msvc-carrito</module>
     </modules>
     <properties>
