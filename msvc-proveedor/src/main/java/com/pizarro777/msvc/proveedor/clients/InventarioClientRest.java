@@ -4,11 +4,8 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
-@FeignClient(name = "msvc-productos", url = "http://localhost:8005/api/producto")
-public interface ProductoClientRest {
-
-    @GetMapping("/productos/{id}")
-    String obtenerProductoPorId(@PathVariable("id") Long id);
-
-
+@FeignClient(name = "msvc-inventario", url = "http://localhost:8004/api/inventario")
+public interface InventarioClientRest {
+    @GetMapping("/{id}")
+    String obtenerInventarioPorId(@PathVariable("id") Long id);
 }
