@@ -60,4 +60,10 @@ public class ProveedorController {
         }
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ProveedorModel> eliminarProveedor(@PathVariable Long id) {
+        proveedorService.eliminarProveedor(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }

@@ -10,11 +10,4 @@ import java.util.List;
 
 @Repository
 public interface ProveedorRepository extends JpaRepository<ProveedorModel, Long> {
-
-    List<ProveedorModel> findByIdProveedor(Long idDProveedor);
-
-    List<ProveedorModel> findByIdProducto(Long idProducto);
-
-    List<ProveedorModel> findAllByIdBoletas(Long idBoletas);
-
 }
