@@ -10,5 +10,6 @@ public interface CarritoService {
     Carrito findById(Long id);
     Carrito save(Carrito carrito);
     void eliminarCarrito(Long id);
+    Double precioTotal(Long idCarrito);
 
 }

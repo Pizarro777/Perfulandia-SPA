@@ -22,7 +22,14 @@ public class Carrito {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCarrito;
 
+    // Calcula el precio total del carrito
+    public Double calcularPrecioTotal() {
+        return items.stream()
+                .mapToDouble(item -> item.getPrecio() * item.getCantidad())
+                .sum();
+    }
 
+    // Relación uno a muchos con ItemCarrito
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "id_carrito")
     private List<ItemCarrito> items;

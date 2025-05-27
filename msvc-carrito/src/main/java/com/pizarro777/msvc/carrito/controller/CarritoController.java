@@ -46,4 +46,18 @@ public class CarritoController {
             Carrito guardarCarrito = carritoService.save(carrito);
             return ResponseEntity.status(201).body(guardarCarrito);
         }
+
+        // Eliminar un carrito por ID
+        @DeleteMapping("/{id}")
+        public ResponseEntity<Void> eliminarCarrito(@PathVariable("id") Long id) {
+            carritoService.eliminarCarrito(id);
+            return ResponseEntity.noContent().build();
+        }
+
+        // Calcular el precio total de un carrito por ID
+        @GetMapping("/{id}/total")
+        public ResponseEntity<Double> obtenerPrecioTotal(@PathVariable Long id) {
+            Double total = carritoService.precioTotal(id);
+            return ResponseEntity.ok(total);
+        }
 }

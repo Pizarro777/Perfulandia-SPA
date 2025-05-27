@@ -39,4 +39,12 @@ public class CarritoServiceImpl implements CarritoService{
     public void eliminarCarrito(Long id) {
         repositoryCarrito.deleteById(id);
     }
+
+    //Calcula el precio total de un carrito
+    @Override
+    public Double precioTotal(Long idCarrito) {
+        return repositoryCarrito.findById(idCarrito)
+                .map(Carrito::calcularPrecioTotal)
+                .orElse(0.0);
+    }
 }
