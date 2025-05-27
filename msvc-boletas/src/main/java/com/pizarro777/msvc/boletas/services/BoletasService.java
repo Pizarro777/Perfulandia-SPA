@@ -15,7 +15,7 @@ public class BoletasService {
     @Autowired
     private BoletasRepository boletasRepository;
 
-    public BoletasService(BoletasRepository repository, BoletasRepository proveedorRepository) {
+    public BoletasService(BoletasRepository repository) {
         this.boletasRepository = repository;
     }
 
