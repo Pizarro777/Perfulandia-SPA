@@ -18,6 +18,7 @@ public class ProductoController {
     @Autowired
     private final ProductoService service;
 
+    @Autowired
     private ProductoRepository productoRepository;
 
     public ProductoController(ProductoService service){
@@ -44,6 +45,12 @@ public class ProductoController {
         return service.listarTodos();
     }
 
+    /* Actualizar Producto */
+    @PutMapping("/{id}")
+    public ResponseEntity<Producto> actualizarProducto(@PathVariable Long id, @RequestBody @Valid Producto producto){
+        Producto prod = service.actualizarCliente(id, producto);
+        return ResponseEntity.ok(prod);
+    }
 
     /* Eliminar un producto por ID */
     @DeleteMapping("/{id}")

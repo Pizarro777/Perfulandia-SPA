@@ -31,6 +31,19 @@ public class ProductoService {
         return repository.findAll();
     }
 
+    /* Actualizar Cliente */
+    public Producto actualizarCliente(Long id, Producto info){
+        Producto prod = obtenerPorId(id);
+
+        prod.setNombre(info.getNombre());
+        prod.setMarca(info.getMarca());
+        prod.setDescripcion(info.getDescripcion());
+        prod.setPrecio(info.getPrecio());
+        prod.setStock(info.getStock());
+        prod.setVersion(info.getVersion());
+        return repository.save(prod);
+    }
+
     /* Eliminar Producto */
     public void eliminarProducto(long id){
         repository.deleteById(id);
