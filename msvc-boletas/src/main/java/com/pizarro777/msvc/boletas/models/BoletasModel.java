@@ -1,7 +1,7 @@
 package com.pizarro777.msvc.boletas.models;
 
-
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
 
@@ -15,6 +15,7 @@ public class BoletasModel {
     @Column(name = "idBoletas")
     private Long idBoletas;
 
+    @NotBlank
     @Column(name = "nombreBoletas")
     private String nombreBoletas;
 
