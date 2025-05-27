@@ -1,6 +1,6 @@
 ﻿# 🍏 Perfulandia-SPA – Gestión de Productos
 
-![Java](https://img.shields.io/badge/Java-17-blue?logo=java&logoColor=white)  
+![Java](https://img.shields.io/badge/Java-21-blue?logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-3.4.6-brightgreen?logo=springboot)  
 
 ---
@@ -19,12 +19,11 @@ Permite crear, leer, actualizar y eliminar (CRUD) productos, validando datos y d
 3. [Requisitos Previos](#-requisitos-previos)
 4. [Instalación](#-instalación)
 5. [Ejecución](#-ejecución)
-6. [Documentación Swagger](#-documentación-swagger)
-7. [Endpoints Principales](#-endpoints-principales)
-8. [MapStruct DTO & Mapper](#-mapstruct-dto--mapper)
-9. [Buenas Prácticas](#-buenas-prácticas)
-10. [Contribuir](#-contribuir)
-11. [Licencia](#-licencia)
+6. [Endpoints Principales](#-endpoints-principales)
+7. [MapStruct DTO & Mapper](#-mapstruct-dto--mapper)
+8. [Buenas Prácticas](#-buenas-prácticas)
+9. [Contribuir](#-contribuir)
+10. [Licencia](#-licencia)
 
 ---
 
