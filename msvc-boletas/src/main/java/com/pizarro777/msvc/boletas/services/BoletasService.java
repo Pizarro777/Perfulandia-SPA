@@ -15,21 +15,24 @@ public class BoletasService {
     @Autowired
     private BoletasRepository boletasRepository;
 
-    public List<BoletasModel> findAll() {
-        return boletasRepository.findAll();
+    public BoletasService(BoletasRepository repository, BoletasRepository proveedorRepository) {
+        this.boletasRepository = repository;
     }
 
-    public BoletasModel findById(Long id) {
-        return boletasRepository.findById(id).orElse(null);
+    public List<BoletasModel> findAll() {return boletasRepository.findAll();}
+
+    public BoletasModel findById(Long idBoletas) {
+        return boletasRepository.findById(idBoletas)
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado con id "+ idBoletas));
     }
 
-    public BoletasModel save(BoletasModel detalleBoletaModel) {
-        return boletasRepository.save(detalleBoletaModel);
+    public BoletasModel save(BoletasModel proveedorModel) {
+        return boletasRepository.save(proveedorModel);
     }
 
-    public void eliminarBoletas(Long id) {
-        boletasRepository.deleteById(id);
-    }
+    public void delete(Long idProveedor) {
+        boletasRepository.deleteById(idProveedor); }
+
 
 
 }

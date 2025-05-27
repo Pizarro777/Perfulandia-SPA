@@ -7,10 +7,10 @@
 		<artifactId>perfulandia</artifactId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.pizarro777.msvc.productos</groupId>
-	<artifactId>msvc-productos</artifactId>
+	<groupId>com.pizarro777.msvc.sucursales</groupId>
+	<artifactId>msvc-sucursales</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>msvc-productos</name>
+	<name>msvc-sucursales</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
 	<licenses>
@@ -110,4 +110,5 @@
 			</plugin>
 		</plugins>
 	</build>
+
 </project>

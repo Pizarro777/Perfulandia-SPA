@@ -2,9 +2,8 @@ package com.pizarro777.msvc.proveedor.services;
 
 import com.pizarro777.msvc.proveedor.models.ProveedorModel;
 import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
-import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
@@ -12,24 +11,25 @@ import java.util.List;
 @Transactional
 public class ProveedorService {
 
-    @Autowired
-    private ProveedorRepository proveedorRepository;
+    private final ProveedorRepository proveedorRepository;
 
-    public List<ProveedorModel> findAll() {
-        return proveedorRepository.findAll();
+    public ProveedorService(ProveedorRepository repository, ProveedorRepository proveedorRepository) {
+        this.proveedorRepository = proveedorRepository;
     }
 
-    public ProveedorModel findById(Long id) {
-        return proveedorRepository.findById(id).orElse(null);
+    public List<ProveedorModel> findAll() {return proveedorRepository.findAll();}
+
+    public ProveedorModel findById(Long idProveedor) {
+        return proveedorRepository.findById(idProveedor)
+                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado con id "+ idProveedor));
     }
 
-    public ProveedorModel save(ProveedorModel proveedor) {
-        return proveedorRepository.save(proveedor);
+    public ProveedorModel save(ProveedorModel proveedorModel) {
+        return proveedorRepository.save(proveedorModel);
     }
 
-    public void eliminarProveedor(Long id) {
-        proveedorRepository.deleteById(id);
-    }
+    public void delete(Long idProveedor) {
+        proveedorRepository.deleteById(idProveedor); }
 
 }
 
