@@ -10,7 +10,7 @@ import lombok.*;
 public class ProveedorDTO {
 
     private Long idProveedor;
-    private Integer telefono ;
-    private String direccion;
-    private String servicio;
+    private Integer telefonoProveedor ;
+    private String direccionProveedor ;
+    private String servicioProveedor ;
 }
