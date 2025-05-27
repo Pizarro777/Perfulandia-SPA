@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/inventarios")
+@RequestMapping("/api/inventario")
 @Validated
 public class InventarioController {
 

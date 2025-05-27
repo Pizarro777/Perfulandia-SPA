@@ -1,4 +1,4 @@
-package com.pizarro777.msvc.inventarios.services;
+package com.pizarro777.msvc.inventario.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -8,13 +8,13 @@ import org.springframework.web.client.HttpClientErrorException;
 public class ProductoServiceClient {
 
     private final RestTemplate restTemplate;
-
+    // Constructor que recibe el RestTemplate para hacer llamadas HTTP
     public ProductoServiceClient(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
     public boolean existeProducto(Long productoId) {
-        String url = "http://localhost:8080/api/productos/" + productoId;
+        String url = "http://localhost:8005/api/productos/" + productoId;
         try {
             restTemplate.getForEntity(url, Object.class);
             return true;

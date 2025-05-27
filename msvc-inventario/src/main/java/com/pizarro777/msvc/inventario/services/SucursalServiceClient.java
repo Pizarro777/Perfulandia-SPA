@@ -1,4 +1,4 @@
-package com.pizarro777.msvc.inventarios.services;
+package com.pizarro777.msvc.inventario.services;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -14,7 +14,7 @@ public class SucursalServiceClient {
     }
 
     public boolean existeSucursal(Long sucursalId) {
-        String url = "http://localhost:8083/api/sucursales/" + sucursalId;
+        String url = "http://localhost:8007/api/sucursales/" + sucursalId;
         try {
             restTemplate.getForEntity(url, Object.class);
             return true;
