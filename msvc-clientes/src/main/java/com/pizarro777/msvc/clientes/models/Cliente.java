@@ -20,17 +20,17 @@ public class Cliente {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
-    @Column(unique = true)
-    @Pattern(regexp = "\\d{1,8}-[\\dKk]", message = "El formato debe ser XXXXXXXX-X")
-    @NotNull(message = "Este campo es obligatorio.")
-    private String rut;
-
     @Column(nullable = false)
     @NotBlank(message = "El nombre es obligatorio.")
     private String nombre;
 
     @Column(nullable = true)
     private String apellido;
+
+    @Column(unique = true)
+    @Pattern(regexp = "\\d{1,8}-[\\dKk]", message = "El formato debe ser XXXXXXXX-X")
+    @NotNull(message = "Este campo es obligatorio.")
+    private String rut;
 
     @Column(nullable = true)
     private String direccion;

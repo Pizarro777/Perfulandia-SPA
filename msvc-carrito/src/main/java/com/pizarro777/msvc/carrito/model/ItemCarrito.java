@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.carrito.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,8 +16,10 @@ import lombok.Setter;
 @Table(name = "item_carrito")
 public class ItemCarrito {
 
+    // Relación muchos a uno con Carrito
     @ManyToOne
     @JoinColumn(name = "id_carrito")
+    @JsonIgnore
     private Carrito carrito;
 
     @Id
@@ -31,6 +34,11 @@ public class ItemCarrito {
 
     @Column(name = "precio", nullable = false)
     private Double precio;
+
+    //Calcula el precio total del item
+    public Double getPrecioTotal() {
+        return this.precio * this.cantidad;
+    }
 
 
 }

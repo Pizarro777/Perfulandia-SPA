@@ -44,4 +44,10 @@ public class comentarioController {
         Comentario savedComentario = comentarioService.save(comentario);
         return ResponseEntity.ok(savedComentario);
     }
+    /* Elimina un comentario por ID. */
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> delete(@PathVariable("id") Long idComentario) {
+        comentarioService.delete(idComentario);
+        return ResponseEntity.noContent().build();
+    }
 }
