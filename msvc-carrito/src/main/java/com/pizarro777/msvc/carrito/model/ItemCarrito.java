@@ -29,6 +29,12 @@ public class ItemCarrito {
     @Column(name = "id_producto",nullable = false)
     private Long idProducto;
 
+    @Column(name = "nombre",nullable = false)
+    private String nombre;
+
+    @Column(name = "marca",nullable = false)
+    private String marca;
+
     @Column(name = "cantidad",nullable = false)
     private Integer cantidad;
 
