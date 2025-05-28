@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.carrito.clients;
 
 
+import com.pizarro777.msvc.carrito.dtos.ProductoDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,5 +10,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface ProductoClientRest {
 
     @GetMapping("/{id}")
-    String obtenerProducto(@PathVariable("id") Long id);
+    ProductoDTO obtenerProducto(@PathVariable("id") Long id);
 }

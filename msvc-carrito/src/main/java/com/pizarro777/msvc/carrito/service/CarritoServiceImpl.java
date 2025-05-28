@@ -1,9 +1,12 @@
 package com.pizarro777.msvc.carrito.service;
 
+import com.pizarro777.msvc.carrito.clients.ProductoClientRest;
+import com.pizarro777.msvc.carrito.dtos.ProductoDTO;
 import com.pizarro777.msvc.carrito.model.Carrito;
 import com.pizarro777.msvc.carrito.model.ItemCarrito;
 import com.pizarro777.msvc.carrito.repositories.RepositoryCarrito;
 import jakarta.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +15,11 @@ import java.util.List;
 @Transactional
 public class CarritoServiceImpl implements CarritoService{
 
-    private final RepositoryCarrito repositoryCarrito;
+    @Autowired
+    private RepositoryCarrito repositoryCarrito;
 
-    public CarritoServiceImpl(RepositoryCarrito repositoryCarrito) {
-        this.repositoryCarrito = repositoryCarrito;
-    }
+    @Autowired
+    private ProductoClientRest productoClientRest;
 
     //Mostra la lista de todos los carritos
     @Override
@@ -30,9 +33,21 @@ public class CarritoServiceImpl implements CarritoService{
         return repositoryCarrito.findById(id).orElse(null);
     }
 
-    //Guarda un carrito en la base de datos
+    //Crear un carrito en la base de datos
     @Override
-    public Carrito save(Carrito carrito) { return repositoryCarrito.save(carrito);}
+    public Carrito save(Carrito carrito) {
+        for (ItemCarrito item : carrito.getItems()) {
+            ProductoDTO producto = productoClientRest.obtenerProducto(item.getIdProducto());
+
+            item.setNombre( producto.getNombre());
+            item.setMarca( producto.getMarca());
+            item.setPrecio(producto.getPrecio());
+            item.setCarrito(carrito);
+
+        }
+
+        return repositoryCarrito.save(carrito);
+    }
 
     //Elimina un carrito por su ID
     @Override
