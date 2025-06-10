@@ -3,15 +3,24 @@ package com.pizarro777.msvc.carrito.controller;
 
 import com.pizarro777.msvc.carrito.model.Carrito;
 import com.pizarro777.msvc.carrito.service.CarritoService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/carritos")
+@Validated
+@Tag(name = "Carrito", description = "Esra seccion contiene los CRUD de carritos")
 public class CarritoController {
 
     @Autowired
@@ -19,6 +28,14 @@ public class CarritoController {
 
      // Obtienes la lista de todos los carritos
      @GetMapping
+     @Operation(
+             summary = "Devuelve todos los carritos",
+             description = "Este metodo debe retornar un list de Carritos, en caso "+
+                     "de que no nada retorna una list vacia"
+     )
+     @ApiResponses(value = {
+             @ApiResponse(responseCode = "200", description = "Se retornaron todos los carritos OK")
+     })
      public ResponseEntity<List<Carrito>> findAll() {
          List<Carrito> carritos = carritoService.findAll();
          if (carritos.isEmpty()) {
@@ -29,6 +46,18 @@ public class CarritoController {
 
         // Busca un carrito por ID
         @GetMapping("/{id}")
+        @Operation(
+                summary = "Devuelve todos los carritos",
+                description = "Este metodo debe retornar un carrito cuando es consultado"+
+                        "mediante su id"
+        )
+        @ApiResponses(value = {
+                @ApiResponse(responseCode = "200", description = "Se retornaron todos los carritos OK"),
+                @ApiResponse(responseCode = "400", description = "Error - Carrito con ID no existe ")
+        })
+        @Parameters(value = {
+                @Parameter(name = "id", description = "Este es el id unico de un carrito", required = true)
+        })
         public ResponseEntity<Carrito> findById(@PathVariable("id")Long id) {
             Carrito buscarCarrito = carritoService.findById(id);
             if (buscarCarrito == null) {
