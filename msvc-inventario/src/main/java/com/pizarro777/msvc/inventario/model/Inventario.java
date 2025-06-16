@@ -24,9 +24,10 @@ public class Inventario {
 
         @NotNull(message = "La cantidad es obligatoria.")
         @Min(value = 0, message = "La cantidad no puede ser negativa.")
+
         private Integer cantidad;
 
-        private String ubicacion;
+        private String direccion;
 
         public Inventario() {}
 
@@ -34,7 +35,7 @@ public class Inventario {
                 this.idProducto = idProducto;
                 this.idSucursal = idSucursal;
                 this.cantidad = cantidad;
-                this.ubicacion = ubicacion;
+                this.direccion = direccion;
         }
 }
 
