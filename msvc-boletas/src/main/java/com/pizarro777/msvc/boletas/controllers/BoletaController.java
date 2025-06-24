@@ -3,6 +3,8 @@ package com.pizarro777.msvc.boletas.controllers;
 import com.pizarro777.msvc.boletas.models.BoletasModel;
 import com.pizarro777.msvc.boletas.services.BoletasService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,18 +26,20 @@ public class BoletaController {
 
     @GetMapping
     @Operation(
-            sumary = "Devuelve todas las boletas",
+            summary = "Devuelve todas las boletas",
             description = "Este metodo debe retornar un List de Boletas, en caaso"+
                     "de que no encuentre nada retorna List vacia"
     )
-    @Ap
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se retornaron todos los carritos OK")
+    })
 
     public ResponseEntity<List<BoletasModel>> findAll() {
-        List<BoletasModel> Proveedores = boletasService.findAll();
-        if (Proveedores.isEmpty()) {
+        List<BoletasModel> Boletas = boletasService.findAll();
+        if (Boletas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(Proveedores);
+        return ResponseEntity.ok(Boletas);
     }
 
     @GetMapping(value = "/{id}")
