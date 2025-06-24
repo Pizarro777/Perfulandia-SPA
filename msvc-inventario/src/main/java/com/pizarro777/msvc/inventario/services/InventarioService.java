@@ -5,50 +5,73 @@ import com.pizarro777.msvc.inventario.clients.ProductoClientFeign;
 import com.pizarro777.msvc.inventario.clients.SucursalClientFeign;
 import com.pizarro777.msvc.inventario.model.Inventario;
 import com.pizarro777.msvc.inventario.repositories.InventarioRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import feign.FeignException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 
 
 @Service
 public class InventarioService {
 
     private final InventarioRepository repository;
-    private final ProductoClientFeign productoClientFeign;
-    private final SucursalClientFeign sucursalClientFeign;
+    private final ProductoClientFeign productoClient;
+    private final SucursalClientFeign sucursalClient;
 
-    @Autowired
     public InventarioService(InventarioRepository repository,
-                             ProductoClientFeign productoClientFeign,
-                             SucursalClientFeign sucursalClientFeign)
-    {
+                             ProductoClientFeign productoClient,
+                             SucursalClientFeign sucursalClient) {
         this.repository = repository;
-        this.productoClientFeign = productoClientFeign;
-        this.sucursalClientFeign = sucursalClientFeign;
+        this.productoClient = productoClient;
+        this.sucursalClient = sucursalClient;
     }
 
-
-
-    public Inventario crearInventario(Inventario inventario){
-        Long idProducto = inventario.getIdProducto();
-        Long idSucursal = inventario.getIdSucursal();
-
-        // Validar que existan producto y sucursal
-        boolean productoExiste = existeProducto(idProducto);
-        boolean sucursalExiste = existeSucursal(idSucursal);
-
-        if (!productoExiste) {
-            throw new RuntimeException("Producto con id " + idProducto + " no existe.");
+    /* Crear Inventario con validación */
+    public Inventario crearInventario(Inventario inventario) {
+        // Validar existencia del producto
+        try {
+            productoClient.obtenerProducto(inventario.getIdProducto());
+        } catch (FeignException.NotFound e) {
+            throw new RuntimeException("No existe un producto con ID " + inventario.getIdProducto());
         }
 
-        if (!sucursalExiste) {
-            throw new RuntimeException("Sucursal con id " + idSucursal + " no existe.");
+        // Validar existencia de la sucursal
+        try {
+            sucursalClient.obtenerSucursal(inventario.getIdSucursal());
+        } catch (FeignException.NotFound e) {
+            throw new RuntimeException("No existe una sucursal con ID " + inventario.getIdSucursal());
         }
 
-        // Si todo está bien, guardar inventario
+        // Guardar si ambas entidades existen
         return repository.save(inventario);
     }
 
+    /* Obtener por ID */
+    public Inventario obtenerPorId(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Inventario no encontrado con ID " + id));
+    }
 
+    /* Listar todos */
+    public List<Inventario> listarTodos() {
+        return repository.findAll();
+    }
+
+    /* Actualizar Inventario */
+    public Inventario actualizarInventario(Long id, Inventario info) {
+        Inventario inv = obtenerPorId(id);
+
+        inv.setIdProducto(info.getIdProducto());
+        inv.setIdSucursal(info.getIdSucursal());
+        inv.setCantidad(info.getCantidad());
+        inv.setDireccion(info.getDireccion());
+
+        return repository.save(inv);
+    }
+
+    /* Eliminar */
+    public void eliminarInventario(Long id) {
+        repository.deleteById(id);
+    }
 
 }

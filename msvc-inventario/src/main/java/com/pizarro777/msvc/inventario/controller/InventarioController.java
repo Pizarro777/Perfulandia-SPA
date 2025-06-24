@@ -1,40 +1,53 @@
 package com.pizarro777.msvc.inventario.controller;
 
-import com.pizarro777.msvc.inventario.dtos.InventarioDto;
 import com.pizarro777.msvc.inventario.model.Inventario;
 import com.pizarro777.msvc.inventario.services.InventarioService;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/inventario")
-@Validated
+@RequestMapping("/api/inventarios")
 public class InventarioController {
 
     private final InventarioService inventarioService;
 
-    @Autowired
     public InventarioController(InventarioService inventarioService) {
         this.inventarioService = inventarioService;
     }
 
-    // Crear o actualizar stock para producto y sucursal
-    @PostMapping("/stock")
-    public ResponseEntity<Inventario> crearOActualizarStock(@RequestBody InventarioDto dto) {
-        Inventario inventario = inventarioService.crearOActualizarStock(dto);
+    /* Crear nuevo inventario */
+    @PostMapping
+    public ResponseEntity<Inventario> crearInventario(@RequestBody Inventario inventario) {
+        Inventario creado = inventarioService.crearInventario(inventario);
+        return ResponseEntity.ok(creado);
+    }
+
+    /* Obtener inventario por ID */
+    @GetMapping("/{id}")
+    public ResponseEntity<Inventario> obtenerInventario(@PathVariable Long id) {
+        Inventario inventario = inventarioService.obtenerPorId(id);
         return ResponseEntity.ok(inventario);
     }
 
-    // Obtener inventario por producto y sucursal
+    /* Listar todos los inventarios */
     @GetMapping
-    public ResponseEntity<Inventario> obtenerInventarioPorProductoYSucursal(
-            @RequestParam Long idProducto,
-            @RequestParam Long idSucursal) {
+    public ResponseEntity<List<Inventario>> listarInventarios() {
+        return ResponseEntity.ok(inventarioService.listarTodos());
+    }
 
-        Inventario inventario = inventarioService.obtenerPorProductoYSucursal(idProducto, idSucursal);
-        return ResponseEntity.ok(inventario);
+    /* Actualizar inventario por ID */
+    @PutMapping("/{id}")
+    public ResponseEntity<Inventario> actualizarInventario(@PathVariable Long id, @RequestBody Inventario inventario) {
+        Inventario actualizado = inventarioService.actualizarInventario(id, inventario);
+        return ResponseEntity.ok(actualizado);
+    }
+
+    /* Eliminar inventario por ID */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarInventario(@PathVariable Long id) {
+        inventarioService.eliminarInventario(id);
+        return ResponseEntity.noContent().build();
     }
 }
