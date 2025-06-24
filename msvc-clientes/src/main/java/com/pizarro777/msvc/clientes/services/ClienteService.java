@@ -41,7 +41,6 @@ public class ClienteService {
     public Cliente actualizarCliente(Long id, Cliente datos){
         Cliente cli = obtenerPorId(id);
 
-
         /* Actualiza todos los datos */
         cli.setRut(datos.getRut());
         cli.setNombre(datos.getNombre());
@@ -51,8 +50,6 @@ public class ClienteService {
         cli.setDireccion(datos.getDireccion());
 
         return clienteRepository.save(cli);
-
-
     }
 
     /* Eliminar Cliente */
