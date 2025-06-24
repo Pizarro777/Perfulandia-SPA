@@ -1,6 +1,4 @@
-package com.pizarro777.msvc.boletas.config;
-
-
+package com.pizarro777.msvc.proveedor.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -18,12 +16,12 @@ public class SwaggerConfig {
         contact.setEmail("abrahamneira1@gmail.com");
         return new OpenAPI()
                 .info(new Info()
-                        .title("API - MSVC - Boletas")
+                        .title("API - MSVC - Proveedor")
                         .version("1.0.0")
-                        .description("Este es el microservicio de Boletas, con el puedes realizar todas las consultas" +
+                        .description("Este es el microservicio de Proveedor, con el puedes realizar todas las consultas" +
                                 " CRUD que necesites")
                         .contact(contact)
                         .summary("Esto es una api dentro de un proyecto de MSVC")
-        );
+                );
     }
 }

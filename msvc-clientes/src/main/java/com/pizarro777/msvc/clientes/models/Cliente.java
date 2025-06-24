@@ -43,4 +43,8 @@ public class Cliente {
     @Column(unique = true, nullable = false)
     @Email(message = "Debe ser un correo electronico valido.")
     private String correo;
+
+    // Manejo de versiones del producto
+    @Version
+    private Integer version;
 }

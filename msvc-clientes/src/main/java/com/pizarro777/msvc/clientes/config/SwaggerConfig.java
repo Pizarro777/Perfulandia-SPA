@@ -1,4 +1,4 @@
-package com.pizarro777.msvc.productos.config;
+package com.pizarro777.msvc.clientes.config;
 
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
@@ -11,8 +11,8 @@ public class SwaggerConfig {
     public OpenAPI customOpenApi(){
         return new OpenAPI()
                 .info(new Info()
-                        .title("Api Restfull - MSVC - Productos")
-                        .description("Esta es la api dedicada al msvc de Productos")
+                        .title("Api Restfull - MSVC - Clientes")
+                        .description("Esta es la api dedicada al msvc de Clientes")
                         .version("1.0.0"));
     }
 }

@@ -19,9 +19,6 @@ public class BoletasModel {
     @Column(name = "nombreBoletas")
     private String nombreBoletas;
 
-    @Column(name = "numeroBoletas")
-    private int numeroBoletas;
-
     @Column(name = "cantidadBoletas")
     private int cantidadBoletas;
 
