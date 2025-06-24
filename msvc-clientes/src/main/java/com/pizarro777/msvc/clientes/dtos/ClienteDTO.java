@@ -1,14 +1,12 @@
 package com.pizarro777.msvc.clientes.dtos;
 
-import jakarta.persistence.Column;
-import jakarta.validation.constraints.NotBlank;
-import lombok.*;
 
-@Getter @Setter @ToString
-@AllArgsConstructor @NoArgsConstructor
+import lombok.Builder;
+import lombok.Data;
+
+@Data @Builder
 public class ClienteDTO {
 
-    private Long id;
     private String rut;
     private String nombre;
     private String apellido;
