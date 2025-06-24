@@ -11,7 +11,7 @@ public class SwaggerConfig {
     public OpenAPI customOpenApi(){
         return new OpenAPI()
                 .info(new Info()
-                        .title("Api Restgull - MSVC - Productos")
+                        .title("Api Restfull - MSVC - Productos")
                         .description("Esta es la api dedicada al msvc de Productos")
                         .version("1.0.0"));
     }

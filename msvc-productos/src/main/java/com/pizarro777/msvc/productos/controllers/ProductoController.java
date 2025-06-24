@@ -1,5 +1,7 @@
 package com.pizarro777.msvc.productos.controllers;
 
+import com.pizarro777.msvc.productos.dtos.ProductoInputDTO;
+import com.pizarro777.msvc.productos.dtos.ProductoOutputDTO;
 import com.pizarro777.msvc.productos.models.Producto;
 import com.pizarro777.msvc.productos.repositories.ProductoRepository;
 import com.pizarro777.msvc.productos.services.ProductoService;
@@ -9,7 +11,6 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -35,16 +36,15 @@ public class ProductoController {
 
     /* Crear un nuevo Producto */
     @PostMapping()
-    public ResponseEntity<Producto> crearProducto(@RequestBody @Valid Producto producto){
+    public ResponseEntity<ProductoOutputDTO> crearProducto(@RequestBody @Validated ProductoInputDTO producto){
         Producto prod = service.crearProducto(producto);
-        return ResponseEntity.status(201).body(prod);
+        return ResponseEntity.status(201).body(service.EntityToDTO(prod));
     }
 
     /* Obtener un producto por ID */
     @GetMapping("/{id}")
-    public ResponseEntity<Producto> obtenerProducto(@PathVariable("id") Long id){
-        Producto prod = service.obtenerPorId(id);
-        return ResponseEntity.ok(prod);
+    public ResponseEntity<ProductoOutputDTO> obtenerProducto(@PathVariable("id") Long id){
+        return ResponseEntity.status(201).body(service.obtenerPorId(id));
     }
 
     /* Obtener todos los productos */
@@ -58,18 +58,14 @@ public class ProductoController {
             @ApiResponse(responseCode = "200", description = "Se retornaron todos los clientes ok"),
             @ApiResponse(responseCode = "400", description = "Error - Producto con ID no existente")
     })
-    @Parameters(value ={
-            @Parameter(name= "id", description= "")
-    })
-    public List<Producto> obtenerTodos(){
-        return service.listarTodos();
+    public ResponseEntity<List<ProductoOutputDTO>> obtenerTodos(){
+        return ResponseEntity.status(201).body(service.listarTodos());
     }
 
     /* Actualizar Producto */
     @PutMapping("/{id}")
-    public ResponseEntity<Producto> actualizarProducto(@PathVariable Long id, @RequestBody @Valid Producto producto){
-        Producto prod = service.actualizarCliente(id, producto);
-        return ResponseEntity.ok(prod);
+    public ResponseEntity<ProductoOutputDTO> actualizarProducto(@PathVariable Long id, @RequestBody @Validated ProductoInputDTO producto){
+        return ResponseEntity.ok(service.actualizarProducto(id, producto));
     }
 
     /* Eliminar un producto por ID */
@@ -77,15 +73,6 @@ public class ProductoController {
     public ResponseEntity<Void> eliminarProducto(@PathVariable Long id){
         service.eliminarProducto(id);
         return ResponseEntity.noContent().build();
-    }
-
-
-    // ENDPOINT
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Producto> obtenerPorId(@PathVariable Long id){
-        return productoRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
     }
 
 
