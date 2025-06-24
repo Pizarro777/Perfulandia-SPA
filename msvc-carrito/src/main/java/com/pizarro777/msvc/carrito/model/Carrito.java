@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -30,8 +31,7 @@ public class Carrito {
     }
 
     // Relación uno a muchos con ItemCarrito
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_carrito")
-    private List<ItemCarrito> items;
+    @OneToMany(mappedBy = "carrito", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<ItemCarrito> items = new ArrayList<>();
 
 }

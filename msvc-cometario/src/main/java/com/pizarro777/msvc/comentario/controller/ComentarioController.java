@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/comentarios")
-public class comentarioController {
+public class ComentarioController {
 
     @Autowired
     private ComentarioService comentarioService;
