@@ -1,6 +1,6 @@
 package com.pizarro777.msvc.boletas.controllers;
 
-import com.pizarro777.msvc.boletas.models.BoletasModel;
+import com.pizarro777.msvc.boletas.models.entities.Boletas;
 import com.pizarro777.msvc.boletas.services.BoletasService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -27,15 +27,15 @@ public class BoletaController {
     @GetMapping
     @Operation(
             summary = "Devuelve todas las boletas",
-            description = "Este metodo debe retornar un List de Boletas, en caaso"+
+            description = "Este metodo debe retornar un List de Boletas, en caso"+
                     "de que no encuentre nada retorna List vacia"
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se retornaron todos los carritos OK")
+            @ApiResponse(responseCode = "200", description = "Se retornaron todos las boletas OK")
     })
 
-    public ResponseEntity<List<BoletasModel>> findAll() {
-        List<BoletasModel> Boletas = boletasService.findAll();
+    public ResponseEntity<List<Boletas>> findAll() {
+        List<Boletas> Boletas = boletasService.findAll();
         if (Boletas.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -43,18 +43,18 @@ public class BoletaController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<BoletasModel> findById(@PathVariable Long idBoletas) {
-        BoletasModel boletasModel = boletasService.findById(idBoletas);
-        if (boletasModel == null) {
+    public ResponseEntity<Boletas> findById(@PathVariable Long idBoletas) {
+        Boletas boletas = boletasService.findById(idBoletas);
+        if (boletas == null) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(boletasModel);
+        return ResponseEntity.ok(boletas);
     }
 
     @PostMapping
-    public ResponseEntity<BoletasModel> save(@RequestBody @Valid BoletasModel boleta) {
-        BoletasModel nuevaBoleta = boletasService.save(boleta);
-        return ResponseEntity.status(201).body(nuevaBoleta);
+    public ResponseEntity<Boletas> save(@RequestBody @Valid Boletas boletas) {
+        Boletas nuevaBoletas = boletasService.save(boletas);
+        return ResponseEntity.status(201).body(nuevaBoletas);
     }
 
 }
