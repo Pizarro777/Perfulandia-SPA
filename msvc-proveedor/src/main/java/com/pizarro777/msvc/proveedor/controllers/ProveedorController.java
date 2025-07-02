@@ -1,18 +1,23 @@
 package com.pizarro777.msvc.proveedor.controllers;
 
 import com.pizarro777.msvc.proveedor.models.ProveedorModel;
+import com.pizarro777.msvc.proveedor.services.ProveedorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/proveedor")
+@Validated
+@Tag(name = "Proveedores", description = "Operaciones CRUD de proveedores")
 public class ProveedorController {
 
     @Autowired
@@ -37,7 +42,7 @@ public class ProveedorController {
         return ResponseEntity.ok(Proveedor);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{idProveedor}")
     public ResponseEntity<ProveedorModel> findById(@PathVariable Long idProveedor) {
         ProveedorModel proveedorModel = proveedorService.findById(idProveedor);
         if (proveedorModel == null) {
