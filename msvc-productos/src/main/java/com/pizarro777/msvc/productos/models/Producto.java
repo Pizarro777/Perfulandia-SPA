@@ -6,12 +6,18 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 import jakarta.validation.constraints.Size;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDate;
 
 @Entity
 @Table(name="Productos")
-@Getter @Setter @ToString
-@NoArgsConstructor @AllArgsConstructor
+@Data @NoArgsConstructor
+@AllArgsConstructor @Builder
 public class Producto {
 
     // Identificacion del Producto
@@ -22,7 +28,7 @@ public class Producto {
 
     // Nombre del Producto
     @NotBlank(message = "El nombre es obligatorio.")
-    @Column(nullable = false, length = 150, unique = true)
+    @Column(nullable = false, length = 150)
     private String nombre;
 
     // Marca del Producto
@@ -44,6 +50,10 @@ public class Producto {
     @PositiveOrZero
     @Column(nullable = false)
     private Integer stock;
+
+    @CreationTimestamp
+    @Column(nullable = false)
+    private LocalDate fechaCreacion;
 
     // Manejo de versiones del producto
     @Version

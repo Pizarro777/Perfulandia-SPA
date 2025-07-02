@@ -34,7 +34,11 @@ public class CarritoController {
                      "de que no nada retorna una list vacia"
      )
      @ApiResponses(value = {
-             @ApiResponse(responseCode = "200", description = "Se retornaron todos los carritos OK")
+             @ApiResponse(responseCode = "200", description = "Se retornaron todos los carritos OK"),
+             @ApiResponse(responseCode = "400", description = "Error - Carrito no existente")
+     })
+     @Parameters(value ={
+             @Parameter(name= "id", description= "")
      })
      public ResponseEntity<List<Carrito>> findAll() {
          List<Carrito> carritos = carritoService.findAll();

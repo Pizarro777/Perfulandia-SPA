@@ -24,6 +24,8 @@ public class Comentario {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long idComentario;
 
+    //Añadir clienteid
+
     // Commentario
     @Column(nullable = false, length = 500)
     private String comentario;
