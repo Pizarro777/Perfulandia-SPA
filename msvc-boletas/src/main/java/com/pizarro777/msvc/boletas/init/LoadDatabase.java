@@ -27,18 +27,21 @@ public class LoadDatabase implements CommandLineRunner {
 
         if(boletasRepository.count() == 0){
             for(int i=0;i<100;i++){
-                Boletas boletas = new Boletas();
+                Boletas boleta = new Boletas();
 
-                String numeroStr = faker.idNumber().valid().replaceAll("-","");
-                String ultimo = numeroStr.substring(numeroStr.length()-1);
-                String restante = numeroStr.substring(0, numeroStr.length()-1);
+                String nombreBoleta = faker.commerce().productName();
 
-                boletas = boletasRepository.save(boletas);
-                log.info("El medico creado es {}", boletas);
+                double precioBoleta = faker.number().numberBetween(1000, 10000);
+
+                boleta.setNombreBoletas(nombreBoleta);
+                boleta.setPrecioBoletas(precioBoleta);
+
+                boleta = boletasRepository.save(boleta);
+                log.info("Boleta creada: {}", boleta);
             }
+        } else {
+            log.info("Boletas ya existentes en base, no se insertan datos.");
         }
-
-
     }
 
 }
