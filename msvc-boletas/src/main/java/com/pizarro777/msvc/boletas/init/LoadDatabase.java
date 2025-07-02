@@ -1,6 +1,8 @@
 package com.pizarro777.msvc.boletas.init;
 
+import com.pizarro777.msvc.boletas.models.entities.Boletas;
 import com.pizarro777.msvc.boletas.repositories.BoletasRepository;
+import net.datafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,9 +40,5 @@ public class LoadDatabase implements CommandLineRunner {
 
 
     }
-
-
-
-
 
 }
