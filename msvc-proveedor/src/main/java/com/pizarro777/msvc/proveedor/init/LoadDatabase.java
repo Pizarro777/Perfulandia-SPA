@@ -1,6 +1,8 @@
 package com.pizarro777.msvc.proveedor.init;
 
+import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
 import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
+import net.datafaker.Faker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +30,6 @@ public class LoadDatabase implements CommandLineRunner {
                 Proveedor proveedor = new Proveedor();
 
                 String numeroStr = faker.idNumber().valid().replaceAll("-","");
-                String ultimo = numeroStr.substring(numeroStr.length()-1);
-                String restante = numeroStr.substring(0, numeroStr.length()-1);
-
                 proveedor = proveedorRepository.save(proveedor);
                 log.info("El medico creado es {}", proveedor);
             }

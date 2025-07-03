@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.proveedor.controllers;
 
-import com.pizarro777.msvc.proveedor.models.ProveedorModel;
+import com.pizarro777.msvc.proveedor.models.Producto;
+import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
 import com.pizarro777.msvc.proveedor.services.ProveedorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -34,8 +35,8 @@ public class ProveedorController {
             @ApiResponse(responseCode = "200", description = "Se retornaron todos los Proveedor OK")
     })
 
-    public ResponseEntity<List<ProveedorModel>> findAll() {
-        List<ProveedorModel> Proveedor = proveedorService.findAll();
+    public ResponseEntity<List<Proveedor>> findAll() {
+        List<Proveedor> Proveedor = proveedorService.findAll();
         if (Proveedor.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -43,8 +44,8 @@ public class ProveedorController {
     }
 
     @GetMapping(value = "/{idProveedor}")
-    public ResponseEntity<ProveedorModel> findById(@PathVariable Long idProveedor) {
-        ProveedorModel proveedorModel = proveedorService.findById(idProveedor);
+    public ResponseEntity<Proveedor> findById(@PathVariable Long idProveedor) {
+        Proveedor proveedorModel = proveedorService.findById(idProveedor);
         if (proveedorModel == null) {
             return ResponseEntity.notFound().build();
         }
@@ -52,8 +53,8 @@ public class ProveedorController {
     }
 
     @PostMapping
-    public ResponseEntity<ProveedorModel> save(@RequestBody @Valid ProveedorModel proveedor) {
-        ProveedorModel nuevoProveedor = proveedorService.save(proveedor);
+    public ResponseEntity<Proveedor> save(@RequestBody @Valid Proveedor proveedor) {
+        Proveedor nuevoProveedor = proveedorService.save(proveedor);
         return ResponseEntity.status(201).body(nuevoProveedor);
     }
 
