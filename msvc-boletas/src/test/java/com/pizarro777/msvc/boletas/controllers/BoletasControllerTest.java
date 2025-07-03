@@ -1,8 +1,8 @@
 package com.pizarro777.msvc.boletas.controllers;
 
-import com.pizarro777.msvc.boletas.models.BoletasModel;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import com.pizarro777.msvc.boletas.models.entities.Boletas;
 import net.minidev.json.JSONArray;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -61,9 +61,9 @@ public class BoletasControllerTest {
     @Test
     @DirtiesContext
     public void shouldCreateANewBoletas() {
-        BoletasModel nuevaBoleta = new BoletasModel();
+        Boletas nuevaBoleta = new Boletas();
         nuevaBoleta.setNombreBoletas("Perfume");
-        nuevaBoleta.setPrecioBoletas(25000);
+        nuevaBoleta.setPrecioBoletas(25000.0);
 
         ResponseEntity<String> response = restTemplate.postForEntity("/api/v2/boletas", nuevaBoleta, String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
