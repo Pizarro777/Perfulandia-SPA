@@ -1,6 +1,6 @@
-package com.pizarro777.msvc.boletas.exceptions;
+package com.pizarro777.msvc.proveedor.excepcions;
 
-import com.pizarro777.msvc.boletas.dtos.ErrorDTO;
+import com.pizarro777.msvc.proveedor.dtos.ErrorDTO;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
