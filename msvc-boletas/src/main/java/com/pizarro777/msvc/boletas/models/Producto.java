@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Getter @Setter @NoArgsConstructor
 @AllArgsConstructor @ToString
 @Schema(description = "Entidad que representa un producto")
-public class ProductoModel {
+public class Producto {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
