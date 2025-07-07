@@ -33,4 +33,9 @@ public class BoletaServiceImpl implements BoletasService{
         return boletasRepository.save(boletas);
     }
 
+    @Override
+    public void eliminarBoletas(Long id) {
+        boletasRepository.deleteById(id);
+    }
+
 }

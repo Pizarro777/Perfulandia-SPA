@@ -7,6 +7,6 @@ public interface BoletasService {
     List<Boletas> findAll();
     Boletas findById(Long id);
     Boletas save(Boletas boletas);
-
+    void eliminarBoletas(Long id);
 
 }

@@ -57,4 +57,10 @@ public class BoletaController {
         return ResponseEntity.status(201).body(nuevaBoletas);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarBoletas(@PathVariable("id") Long id) {
+        boletasService.eliminarBoletas(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
