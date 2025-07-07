@@ -12,12 +12,22 @@ import java.time.LocalDate;
 @Builder
 public class ProveedorProductoDTO {
 
+    private Long idProveedor;
+
     private Long idProducto;
+
     private String nombreProducto;
+
     private String marcaProducto;
+
     private String descripcion;
+
     private Double precio;
-    private LocalDate fechaCreacion;
+
     private Integer stock;
+
+    private LocalDate fechaCreacion;
+
+    private Integer version;
 
 }
