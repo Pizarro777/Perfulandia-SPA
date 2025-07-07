@@ -27,8 +27,8 @@ public class ProveedorController {
 
     @GetMapping
     @Operation(
-            summary = "Devuelve todas los Proveedor",
-            description = "Este metodo debe retornar un List de Proveedor, en caaso"+
+            summary = "Devuelve todos los Proveedor",
+            description = "Este metodo debe retornar un List de Proveedor, en caso"+
                     "de que no encuentre nada retorna List vacia"
     )
     @ApiResponses(value = {
@@ -43,7 +43,7 @@ public class ProveedorController {
         return ResponseEntity.ok(Proveedor);
     }
 
-    @GetMapping(value = "/{idProveedor}")
+    @GetMapping(value = "/{id}")
     public ResponseEntity<Proveedor> findById(@PathVariable Long idProveedor) {
         Proveedor proveedorModel = proveedorService.findById(idProveedor);
         if (proveedorModel == null) {
@@ -58,7 +58,7 @@ public class ProveedorController {
         return ResponseEntity.status(201).body(nuevoProveedor);
     }
 
-    // Eliminar un carrito por ID
+
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long id) {
         proveedorService.eliminarProveedor(id);
