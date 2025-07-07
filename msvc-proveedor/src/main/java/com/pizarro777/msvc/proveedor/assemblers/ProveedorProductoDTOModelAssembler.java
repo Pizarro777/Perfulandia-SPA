@@ -1,7 +1,7 @@
 package com.pizarro777.msvc.proveedor.assemblers;
 
 
-import com.pizarro777.msvc.proveedor.dtos.ProveedorControllerV2;
+import com.pizarro777.msvc.proveedor.controllers.ProveedorControllerV2;
 import com.pizarro777.msvc.proveedor.dtos.ProveedorProductoDTO;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
