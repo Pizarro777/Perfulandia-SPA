@@ -1,5 +1,6 @@
 package com.pizarro777.msvc.inventario.controller;
 
+
 import com.pizarro777.msvc.inventario.model.Inventario;
 import com.pizarro777.msvc.inventario.services.InventarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -22,6 +23,7 @@ import java.util.List;
 public class InventarioController {
     @Autowired
     private InventarioService inventarioService;
+    @Autowired
 
     public InventarioController(InventarioService inventarioService) {
         this.inventarioService = inventarioService;

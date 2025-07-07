@@ -83,5 +83,6 @@ public class InventarioControllerV2 {
                 .created(linkTo(methodOn(InventarioControllerV2.class).obtenerInventario(creado.getId())).toUri())
                 .body(modelo);
     }
+
 }
 
