@@ -18,7 +18,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/proveedor")
 @Validated
-@Tag(name = "Proveedores", description = "Operaciones CRUD de proveedores")
+@Tag(name = "Proveedor", description = "Esta seccion contiene los CRUD de proveedor")
 public class ProveedorController {
 
     @Autowired
