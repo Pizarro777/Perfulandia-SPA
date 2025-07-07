@@ -9,10 +9,10 @@ import lombok.*;
 @AllArgsConstructor
 public class InventarioDto {
 
+    private Long id;
     private Long idProducto;
     private Long idSucursal;
     private Integer cantidad;
-    private String ubicacion;
-
+    private String direccion;
 
 }
