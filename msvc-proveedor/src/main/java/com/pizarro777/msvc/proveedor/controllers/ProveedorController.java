@@ -58,4 +58,11 @@ public class ProveedorController {
         return ResponseEntity.status(201).body(nuevoProveedor);
     }
 
+    // Eliminar un carrito por ID
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long id) {
+        proveedorService.eliminarProveedor(id);
+        return ResponseEntity.noContent().build();
+    }
+
 }
