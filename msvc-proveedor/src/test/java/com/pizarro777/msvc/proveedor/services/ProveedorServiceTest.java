@@ -36,7 +36,7 @@ public class ProveedorServiceTest {
         this.proveedorPrueba = new Proveedor(
                 987654321,
                 "Av. Pizarro 777",
-                "Materiales de construcción"
+                "Perfume"
         );
         proveedorPrueba.setIdProveedor(1L);
 

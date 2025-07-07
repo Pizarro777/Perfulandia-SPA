@@ -22,7 +22,7 @@ public class ProveedorControllerTest {
 
     @Test
     public void shouldReturnAllProveedoresWhenListIsRequested() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedores", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedor", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -38,7 +38,7 @@ public class ProveedorControllerTest {
 
     @Test
     public void shouldReturnAProveedorWhenFindById() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedores/1", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedor/1", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -51,7 +51,7 @@ public class ProveedorControllerTest {
 
     @Test
     public void shouldReturnAProveedorWithUnknownId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedores/9999", String.class);
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedor/9999", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -62,10 +62,10 @@ public class ProveedorControllerTest {
     @Test
     @DirtiesContext
     public void shouldCreateANewProveedor() {
-        Proveedor proveedor = new Proveedor(912345678, "Av. Nueva 456", "Distribución de materiales");
+        Proveedor proveedor = new Proveedor(987654321, "Av. Pizarro 777", "Perfume" );
 
         ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/v1/proveedores",
+                "/api/v1/proveedor",
                 proveedor,
                 String.class
         );
@@ -77,7 +77,7 @@ public class ProveedorControllerTest {
         assertThat(idProveedor).isEqualTo(3);
 
         String direccion = documentContext.read("$.direccion");
-        assertThat(direccion).isEqualTo("Av. Nueva 456");
+        assertThat(direccion).isEqualTo("Av. Pizarro 777");
     }
 
     @Test
@@ -85,7 +85,7 @@ public class ProveedorControllerTest {
         Proveedor proveedorInvalido = new Proveedor(null, "Av. Principal 123", "Servicios varios");
 
         ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/v1/proveedores",
+                "/api/v1/proveedor",
                 proveedorInvalido,
                 String.class
         );
@@ -99,10 +99,10 @@ public class ProveedorControllerTest {
 
     @Test
     public void shouldReturnBadRequestWhenDireccionIsBlank() {
-        Proveedor proveedorInvalido = new Proveedor(987654321, " ", "Servicios varios");
+        Proveedor proveedorInvalido = new Proveedor(987654321, "Av. Pizarro 777", "Perfume");
 
         ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/v1/proveedores",
+                "/api/v1/proveedor",
                 proveedorInvalido,
                 String.class
         );
