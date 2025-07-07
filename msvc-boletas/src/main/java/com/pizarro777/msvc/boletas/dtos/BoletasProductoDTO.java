@@ -27,8 +27,10 @@ public class BoletasProductoDTO {
 
     private Double precio;
 
+    private Integer stock;
+
     private LocalDate fechaCreacion;
 
-    private Integer stock;
+    private Integer version;
 
 }

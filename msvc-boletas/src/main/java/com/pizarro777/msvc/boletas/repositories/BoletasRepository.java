@@ -8,4 +8,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoletasRepository extends JpaRepository<Boletas, Long> {
 
+
 }
