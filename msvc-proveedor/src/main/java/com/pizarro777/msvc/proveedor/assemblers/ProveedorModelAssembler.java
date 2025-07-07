@@ -15,7 +15,7 @@ public class ProveedorModelAssembler implements RepresentationModelAssembler<Pro
 
     @Override
     public EntityModel<Proveedor> toModel(Proveedor entity) {
-        Link link = Link.of("http://localhost:8000/api/proveedor/" + entity.getIdProveedor()).withRel("proveedor");
+        Link link = Link.of("http://localhost:8007/api/proveedor/" + entity.getIdProveedor()).withRel("proveedor");
         return EntityModel.of(
                 entity,
                 linkTo(methodOn(ProveedorControllerV2.class).findById(entity.getIdProveedor())).withSelfRel(),
