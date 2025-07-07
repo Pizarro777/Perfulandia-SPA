@@ -16,7 +16,7 @@ public class BoletasProductoDTOModelAssembler implements RepresentationModelAsse
         return EntityModel.of(
                 boletasProductoDTO,
                 linkTo(methodOn(BoletasControllerV2.class).findBoletasProductoDTOById(boletasProductoDTO.getIdProducto())).withSelfRel(),
-                linkTo(methodOn(BoletasControllerV2.class).findAllBoletasProductos()).withRel("productos")
+                linkTo(methodOn(BoletasControllerV2.class).findAllBoletasProductos()).withRel("producto-boletas")
         );
     }
 }
