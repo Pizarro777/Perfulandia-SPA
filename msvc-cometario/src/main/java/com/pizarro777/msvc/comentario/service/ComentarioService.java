@@ -37,6 +37,20 @@ public class ComentarioService {
         productoClientRest.obtenerProducto(comentario.getIdProducto());
         return comentarioRepository.save(comentario);
     }
+    /* Actualizar un comentario en la base de datos*/
+    public Comentario update(Long idComentario, Comentario comentarioActualizado) {
+        Comentario existente = comentarioRepository.findById(idComentario)
+                .orElseThrow(() -> new RuntimeException("Comentario no encontrado con id " + idComentario));
+
+        // Validar que el producto exista
+        productoClientRest.obtenerProducto(comentarioActualizado.getIdProducto());
+
+        // Actualizar campos editables
+        existente.setComentario(comentarioActualizado.getComentario());
+        existente.setIdProducto(comentarioActualizado.getIdProducto());
+
+        return comentarioRepository.save(existente);
+    }
 
     /* Elimina un comentario de la base de datos buscado por su ID. */
     public void delete(Long idComentario) {
