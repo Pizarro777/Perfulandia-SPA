@@ -44,6 +44,14 @@ public class ComentarioController {
         Comentario savedComentario = comentarioService.save(comentario);
         return ResponseEntity.ok(savedComentario);
     }
+
+    /* Actualiza un comentario por ID. */
+    @PutMapping("/{id}")
+    public ResponseEntity<Comentario> updateComentario(@PathVariable Long id, @RequestBody Comentario comentario) {
+        Comentario actualizado = comentarioService.update(id, comentario);
+        return ResponseEntity.ok(actualizado);
+    }
+
     /* Elimina un comentario por ID. */
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long idComentario) {
