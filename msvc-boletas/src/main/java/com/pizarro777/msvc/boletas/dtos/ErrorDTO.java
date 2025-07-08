@@ -33,4 +33,6 @@ public class ErrorDTO {
     public void setErrors(Map<String, String> errors) {
         this.errors = errors;
     }
+
+
 }

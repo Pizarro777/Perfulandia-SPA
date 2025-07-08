@@ -41,4 +41,10 @@ public class GlobalExceptionHandler {
                 .body(this.createErrorDTO(HttpStatus.INTERNAL_SERVER_ERROR.value(), LocalDateTime.now(), errorMap));
     }
 
+
+    @ExceptionHandler(BoletasException.class)
+    public ResponseEntity<String> handleBoletasException(BoletasException ex) {
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
 }
