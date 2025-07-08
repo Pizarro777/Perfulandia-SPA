@@ -17,15 +17,16 @@ public class Boletas {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_boletas")
+    @Column(name = "id_boleta")
     @Schema(description = "ID de la boleta", example = "1")
     private Long idBoletas;
 
-    @Column(name = "nombre_boletas", nullable = false)
+    @Column(name = "nombre_boleta", nullable = false)
     @NotBlank(message = "El nombre de la boleta no puede estar vacío")
     @Schema(description = "Nombre de la boleta", example = "Boleta de Servicio")
     private String nombreBoletas;
 
+    @Column(name = "precio_boleta")
     @NotNull(message = "El precio de la boleta es obligatorio")
     @Min(value = 0, message = "El precio de la boleta debe ser mayor o igual a cero")
     @Schema(description = "Precio de la boleta", example = "18000")
