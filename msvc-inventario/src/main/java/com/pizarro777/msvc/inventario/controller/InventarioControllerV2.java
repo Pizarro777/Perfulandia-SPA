@@ -1,6 +1,6 @@
 package com.pizarro777.msvc.inventario.controller;
 
-import com.pizarro777.msvc.inventario.assemblers.InventarioDTOModelAssembler;
+import com.pizarro777.msvc.inventario.assemblers.InventarioModelAssembler;
 import com.pizarro777.msvc.inventario.dtos.InventarioDto;
 import com.pizarro777.msvc.inventario.services.InventarioService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -27,7 +27,7 @@ public class InventarioControllerV2 {
     private InventarioService inventarioService;
 
     @Autowired
-    private InventarioDTOModelAssembler assembler;
+    private InventarioModelAssembler assembler;
 
     @GetMapping
     @Operation(

@@ -39,8 +39,7 @@ public class InventarioServiceImpl implements InventarioService {
                         inv.getId(),
                         inv.getIdProducto(),
                         inv.getIdSucursal(),
-                        inv.getCantidad(),
-                        inv.getDireccion()
+                        inv.getCantidad()
                 ))
                 .collect(Collectors.toList());
     }
@@ -75,7 +74,7 @@ public class InventarioServiceImpl implements InventarioService {
         inv.setIdProducto(datos.getIdProducto());
         inv.setIdSucursal(datos.getIdSucursal());
         inv.setCantidad(datos.getCantidad());
-        inv.setDireccion(datos.getDireccion());
+
 
         return repository.save(inv);
     }
@@ -94,15 +93,14 @@ public class InventarioServiceImpl implements InventarioService {
                 inv.getId(),
                 inv.getIdProducto(),
                 inv.getIdSucursal(),
-                inv.getCantidad(),
-                inv.getDireccion()
+                inv.getCantidad()
         );
     }
 
     // Crea un inventario a partir de un InventarioDto y devuelve el DTO creado
     @Override
     public InventarioDto crearInventarioDto(InventarioDto dto) {
-        // Validar existencia de producto y sucursal igual que en crearInventario()
+
         try {
             productoClient.obtenerProducto(dto.getIdProducto());
         } catch (FeignException.NotFound e) {
@@ -120,7 +118,7 @@ public class InventarioServiceImpl implements InventarioService {
         inventario.setIdProducto(dto.getIdProducto());
         inventario.setIdSucursal(dto.getIdSucursal());
         inventario.setCantidad(dto.getCantidad());
-        inventario.setDireccion(dto.getDireccion());
+
 
         Inventario inventarioCreado = repository.save(inventario);
 
@@ -129,8 +127,7 @@ public class InventarioServiceImpl implements InventarioService {
                 inventarioCreado.getId(),
                 inventarioCreado.getIdProducto(),
                 inventarioCreado.getIdSucursal(),
-                inventarioCreado.getCantidad(),
-                inventarioCreado.getDireccion()
+                inventarioCreado.getCantidad()
         );
     }
 
