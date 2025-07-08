@@ -33,7 +33,7 @@ public class BoletasServiceTest {
     public void setUp() {
         boletaPrueba = new Boletas();
         boletaPrueba.setIdBoletas(1L);
-        boletaPrueba.setNombreBoletas("Boleta de ejemplo");
+        boletaPrueba.setNombreBoletas("Perfum Alta Gama");
         boletaPrueba.setPrecioBoletas(1000.0);
 
         boletasList = new ArrayList<>();

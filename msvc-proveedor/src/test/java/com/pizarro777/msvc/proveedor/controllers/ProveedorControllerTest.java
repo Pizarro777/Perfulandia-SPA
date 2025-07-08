@@ -82,7 +82,7 @@ public class ProveedorControllerTest {
 
     @Test
     public void shouldReturnBadRequestWhenTelefonoIsNull() {
-        Proveedor proveedorInvalido = new Proveedor(null, "Av. Principal 123", "Servicios varios");
+        Proveedor proveedorInvalido = new Proveedor(null, "Av. Pizarro 777", "Servicios varios");
 
         ResponseEntity<String> response = restTemplate.postForEntity(
                 "/api/v1/proveedor",
