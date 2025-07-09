@@ -23,19 +23,25 @@ public class BoletaServiceImpl implements BoletasService{
     }
 
     @Override
-    public Boletas findById(Long id) {
-        return boletasRepository.findById(id)
-                .orElseThrow(() -> new BoletasException("La boleta con id " + id + " no se encuentra en la base de datos"));
+    public Boletas findById(Long idBoletas) {
+        return boletasRepository.findById(idBoletas)
+                .orElseThrow(() -> new BoletasException("La boleta con id " + idBoletas + " no se encuentra en la base de datos"));
     }
 
     @Override
-    public Boletas create (Boletas boletas) {
+    public Boletas save (Boletas boletas) {
         return boletasRepository.save(boletas);
     }
 
     @Override
-    public void eliminarBoletas(Long id) {
-        boletasRepository.deleteById(id);
+    @Transactional
+    public void eliminarBoletas(Long idBoletas) {
+        if (!boletasRepository.existsById(idBoletas)) {
+            // Lanza BoletasException si la boleta no existe para eliminar
+            throw new BoletasException("Boleta no encontrada para eliminar con ID: " + idBoletas);
+        }
+        boletasRepository.deleteById(idBoletas);
+        System.out.println("DEBUG Service: Boleta eliminada con ID: " + idBoletas);
     }
 
 }

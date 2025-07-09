@@ -5,3 +5,4 @@ public class BoletasException extends RuntimeException {
         super(message);
     }
 }
+

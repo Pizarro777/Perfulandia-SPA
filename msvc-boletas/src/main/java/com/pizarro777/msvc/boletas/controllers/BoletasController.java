@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -23,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/boletas")
 @Validated
 @Tag(name = "Boletas", description = "Esta seccion contiene los CRUD de boletas")
-public class BoletaController {
+public class BoletasController {
 
     @Autowired
     private BoletasService boletasService;
@@ -47,7 +48,6 @@ public class BoletaController {
         return ResponseEntity.ok(Boletas);
     }
 
-    @GetMapping("/{id}")
     @Operation(summary = "Obtiene una boleta", description = "A través del id suministrado devuelve la boleta con esa id")
     @ApiResponses( value = {
             @ApiResponse(responseCode = "200", description = "Operacion existosa"),
@@ -66,20 +66,20 @@ public class BoletaController {
 
 
 
-    @GetMapping(value = "/{id}")
-    public ResponseEntity<Boletas> findById(@PathVariable Long idBoletas) {
-        Boletas boletas = boletasService.findById(idBoletas);
-        if (boletas == null) {
-            return ResponseEntity.notFound().build();
+    @GetMapping("/{id}")
+    public ResponseEntity<Boletas> findById(@PathVariable("id") Long id) { // El path variable en la URL es 'id'
+        Boletas boletas = boletasService.findById(id); // Pasar 'id' al servicio
+
+        if (boletas == null) { // Si el servicio devuelve null
+            return ResponseEntity.notFound().build(); // Devuelve 404 Not Found
         }
         return ResponseEntity.ok(boletas);
     }
 
 
 
-    @PostMapping
     @Operation(
-            summary = "Guarda un medico",
+            summary = "Guarda una boleta",
             description = "Con este método podemos enviar los datos mediante un body y realizar el guardado"
     )
     @ApiResponses( value = {
@@ -94,17 +94,29 @@ public class BoletaController {
             )
     })
     @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "medico a crear",
+            description = "boleta a crear",
             content = @Content(
                     mediaType = "application/json",
-                    schema = @Schema(implementation = Medico.class)
+                    schema = @Schema(implementation = Boletas.class)
             )
     )
 
-    @PostMapping
-    public ResponseEntity<Boletas> create(@RequestBody @Valid Boletas boletas) {
-        Boletas nuevaBoletas = boletasService.save(boletas);
-        return ResponseEntity.status(201).body(nuevaBoletas);
+
+    @PostMapping // Mapea las solicitudes HTTP POST a la ruta base /api/boletas
+    public ResponseEntity<Boletas> crearBoletas(@RequestBody Boletas boleta) {
+        try {
+
+            Boletas nuevaBoleta = boletasService.save(boleta);
+
+            System.out.println("API: Boleta creada exitosamente con ID: " + nuevaBoleta.getIdBoletas() + " y número: " + nuevaBoleta.getNombreBoletas());
+
+            return new ResponseEntity<>(nuevaBoleta, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @DeleteMapping("/{id}")

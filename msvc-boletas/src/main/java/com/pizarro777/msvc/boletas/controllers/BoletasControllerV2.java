@@ -131,7 +131,7 @@ public class BoletasControllerV2 {
                     schema = @Schema(implementation = Boletas.class)
             )
     )
-    public ResponseEntity<EntityModel<Boletas>> create(@Valid @RequestBody Boletas boletas) {
+    public ResponseEntity<EntityModel<Boletas>> save(@Valid @RequestBody Boletas boletas) {
         Boletas nuevaBoleta = this.boletasService.save(boletas);
         EntityModel<Boletas> entityModel = this.boletasModelAssembler.toModel(nuevaBoleta);
 
