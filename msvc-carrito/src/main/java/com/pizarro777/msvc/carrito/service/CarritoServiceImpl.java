@@ -49,6 +49,17 @@ public class CarritoServiceImpl implements CarritoService{
         return repositoryCarrito.save(carrito);
     }
 
+    //Actualiza un carrito en la base de datos
+    @Override
+    public Carrito actualizarCarrito(Long id, Carrito carrito) {
+        return repositoryCarrito.findById(id)
+                .map(existingCarrito -> {
+                    existingCarrito.setItems(carrito.getItems());
+                    return repositoryCarrito.save(existingCarrito);
+                })
+                .orElse(null);
+    }
+
     //Elimina un carrito por su ID
     @Override
     public void eliminarCarrito(Long id) {
