@@ -1,6 +1,5 @@
 package com.pizarro777.msvc.boletas.models.entities;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
@@ -31,5 +30,11 @@ public class Boletas {
     @Min(value = 0, message = "El precio de la boleta debe ser mayor o igual a cero")
     @Schema(description = "Precio de la boleta", example = "18000")
     private Double precioBoletas;
+
+    public Boletas(String nombreBoletas, double precioBoletas) {
+        this.nombreBoletas = nombreBoletas;
+        this.precioBoletas = precioBoletas;
+    }
+
 
 }

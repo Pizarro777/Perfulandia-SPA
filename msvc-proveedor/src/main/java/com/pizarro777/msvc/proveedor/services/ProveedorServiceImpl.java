@@ -1,41 +1,93 @@
 package com.pizarro777.msvc.proveedor.services;
 
+import com.pizarro777.msvc.proveedor.excepcions.ProveedorException;
 import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
 import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class ProveedorServiceImpl implements ProveedorService{
 
 
-    private final ProveedorRepository proveedorRepository;
-
-
-    public ProveedorServiceImpl(ProveedorRepository proveedorRepository) {
-        this.proveedorRepository = proveedorRepository;
-    }
-
+    @Autowired
+    private ProveedorRepository proveedorRepository;
 
     @Override
+    @Transactional(readOnly = true)
     public List<Proveedor> findAll() {
         return proveedorRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Proveedor findById(Long idProveedor) {
         return proveedorRepository.findById(idProveedor)
-                .orElseThrow(() -> new RuntimeException("Proveedor no encontrado con id " + idProveedor));
+                .orElseThrow(() -> new ProveedorException("El proveedor con id " + idProveedor + " no se encuentra en la base de datos"));
     }
 
     @Override
-    public Proveedor save(Proveedor proveedor) {
+    @Transactional
+    public Proveedor save (Proveedor proveedor) {
         return proveedorRepository.save(proveedor);
     }
 
+    @Transactional
+    public Proveedor update(Long idProveedor, Proveedor proveedorActualizado) {
+
+        Proveedor proveedorExistente = proveedorRepository.findById(idProveedor)
+                .orElseThrow(() -> new ProveedorException("Proveedor no encontrado con id " + idProveedor));
+
+        // Validate mandatory fields for update
+        if (proveedorActualizado.getNombreProveedor() == null || proveedorActualizado.getNombreProveedor().trim().isEmpty()) {
+            throw new IllegalArgumentException("El nombre del proveedor es obligatorio para la actualización.");
+        }
+
+        // Check for duplicate name, excluding the current supplier being updated
+        Optional<Proveedor> existingProveedorWithNewNameOpt = proveedorRepository.findByNombreProveedor(proveedorActualizado.getNombreProveedor());
+        if (existingProveedorWithNewNameOpt.isPresent()) {
+            Proveedor proveedorConMismoNombre = existingProveedorWithNewNameOpt.get();
+            if (!proveedorConMismoNombre.getIdProveedor().equals(idProveedor)) {
+                throw new IllegalArgumentException("Ya existe otro proveedor con el nombre: " + proveedorActualizado.getNombreProveedor());
+            }
+        }
+
+        // Update fields
+        proveedorExistente.setNombreProveedor(proveedorActualizado.getNombreProveedor());
+
+        if (proveedorActualizado.getTelefono() != null) {
+            proveedorExistente.setTelefono(proveedorActualizado.getTelefono());
+        }
+
+        if (proveedorActualizado.getDireccion() != null && !proveedorActualizado.getDireccion().trim().isEmpty()) {
+            proveedorExistente.setDireccion(proveedorActualizado.getDireccion());
+        }
+
+        if (proveedorActualizado.getServicio() != null && !proveedorActualizado.getServicio().trim().isEmpty()) {
+            proveedorExistente.setServicio(proveedorActualizado.getServicio());
+        }
+
+        System.out.println("DEBUG Service: Actualizando proveedor con ID: " + proveedorExistente.getIdProveedor() +
+                " Nombre: " + proveedorExistente.getNombreProveedor() +
+                " Teléfono: " + proveedorExistente.getTelefono() +
+                " Dirección: " + proveedorExistente.getDireccion() +
+                " Servicio: " + proveedorExistente.getServicio());
+
+        return proveedorRepository.save(proveedorExistente);
+    }
+
     @Override
-    public void eliminarProveedor(Long id) {
-        proveedorRepository.deleteById(id);
+    @Transactional
+    public void eliminarProveedor(Long idProveedor) {
+        if (!proveedorRepository.existsById(idProveedor)) {
+            throw new ProveedorException("Proveedor no encontrado para eliminar con ID: " + idProveedor);
+        }
+        proveedorRepository.deleteById(idProveedor);
+        System.out.println("DEBUG Service: Proveedor eliminado con ID: " + idProveedor);
     }
 }
