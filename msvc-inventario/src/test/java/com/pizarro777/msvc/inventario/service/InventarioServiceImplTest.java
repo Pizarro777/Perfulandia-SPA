@@ -2,91 +2,65 @@ package com.pizarro777.msvc.inventario.service;
 
 import com.pizarro777.msvc.inventario.clients.ProductoClientFeign;
 import com.pizarro777.msvc.inventario.clients.SucursalClientFeign;
-import com.pizarro777.msvc.inventario.dtos.InventarioDto;
+import com.pizarro777.msvc.inventario.dtos.ProductoDto;
+import com.pizarro777.msvc.inventario.dtos.SucursalDto;
 import com.pizarro777.msvc.inventario.model.Inventario;
 import com.pizarro777.msvc.inventario.repositories.InventarioRepository;
 import com.pizarro777.msvc.inventario.services.InventarioServiceImpl;
-import feign.FeignException;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class InventarioServiceImplTest {
 
+    @Mock
     private InventarioRepository inventarioRepository;
-    private ProductoClientFeign productoClientFeign;
-    private SucursalClientFeign sucursalClientFeign;
 
-    private InventarioServiceImpl service;
+    @Mock
+    private ProductoClientFeign productoClient;
 
-    @BeforeEach
-    void setUp() {
-        inventarioRepository = mock(InventarioRepository.class);
-        productoClientFeign = mock(ProductoClientFeign.class);
-        sucursalClientFeign = mock(SucursalClientFeign.class);
-        service = new InventarioServiceImpl(inventarioRepository, productoClientFeign, sucursalClientFeign);
-    }
+    @Mock
+    private SucursalClientFeign sucursalClient;
+
+    @InjectMocks
+    private InventarioServiceImpl inventarioService;
 
     @Test
-    void testCrearInventarioDtoExitosamente() {
-        // Given
-        InventarioDto dto = new InventarioDto(null, 1L, 2L, 50);
+    void testGuardarInventario() {
+        // Arrange
+        Inventario inventario = new Inventario();
+        inventario.setIdProducto(1L);
+        inventario.setIdSucursal(2L);
+        inventario.setCantidad(5);
 
-        // Simular que Feign responde bien (no lanza error)
-        when(productoClientFeign.obtenerProducto(1L)).thenReturn("OK");
-        when(sucursalClientFeign.obtenerSucursal(2L)).thenReturn("OK");
+        ProductoDto productoDto = new ProductoDto();
+        productoDto.setNombre("Producto Test");
 
-        // Simular guardado exitoso
-        Inventario inventarioGuardado = new Inventario(1L, 2L, 50);
-        inventarioGuardado.setId(100L);
-        when(inventarioRepository.save(any(Inventario.class))).thenReturn(inventarioGuardado);
+        SucursalDto sucursalDto = new SucursalDto();
+        sucursalDto.setNombre("Sucursal Test");
 
-        // When
-        InventarioDto resultado = service.crearInventarioDto(dto);
+        when(inventarioRepository.findByIdProductoAndIdSucursal(1L, 2L))
+                .thenReturn(Optional.empty());
 
-        // Then
+        when(productoClient.obtenerProducto(1L)).thenReturn(productoDto);
+        when(sucursalClient.obtenerSucursal(2L)).thenReturn(sucursalDto);
+        when(inventarioRepository.save(any(Inventario.class))).thenReturn(inventario);
+
+        // Act
+        Inventario resultado = inventarioService.save(inventario);
+
+        // Assert
         assertNotNull(resultado);
-        assertEquals(100L, resultado.getId());
-        assertEquals(1L, resultado.getIdProducto());
-        assertEquals(2L, resultado.getIdSucursal());
-        assertEquals(50, resultado.getCantidad());
-    }
-
-    @Test
-    void testCrearInventarioDtoConProductoInvalido() {
-        // Given
-        InventarioDto dto = new InventarioDto(null, 99L, 2L, 50);
-
-        // Simular que Feign lanza error
-        when(productoClientFeign.obtenerProducto(99L))
-                .thenThrow(FeignException.NotFound.class);
-
-        // Then
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
-            service.crearInventarioDto(dto);
-        });
-
-        assertTrue(ex.getMessage().contains("No existe un producto con ID"));
-    }
-
-    @Test
-    void testCrearInventarioDtoConSucursalInvalida() {
-        // Given
-        InventarioDto dto = new InventarioDto(null, 1L, 99L, 50);
-
-        // Simular producto OK pero sucursal falla
-        when(productoClientFeign.obtenerProducto(1L)).thenReturn("OK");
-        when(sucursalClientFeign.obtenerSucursal(99L))
-                .thenThrow(FeignException.NotFound.class);
-
-        // Then
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
-            service.crearInventarioDto(dto);
-        });
-
-        assertTrue(ex.getMessage().contains("No existe una sucursal con ID"));
+        assertEquals("Producto Test", resultado.getNombreProducto());
+        assertEquals("Sucursal Test", resultado.getNombreSucursal());
+        verify(inventarioRepository).save(inventario);
     }
 }
