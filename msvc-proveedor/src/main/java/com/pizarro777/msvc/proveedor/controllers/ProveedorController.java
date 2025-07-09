@@ -43,7 +43,7 @@ public class ProveedorController {
         return ResponseEntity.ok(Proveedor);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Proveedor> findById(@PathVariable Long idProveedor) {
         Proveedor proveedorModel = proveedorService.findById(idProveedor);
         if (proveedorModel == null) {
@@ -56,6 +56,12 @@ public class ProveedorController {
     public ResponseEntity<Proveedor> save(@RequestBody @Valid Proveedor proveedor) {
         Proveedor nuevoProveedor = proveedorService.save(proveedor);
         return ResponseEntity.status(201).body(nuevoProveedor);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Proveedor> updateProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
+        Proveedor actualizado = proveedorService.update(id, proveedor);
+        return ResponseEntity.ok(actualizado);
     }
 
 
