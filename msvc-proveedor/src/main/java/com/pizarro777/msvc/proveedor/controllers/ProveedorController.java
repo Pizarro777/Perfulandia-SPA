@@ -2,6 +2,7 @@ package com.pizarro777.msvc.proveedor.controllers;
 
 import com.pizarro777.msvc.proveedor.models.Producto;
 import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
+import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
 import com.pizarro777.msvc.proveedor.services.ProveedorService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -23,6 +24,12 @@ public class ProveedorController {
 
     @Autowired
     private ProveedorService proveedorService;
+
+    private final ProveedorRepository proveedorRepository;
+
+    public ProveedorController(ProveedorRepository proveedorRepository) {
+        this.proveedorRepository = proveedorRepository;
+    }
 
 
     @GetMapping
@@ -70,5 +77,11 @@ public class ProveedorController {
         proveedorService.eliminarProveedor(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Proveedor> getById(@PathVariable Long id) {
+        return ResponseEntity.of(proveedorRepository.findById(id));
+    }
+
 
 }
