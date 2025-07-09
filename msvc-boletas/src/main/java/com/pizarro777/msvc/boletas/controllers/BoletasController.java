@@ -38,7 +38,7 @@ public class BoletasController {
 
     @PostMapping
     @Operation(
-            summary = "Crear nueva bolets",
+            summary = "Crear nueva boleta",
             description = "Crea uns nueva boleta con la información enviada en el cuerpo de la petición."
     )
     @ApiResponses(value = {
