@@ -1,7 +1,6 @@
 package com.pizarro777.msvc.boletas.controllers;
 
 import com.pizarro777.msvc.boletas.dtos.ErrorDTO;
-import com.pizarro777.msvc.boletas.exceptions.BoletasException;
 import com.pizarro777.msvc.boletas.models.entities.Boletas;
 import com.pizarro777.msvc.boletas.services.BoletasService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -12,22 +11,27 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-        import java.util.List;
+import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/boletas")
 @Validated
 @Tag(name = "Boletas", description = "Esta seccion contiene los CRUD de boletas")
 public class BoletasController {
 
-    @Autowired
-    private BoletasService boletasService;
+
+    private final BoletasService boletasService;
+
+    public BoletasController(BoletasService boletasService) {
+        this.boletasService = boletasService;
+    }
 
 
     @GetMapping
@@ -101,16 +105,18 @@ public class BoletasController {
     @PostMapping
     public ResponseEntity<Boletas> crearBoletas(@RequestBody Boletas boleta) {
         try {
-
             Boletas nuevaBoleta = boletasService.save(boleta);
 
-            System.out.println("API: Boleta creada exitosamente con ID: " + nuevaBoleta.getIdBoletas() + " y número: " + nuevaBoleta.getNombreBoletas());
+            log.info("API: Boleta creada exitosamente con ID: {} y número: {}", nuevaBoleta.getIdBoletas(), nuevaBoleta.getNombreBoletas());
 
             return new ResponseEntity<>(nuevaBoleta, HttpStatus.CREATED);
+
         } catch (IllegalArgumentException e) {
+            log.warn("Error al crear boleta debido a argumentos inválidos: {}", e.getMessage());
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("Ocurrió un error inesperado al crear la boleta", e);
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
