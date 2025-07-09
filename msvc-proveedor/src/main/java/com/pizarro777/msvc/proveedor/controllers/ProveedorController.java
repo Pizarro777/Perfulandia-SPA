@@ -50,15 +50,6 @@ public class ProveedorController {
         return ResponseEntity.ok(Proveedor);
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> findById(@PathVariable Long idProveedor) {
-        Proveedor proveedorModel = proveedorService.findById(idProveedor);
-        if (proveedorModel == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(proveedorModel);
-    }
-
     @PostMapping
     public ResponseEntity<Proveedor> save(@RequestBody @Valid Proveedor proveedor) {
         Proveedor nuevoProveedor = proveedorService.save(proveedor);
