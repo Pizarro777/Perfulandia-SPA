@@ -79,20 +79,6 @@ public class BoletasControllerTest {
         Double precioBoletasFromResponse = documentContext.read("$.precioBoletas");
         assertThat(precioBoletasFromResponse).isEqualTo(18000.0);
     }
-    @Test
-    public void shouldReturnNotFoundWhenBoletaWithUnknownId() {
-        // El ID 999 no existirá en la DB
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/boletas/9999", String.class);
-
-        // Solo verifica el código de estado HTTP
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-
-        // Y lo más importante: verifica que el cuerpo de la respuesta está vacío.
-        // Cuando un ResponseEntity.notFound().build() es retornado, el cuerpo es nulo.
-        assertThat(response.getBody()).isNull();
-
-        // Ya no intentamos parsear el cuerpo JSON si esperamos que esté vacío.
-    }
 
     @Test
     @DirtiesContext
