@@ -29,7 +29,7 @@ public class BoletaServiceImpl implements BoletasService{
     }
 
     @Override
-    public Boletas save(Boletas boletas) {
+    public Boletas create (Boletas boletas) {
         return boletasRepository.save(boletas);
     }
 

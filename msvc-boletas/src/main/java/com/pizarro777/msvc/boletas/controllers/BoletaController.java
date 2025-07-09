@@ -1,8 +1,13 @@
 package com.pizarro777.msvc.boletas.controllers;
 
+import com.pizarro777.msvc.boletas.dtos.ErrorDTO;
 import com.pizarro777.msvc.boletas.models.entities.Boletas;
 import com.pizarro777.msvc.boletas.services.BoletasService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -42,6 +47,25 @@ public class BoletaController {
         return ResponseEntity.ok(Boletas);
     }
 
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtiene una boleta", description = "A través del id suministrado devuelve la boleta con esa id")
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "200", description = "Operacion existosa"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Boleta no encontrada, con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema =  @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    @Parameters(value = {
+            @Parameter(name="id", description = "Este es el id unico de la boleta", required = true)
+    })
+
+
+
     @GetMapping(value = "/{id}")
     public ResponseEntity<Boletas> findById(@PathVariable Long idBoletas) {
         Boletas boletas = boletasService.findById(idBoletas);
@@ -51,8 +75,34 @@ public class BoletaController {
         return ResponseEntity.ok(boletas);
     }
 
+
+
     @PostMapping
-    public ResponseEntity<Boletas> save(@RequestBody @Valid Boletas boletas) {
+    @Operation(
+            summary = "Guarda un medico",
+            description = "Con este método podemos enviar los datos mediante un body y realizar el guardado"
+    )
+    @ApiResponses( value = {
+            @ApiResponse(responseCode = "201", description = "Guardado exitoso"),
+            @ApiResponse(
+                    responseCode = "409",
+                    description = "El medico guardado ya se encuentra en la base de datos",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "medico a crear",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Medico.class)
+            )
+    )
+
+    @PostMapping
+    public ResponseEntity<Boletas> create(@RequestBody @Valid Boletas boletas) {
         Boletas nuevaBoletas = boletasService.save(boletas);
         return ResponseEntity.status(201).body(nuevaBoletas);
     }
