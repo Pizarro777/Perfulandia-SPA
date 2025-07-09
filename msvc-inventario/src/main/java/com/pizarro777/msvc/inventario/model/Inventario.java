@@ -27,15 +27,15 @@ public class Inventario {
 
         private Integer cantidad;
 
-        private String direccion;
+
 
         public Inventario() {}
 
-        public Inventario(Long idProducto, Long idSucursal, Integer cantidad, String ubicacion) {
+        public Inventario(Long idProducto, Long idSucursal, Integer cantidad) {
                 this.idProducto = idProducto;
                 this.idSucursal = idSucursal;
                 this.cantidad = cantidad;
-                this.direccion = direccion;
+
         }
 }
 
