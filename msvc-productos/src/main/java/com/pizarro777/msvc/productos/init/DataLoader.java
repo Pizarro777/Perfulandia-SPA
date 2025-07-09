@@ -1,12 +1,10 @@
-package com.pizarro777.msvc.productos;
+package com.pizarro777.msvc.productos.init;
 
 import com.pizarro777.msvc.productos.models.Producto;
 import com.pizarro777.msvc.productos.repositories.ProductoRepository;
 import lombok.RequiredArgsConstructor;
 import net.datafaker.Faker;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component @RequiredArgsConstructor
@@ -34,9 +32,4 @@ public class DataLoader implements CommandLineRunner {
         System.out.println("Se ha generado productos de prueba.");
         productoRepository.findAll().forEach(System.out::println);
     }
-
-
-
-
-
 }
