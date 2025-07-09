@@ -129,6 +129,64 @@ public class CarritoControllerV2 {
                 .body(entityModel);
     }
 
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Actualiza un carrito existente",
+            description = "Permite actualizar un carrito específico por su ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Carrito actualizado exitosamente",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Carrito.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Carrito no encontrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID del carrito a actualizar", required = true)
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Carrito actualizado",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Carrito.class)
+            )
+    )
+    public ResponseEntity<EntityModel<Carrito>> actualizarCarrito(
+            @PathVariable Long id,
+            @Valid @RequestBody Carrito carrito
+    ) {
+        Carrito actualizado = carritoService.actualizarCarrito(id, carrito);
+
+        if (actualizado == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        EntityModel<Carrito> entityModel = carritoModelAssembler.toModel(actualizado);
+
+        return ResponseEntity.ok(entityModel);
+    }
+
+
     @GetMapping("/{id}/total")
     @Operation(summary = "Obtiene el total del carrito", description = "Calcula y devuelve el total en CLP del carrito")
     @ApiResponses(value = {

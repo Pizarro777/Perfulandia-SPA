@@ -80,6 +80,33 @@ public class CarritoController {
             return ResponseEntity.status(201).body(guardarCarrito);
         }
 
+        // Actualizar un carrito por su ID
+        @PutMapping("/{id}")
+        @Operation(
+                summary = "Actualiza un carrito por ID",
+                description = "Este método actualiza un carrito existente en la base de datos usando su ID."
+        )
+        @ApiResponses(value = {
+                @ApiResponse(responseCode = "200", description = "Carrito actualizado correctamente"),
+                @ApiResponse(responseCode = "404", description = "Carrito con ese ID no existe"),
+                @ApiResponse(responseCode = "400", description = "Datos inválidos en la petición")
+        })
+        @Parameters(value = {
+                @Parameter(name = "id", description = "ID del carrito a actualizar", required = true)
+        })
+        public ResponseEntity<Carrito> actualizarCarrito(@PathVariable("id") Long id, @RequestBody @Valid Carrito carrito) {
+            if (carrito.getItems() == null || carrito.getItems().isEmpty()) {
+                return ResponseEntity.badRequest().build();
+            }
+
+            Carrito actualizado = carritoService.actualizarCarrito(id, carrito);
+            if (actualizado == null) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(actualizado);
+        }
+
         // Eliminar un carrito por ID
         @DeleteMapping("/{id}")
         public ResponseEntity<Void> eliminarCarrito(@PathVariable("id") Long id) {
