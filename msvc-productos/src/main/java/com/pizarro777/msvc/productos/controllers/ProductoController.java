@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/api/v2/productos")
+@RequestMapping("/api/v1/productos")
 @Validated
 @Tag(name="Productos", description = "Esta sección contiene los CRUD de Productos")
 public class ProductoController {

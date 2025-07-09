@@ -25,6 +25,14 @@ public class ProductoService {
         return repository.save(producto);
     }
 
+    public Producto obtenerProductoPorId(Long id) {
+        return repository.findById(id).orElseThrow(() -> new RuntimeException("Producto no encontrado"));
+    }
+
+    public List<Producto> obtenerTodos() {
+        return repository.findAll();
+    }
+
     /* Listar Por Id */
     public ProductoOutputDTO obtenerPorId(Long id){
         Optional<Producto> producto = repository.findById(id);
@@ -50,6 +58,7 @@ public class ProductoService {
         prod.setDescripcion(datos.getDescripcion());
         prod.setPrecio(datos.getPrecio());
         prod.setStock(datos.getStock());
+
         return EntityToDTO(repository.save(prod));
     }
 
@@ -60,15 +69,30 @@ public class ProductoService {
 
     /* Convierte la entidad al DTO */
     public ProductoOutputDTO EntityToDTO(Producto producto){
-        ProductoOutputDTO dto = ProductoOutputDTO.builder().nombre(producto.getNombre()).marca(producto.getMarca())
-                .descripcion(producto.getDescripcion()).precio(producto.getPrecio()).stock(producto.getStock()).build();
+        ProductoOutputDTO dto = ProductoOutputDTO.builder()
+                .id(producto.getId())
+                .nombre(producto.getNombre())
+                .marca(producto.getMarca())
+                .descripcion(producto.getDescripcion())
+                .precio(producto.getPrecio())
+                .stock(producto.getStock())
+                .fechaCreacion(producto.getFechaCreacion())
+                .build();
+
         return dto;
     }
 
     /* transfiere datos */
     public Producto DTOToEntity(ProductoOutputDTO dto){
-        Producto producto = Producto.builder().nombre(dto.getNombre()).marca(dto.getMarca()).descripcion(dto.getDescripcion())
-                .precio(dto.getPrecio()).stock(dto.getStock()).fechaCreacion(dto.getFechaCreacion()).build();
+        Producto producto = Producto.builder()
+                .nombre(dto.getNombre())
+                .marca(dto.getMarca())
+                .descripcion(dto.getDescripcion())
+                .precio(dto.getPrecio())
+                .stock(dto.getStock())
+                .fechaCreacion(dto.getFechaCreacion())
+                .build();
+
         return producto;
     }
 
