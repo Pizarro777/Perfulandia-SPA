@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.boletas.controllers;
 
 import com.pizarro777.msvc.boletas.dtos.ErrorDTO;
+import com.pizarro777.msvc.boletas.exceptions.BoletasException;
 import com.pizarro777.msvc.boletas.models.entities.Boletas;
 import com.pizarro777.msvc.boletas.services.BoletasService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,15 +65,11 @@ public class BoletasController {
     })
 
 
-
     @GetMapping("/{id}")
-    public ResponseEntity<Boletas> findById(@PathVariable("id") Long id) { // El path variable en la URL es 'id'
-        Boletas boletas = boletasService.findById(id); // Pasar 'id' al servicio
-
-        if (boletas == null) { // Si el servicio devuelve null
-            return ResponseEntity.notFound().build(); // Devuelve 404 Not Found
-        }
-        return ResponseEntity.ok(boletas);
+    public ResponseEntity<Boletas> findById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.boletasService.findById(id));
     }
 
 
@@ -102,7 +98,7 @@ public class BoletasController {
     )
 
 
-    @PostMapping // Mapea las solicitudes HTTP POST a la ruta base /api/boletas
+    @PostMapping
     public ResponseEntity<Boletas> crearBoletas(@RequestBody Boletas boleta) {
         try {
 
@@ -117,6 +113,12 @@ public class BoletasController {
             e.printStackTrace();
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Boletas> updateBoletas(@PathVariable Long id, @RequestBody Boletas boletas) {
+        Boletas actualizado = boletasService.update(id, boletas);
+        return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")

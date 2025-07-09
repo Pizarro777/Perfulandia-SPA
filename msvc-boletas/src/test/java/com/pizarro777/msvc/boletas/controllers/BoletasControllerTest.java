@@ -54,16 +54,22 @@ public class BoletasControllerTest {
 
 
     @Test
-    public void shouldReturnAnBoletaWhenFindById(){
+    public void shouldReturnAnBoletasWhenFindById(){
 
         Boletas boletaGuardada = boletasRepository.save(new Boletas("Boleta de Perfum Alta Gama", 18000.0));
 
         ResponseEntity<String> response = restTemplate.getForEntity("/api/boletas/" + boletaGuardada.getIdBoletas(), String.class);
 
+        // 3. Verifica el código de estado HTTP (debe ser 200 OK)
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
+        // 4. Asegúrate de que el cuerpo de la respuesta no sea nulo antes de intentar parsear
+        assertThat(response.getBody()).isNotNull();
+
+        // 5. Parsea el cuerpo de la respuesta como JSON
         DocumentContext documentContext = JsonPath.parse(response.getBody());
 
+        // 6. Lee los campos del JSON y realiza las aserciones
         Number idBoletasFromResponse = documentContext.read("$.idBoletas");
         assertThat(idBoletasFromResponse.longValue()).isEqualTo(boletaGuardada.getIdBoletas());
 
@@ -73,27 +79,24 @@ public class BoletasControllerTest {
         Double precioBoletasFromResponse = documentContext.read("$.precioBoletas");
         assertThat(precioBoletasFromResponse).isEqualTo(18000.0);
     }
-
     @Test
-    public void shouldReturnNotFoundWhenBoletaWithUnknownId(){
-
+    public void shouldReturnNotFoundWhenBoletaWithUnknownId() {
+        // El ID 999 no existirá en la DB
         ResponseEntity<String> response = restTemplate.getForEntity("/api/boletas/9999", String.class);
 
+        // Solo verifica el código de estado HTTP
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
-        try {
-            DocumentContext documentContext = JsonPath.parse(response.getBody());
-            Number status = documentContext.read("$.status");
-            assertThat(status).isEqualTo(404);
-        } catch (Exception e) {
+        // Y lo más importante: verifica que el cuerpo de la respuesta está vacío.
+        // Cuando un ResponseEntity.notFound().build() es retornado, el cuerpo es nulo.
+        assertThat(response.getBody()).isNull();
 
-            System.err.println("Advertencia: No se pudo parsear el cuerpo de error como JSON con 'status' o el cuerpo está vacío. Error: " + e.getMessage());
-        }
+        // Ya no intentamos parsear el cuerpo JSON si esperamos que esté vacío.
     }
 
     @Test
     @DirtiesContext
-    public void shouldCreateANewBoleta(){
+    public void shouldCreateANewBoletas(){
 
         Boletas newBoleta = new Boletas("Boleta de Perfum Nuevo", 20000.0); // Corregido el nombre para la aserción
 
@@ -115,7 +118,7 @@ public class BoletasControllerTest {
 
     @Test
     @DirtiesContext
-    public void shouldDeleteBoleta() {
+    public void shouldDeleteBoletas() {
 
         Boletas boletaAEliminar = boletasRepository.save(new Boletas("Boleta para Eliminar", 10000.0));
 
