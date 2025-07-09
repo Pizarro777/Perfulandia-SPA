@@ -78,16 +78,17 @@ public class ProveedorServiceTest {
     }
 
     @Test
-    @DisplayName("Debe buscar un proveedor con ID que no existe")
-    public void shouldNotFindProveedorId(){
+    @DisplayName("Debe buscar un proveedor con ID que no existe y lanzar ProveedorException")
+    void shouldNotFindProveedorId() {
         Long idInexistente = 999L;
+
         when(proveedorRepository.findById(idInexistente)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(()->{
+        assertThatThrownBy(() -> {
             proveedorService.findById(idInexistente);
-        }).isInstanceOf(ProveedorException.class)
-                .hasMessageContaining("El proveedor con id " +
-                        idInexistente + " no se encuentra en la base de datos");
+        })
+                .isInstanceOf(ProveedorException.class)
+                .hasMessageContaining("El proveedor con id " + idInexistente + " no se encuentra en la base de datos");
 
         verify(proveedorRepository, times(1)).findById(idInexistente);
     }

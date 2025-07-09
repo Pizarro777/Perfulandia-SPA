@@ -20,6 +20,11 @@ public class Proveedor {
     @Schema(description = "ID del proveedor", example = "1")
     private Long idProveedor;
 
+    @Column(name = "nombre_proveedor", nullable = false)
+    @NotBlank(message = "El nombre del proveedor no puede estar vacío")
+    @Schema(description = "Nombre del proveedor", example = "Proveedor de Servicio")
+    private String nombreProveedor;
+
     @NotNull(message = "El teléfono es obligatorio")
     @Column(name = "telefono", nullable = false)
     @Schema(description = "Teléfono del proveedor", example = "987654321")
@@ -35,7 +40,6 @@ public class Proveedor {
     @Schema(description = "Servicio que provee", example = "Suministro de materiales")
     private String servicio;
 
-    // Constructor sin id (por si quieres crear nuevo proveedor sin asignar id manualmente)
     public Proveedor(Integer telefono, String direccion, String servicio) {
         this.telefono = telefono;
         this.direccion = direccion;

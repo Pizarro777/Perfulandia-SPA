@@ -31,7 +31,7 @@ public class Boletas {
     @Schema(description = "Precio de la boleta", example = "18000")
     private Double precioBoletas;
 
-    public Boletas(String nombreBoletas, double precioBoletas) { // <--- El nombre del constructor coincide
+    public Boletas(String nombreBoletas, double precioBoletas) {
         this.nombreBoletas = nombreBoletas;
         this.precioBoletas = precioBoletas;
     }

@@ -9,4 +9,9 @@ public interface BoletasService {
     Boletas save (Boletas boletas);
     void eliminarBoletas(Long id);
 
+    Boletas update(
+            Long idBoletas,
+            Boletas boletaActualizada
+    );
+
 }
