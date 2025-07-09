@@ -41,45 +41,14 @@ public class ProveedorControllerV2 {
     @Autowired
     private ProveedorModelAssembler proveedorModelAssembler;
 
-    @Autowired
-    private ProveedorProductoDTOModelAssembler proveedorProductoDTOModelAssembler;
-
-    private final List<ProveedorProductoDTO> productosDB = List.of(
-            new ProveedorProductoDTO(
-                    1L,
-                    1001L,
-                    "Arroz Grado 1",
-                    "SuperMarca",
-                    "Arroz seleccionado calidad premium",
-                    1500.0,
-                    100,
-                    LocalDate.now(),
-                    1
-            ),
-            new ProveedorProductoDTO(
-                    2L,
-                    1002L,
-                    "Leche Entera 1L",
-                    "LaVaquita",
-                    "Leche entera fresca pasteurizada",
-                    1000.0,
-                    50,
-                    LocalDate.now(),
-                    1
-            )
-    );
-
     @GetMapping
-    @Operation(summary = "Obtiene todos los proveedores", description = "Devuelve una lista de proveedores en el body")
+    @Operation(
+            summary = "Devuelve todos los proveedores",
+            description = "Este método retorna una lista de proveedores. Si no hay proveedores, retorna una lista vacía."
+    )
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operación exitosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = Proveedor.class)
-                    )
-            )
+            @ApiResponse(responseCode = "200", description = "Lista de proveedores retornada correctamente"),
+            @ApiResponse(responseCode = "204", description = "No existen proveedores")
     })
     public ResponseEntity<CollectionModel<EntityModel<Proveedor>>> findAll() {
         List<EntityModel<Proveedor>> entityModels = proveedorService.findAll()
@@ -151,76 +120,13 @@ public class ProveedorControllerV2 {
                     schema = @Schema(implementation = Proveedor.class)
             )
     )
-    public ResponseEntity<EntityModel<Proveedor>> create(@Valid @RequestBody Proveedor proveedor) {
+    public ResponseEntity<EntityModel<Proveedor>> save(@Valid @RequestBody Proveedor proveedor) {
         Proveedor proveedorNuevo = this.proveedorService.save(proveedor);
         EntityModel<Proveedor> entityModel = this.proveedorModelAssembler.toModel(proveedorNuevo);
 
         return ResponseEntity
                 .created(linkTo(methodOn(ProveedorControllerV2.class).findById(proveedorNuevo.getIdProveedor())).toUri())
                 .body(entityModel);
-    }
-
-
-
-
-
-    @GetMapping("/productos")
-    @Operation(summary = "Obtiene todos los productos de proveedor", description = "Devuelve una lista de productos asociados a proveedores")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operación exitosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = ProveedorProductoDTO.class)
-                    )
-            )
-    })
-    public ResponseEntity<CollectionModel<EntityModel<ProveedorProductoDTO>>> findAllProveedorProductos() {
-        List<EntityModel<ProveedorProductoDTO>> entityModels = productosDB.stream()
-                .map(proveedorProductoDTOModelAssembler::toModel)
-                .toList();
-
-        CollectionModel<EntityModel<ProveedorProductoDTO>> collectionModel = CollectionModel.of(
-                entityModels,
-                linkTo(methodOn(ProveedorControllerV2.class).findAllProveedorProductos()).withSelfRel()
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(collectionModel);
-    }
-
-    @GetMapping("/productos/{id}")
-    @Operation(summary = "Obtiene un producto de proveedor por ID", description = "Devuelve un producto específico asociado a un proveedor dado su ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operación exitosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = ProveedorProductoDTO.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Producto no encontrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDTO.class)
-                    )
-            )
-    })
-    @Parameters({
-            @Parameter(name = "id", description = "ID único del producto de proveedor", required = true)
-    })
-    public ResponseEntity<EntityModel<ProveedorProductoDTO>> findProveedorProductoById(@PathVariable Long id) {
-        ProveedorProductoDTO producto = productosDB.stream()
-                .filter(p -> p.getIdProducto().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-
-        EntityModel<ProveedorProductoDTO> entityModel = proveedorProductoDTOModelAssembler.toModel(producto);
-
-        return ResponseEntity.ok(entityModel);
     }
 
 }
