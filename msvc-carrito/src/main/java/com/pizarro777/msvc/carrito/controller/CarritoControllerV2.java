@@ -32,11 +32,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 @Tag(name = "Carrito V2", description = "Operaciones CRUD de carritos con HATEOAS")
 public class CarritoControllerV2 {
 
-    @Autowired
-    private CarritoService carritoService;
+    private final CarritoService carritoService;
+    private final CarritoModelAssembler carritoModelAssembler;
 
-    @Autowired
-    private CarritoModelAssembler carritoModelAssembler;
+    public CarritoControllerV2(CarritoService carritoService, CarritoModelAssembler carritoModelAssembler) {
+        this.carritoService = carritoService;
+        this.carritoModelAssembler = carritoModelAssembler;
+    }
 
     @GetMapping
     @Operation(summary = "Obtiene todos los carritos", description = "Devuelve una lista de carritos en el body")

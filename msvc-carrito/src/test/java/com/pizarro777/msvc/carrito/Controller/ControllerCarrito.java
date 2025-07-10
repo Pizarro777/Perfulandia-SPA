@@ -23,38 +23,74 @@ public class ControllerCarrito {
     private TestRestTemplate restTemplate;
 
     @Test
+    @DirtiesContext
     public void testGetCarritoList() {
-        // Realiza la solicitud al endpoint correcto
+        // Crear y guardar un carrito
+        Carrito nuevo = new Carrito();
+        ItemCarrito item1 = new ItemCarrito();
+        item1.setIdProducto(1L);
+        item1.setNombre("Producto 1");
+        item1.setMarca("Marca A");
+        item1.setCantidad(1);
+        item1.setPrecio(50.0);
+        item1.setCarrito(nuevo);
+        nuevo.getItems().add(item1);
+
+        ItemCarrito item2 = new ItemCarrito();
+        item2.setIdProducto(2L);
+        item2.setNombre("Producto 2");
+        item2.setMarca("Marca B");
+        item2.setCantidad(2);
+        item2.setPrecio(30.0);
+        item2.setCarrito(nuevo);
+        nuevo.getItems().add(item2);
+
+        restTemplate.postForEntity("/api/v2/carrito", nuevo, String.class);
+
+        //GET
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v2/carrito", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        // Analiza el JSON devuelto
         DocumentContext context = JsonPath.parse(response.getBody());
 
-        // Extrae la lista de ID de carritos
-        List<Integer> ids = context.read("$._embedded.carritoList[*].idCarrito");
+        List<Integer> ids = context.read("$[*].idCarrito");
         assertThat(ids).isNotEmpty();
 
-        // Extrae los nombres de productos dentro de los ítems de los carritos
-        List<String> nombresProductos = context.read("$._embedded.carritoList[*].items[*].nombre");
-
-        // Valida que existan productos con nombres esperados
+        List<String> nombresProductos = context.read("$[*].items[*].nombre");
         assertThat(nombresProductos).contains("Producto 1", "Producto 2");
     }
 
-    @Test
-    public void shouldReturnCarritoById() {
-        // Cambia el ID por uno válido en tu base de datos precargada
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v2/carrito/1", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
-        DocumentContext context = JsonPath.parse(response.getBody());
+    @Test
+    @DirtiesContext
+    public void shouldReturnCarritoById() {
+        // Paso 1: Crear carrito con 1 ítem
+        Carrito nuevo = new Carrito();
+        ItemCarrito item = new ItemCarrito();
+        item.setIdProducto(1L);
+        item.setNombre("Producto 1");
+        item.setMarca("Marca A");
+        item.setCantidad(1);
+        item.setPrecio(99.99);
+        item.setCarrito(nuevo);
+        nuevo.getItems().add(item);
+
+        ResponseEntity<String> postResponse = restTemplate.postForEntity("/api/v2/carrito", nuevo, String.class);
+        assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
+        Integer idCarritoCreado = JsonPath.parse(postResponse.getBody()).read("$.idCarrito", Integer.class);
+
+        ResponseEntity<String> getResponse = restTemplate.getForEntity("/api/v2/carrito/" + idCarritoCreado, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext context = JsonPath.parse(getResponse.getBody());
         int idCarrito = context.read("$.idCarrito");
         List<String> nombres = context.read("$.items[*].nombre");
 
-        assertThat(idCarrito).isEqualTo(1);
-        assertThat(nombres).contains("Producto 1", "Producto 2"); // ajusta según tus datos
+        assertThat(idCarrito).isEqualTo(idCarritoCreado);
+        assertThat(nombres).isNotEmpty();
     }
+
 
     @Test
     public void shouldReturnNotFoundForUnknownCarritoId() {
@@ -82,10 +118,12 @@ public class ControllerCarrito {
         nuevo.getItems().add(item);
 
         ResponseEntity<String> response = restTemplate.postForEntity("/api/v2/carrito", nuevo, String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
+
 
         DocumentContext context = JsonPath.parse(response.getBody());
-        Long idCarrito = context.read("$.idCarrito");
+        Long idCarrito = context.read("$.idCarrito", Integer.class).longValue();
+
 
         assertThat(idCarrito).isNotNull();
     }

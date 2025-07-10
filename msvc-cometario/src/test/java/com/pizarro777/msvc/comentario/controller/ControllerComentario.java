@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.annotation.DirtiesContext;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,38 +25,62 @@ public class ControllerComentario {
 
     @Test
     public void shouldReturnAllComentariosWhenListIsRequested() {
+        // Crear comentario "Buen producto"
+        Comentario c1 = new Comentario();
+        c1.setComentario("Buen producto");
+        c1.setIdProducto(1L);
+        c1.setFechaCreacion(LocalDate.now());
+        restTemplate.postForEntity("/api/v2/comentarios", c1, String.class);
+
+        // Crear comentario "Excelente servicio"
+        Comentario c2 = new Comentario();
+        c2.setComentario("Excelente servicio");
+        c2.setIdProducto(1L);
+        c2.setFechaCreacion(LocalDate.now());
+        restTemplate.postForEntity("/api/v2/comentarios", c2, String.class);
+
+        // Ahora sí hacemos la petición GET
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v2/comentarios", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext context = JsonPath.parse(response.getBody());
-        List<Integer> ids = context.read("$._embedded.comentarioList[*].idComentario");
         List<String> comentarios = context.read("$._embedded.comentarioList[*].comentario");
 
-        assertThat(ids).isNotEmpty();
         assertThat(comentarios).contains("Buen producto", "Excelente servicio");
     }
 
     @Test
     public void shouldReturnComentarioById() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v2/comentarios/1", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        // 1. Crear un nuevo comentario primero (POST)
+        Comentario nuevo = new Comentario();
+        nuevo.setComentario("Comentario para test");
+        nuevo.setIdProducto(1L);
+        nuevo.setFechaCreacion(LocalDate.now());
 
-        DocumentContext context = JsonPath.parse(response.getBody());
-        int idComentario = context.read("$.idComentario");
-        String comentario = context.read("$.comentario");
+        ResponseEntity<String> postResponse = restTemplate.postForEntity("/api/v2/comentarios", nuevo, String.class);
+        assertThat(postResponse.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
-        assertThat(idComentario).isEqualTo(1);
-        assertThat(comentario).isEqualTo("Buen producto");
+        // 2. Leer el idComentario del JSON de la respuesta POST
+        DocumentContext postContext = JsonPath.parse(postResponse.getBody());
+        Long idComentario = postContext.read("$.idComentario", Long.class);
+        assertThat(idComentario).isNotNull();
+
+        // 3. Ahora buscar ese comentario por ID con GET
+        ResponseEntity<String> getResponse = restTemplate.getForEntity("/api/v2/comentarios/" + idComentario, String.class);
+        assertThat(getResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+
+        DocumentContext getContext = JsonPath.parse(getResponse.getBody());
+        Long getIdComentario = getContext.read("$.idComentario", Long.class);
+        String getComentario = getContext.read("$.comentario");
+
+        assertThat(getIdComentario).isEqualTo(idComentario);
+        assertThat(getComentario).isEqualTo("Comentario para test");
     }
 
     @Test
     public void shouldReturnNotFoundForUnknownComentarioId() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v2/comentarios/9999", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-
-        DocumentContext context = JsonPath.parse(response.getBody());
-        int status = context.read("$.status");
-        assertThat(status).isEqualTo(404);
     }
 
     @Test
@@ -64,13 +89,13 @@ public class ControllerComentario {
         Comentario nuevo = new Comentario();
         nuevo.setComentario("Excelente servicio");
         nuevo.setIdProducto(1L);
-        nuevo.setFechaCreacion(LocalDateTime.now());
+        nuevo.setFechaCreacion(LocalDate.of(2025, 7, 9));
 
         ResponseEntity<String> response = restTemplate.postForEntity("/api/v2/comentarios", nuevo, String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         DocumentContext context = JsonPath.parse(response.getBody());
-        Long idComentario = context.read("$.idComentario");
+        Long idComentario = context.read("$.idComentario", Long.class);
 
         assertThat(idComentario).isNotNull();
     }

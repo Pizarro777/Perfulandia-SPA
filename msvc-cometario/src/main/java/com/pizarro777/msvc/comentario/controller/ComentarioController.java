@@ -27,7 +27,7 @@ public class ComentarioController {
         return ResponseEntity.ok(Comentarios);
     }
     /* Busca un comentario por ID. */
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "/{idComentario}")
     public ResponseEntity<Comentario> findById(@PathVariable Long idComentario) {
         Comentario comentario = comentarioService.findById(idComentario);
         if (comentario == null) {
@@ -46,14 +46,14 @@ public class ComentarioController {
     }
 
     /* Actualiza un comentario por ID. */
-    @PutMapping("/{id}")
+    @PutMapping("/{idComentario}")
     public ResponseEntity<Comentario> updateComentario(@PathVariable Long id, @RequestBody Comentario comentario) {
         Comentario actualizado = comentarioService.update(id, comentario);
         return ResponseEntity.ok(actualizado);
     }
 
     /* Elimina un comentario por ID. */
-    @DeleteMapping(value = "/{id}")
+    @DeleteMapping(value = "/{idComentario}")
     public ResponseEntity<Void> delete(@PathVariable("id") Long idComentario) {
         comentarioService.delete(idComentario);
         return ResponseEntity.noContent().build();

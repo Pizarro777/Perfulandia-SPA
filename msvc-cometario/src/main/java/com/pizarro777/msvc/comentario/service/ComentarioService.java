@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.comentario.service;
 
 import com.pizarro777.msvc.comentario.clients.ProductoClientRest;
+import com.pizarro777.msvc.comentario.exceptions.ComentarioNotFoundException;
 import com.pizarro777.msvc.comentario.model.Comentario;
 import com.pizarro777.msvc.comentario.repositories.ComentarioRepository;
 import jakarta.transaction.Transactional;
@@ -28,7 +29,7 @@ public class ComentarioService {
     /* Obtener un comentario por su id */
     public Comentario findById(Long idComentario) {
         return comentarioRepository.findById(idComentario)
-                .orElseThrow(() -> new RuntimeException("Comentario no encontrado con id " + idComentario));
+                .orElseThrow(() -> new ComentarioNotFoundException(idComentario));
     }
 
     /* Guardar un comentario en la base de datos */

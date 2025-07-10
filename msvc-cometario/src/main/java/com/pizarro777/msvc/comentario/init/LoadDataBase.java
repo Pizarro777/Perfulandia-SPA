@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -33,7 +34,7 @@ public class LoadDataBase implements CommandLineRunner {
 
                 comentario.setComentario(faker.lorem().sentence());
                 comentario.setIdProducto(faker.number().numberBetween(1L, 100L));
-                comentario.setFechaCreacion(LocalDateTime.now());
+                comentario.setFechaCreacion(LocalDate.now());
 
                 comentarioRepository.save(comentario);
                 log.info("Comentario creado: {}", comentario);
