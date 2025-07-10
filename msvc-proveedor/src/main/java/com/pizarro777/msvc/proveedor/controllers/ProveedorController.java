@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/proveedor")
+@RequestMapping("/api/proveedores")
 @Validated
 @Tag(name = "Proveedor", description = "Esta seccion contiene los CRUD de proveedor")
 public class ProveedorController {
