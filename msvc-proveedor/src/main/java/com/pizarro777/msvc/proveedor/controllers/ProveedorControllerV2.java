@@ -27,7 +27,7 @@ import java.util.List;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping("/api/v2/proveedor")
+@RequestMapping("/api/v2/proveedores")
 @Validated
 @Tag(name = "Proveedor V2", description = "Operaciones CRUD de proveedor con HATEOAS")
 public class ProveedorControllerV2 {
