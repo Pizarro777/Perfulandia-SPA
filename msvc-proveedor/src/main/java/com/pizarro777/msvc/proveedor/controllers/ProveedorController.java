@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -29,6 +30,30 @@ public class ProveedorController {
 
     @Autowired
     private ProveedorService proveedorService;
+
+    @GetMapping ("/api/proveedor")
+    public ResponseEntity<List<Proveedor>> listar() {
+
+        List<Proveedor> proveedoresList = new ArrayList<>();
+
+        proveedoresList.add(new Proveedor(
+                1L,
+                "Proveedor Juan",
+                987654321,
+                "Av. Principal 123",
+                "Servicio Express"
+        ));
+
+        proveedoresList.add(new Proveedor(
+                2L,
+                "Proveedor Pedro",
+                945732864,
+                "Calle Falsa 456",
+                "Servicio Normal"
+        ));
+
+        return ResponseEntity.ok(proveedoresList);
+    }
 
     @PostMapping
     @Operation(
