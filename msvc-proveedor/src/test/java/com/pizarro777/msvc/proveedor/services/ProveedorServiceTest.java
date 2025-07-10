@@ -16,6 +16,7 @@ import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -84,11 +85,11 @@ public class ProveedorServiceTest {
 
         when(proveedorRepository.findById(idInexistente)).thenReturn(Optional.empty());
 
-        assertThatThrownBy(() -> {
+        Throwable thrown = assertThrows(ProveedorException.class, () -> {
             proveedorService.findById(idInexistente);
-        })
-                .isInstanceOf(ProveedorException.class)
-                .hasMessageContaining("El proveedor con id " + idInexistente + " no se encuentra en la base de datos");
+        });
+
+        assertThat(thrown).hasMessageContaining("El proveedor con id " + idInexistente + " no se encuentra en la base de datos");
 
         verify(proveedorRepository, times(1)).findById(idInexistente);
     }
