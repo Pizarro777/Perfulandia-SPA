@@ -19,16 +19,14 @@ public class BoletaServiceImpl implements BoletasService{
     private BoletasRepository boletasRepository;
 
     @Override
-    @Transactional(readOnly = true)
     public List<Boletas> findAll() {
         return boletasRepository.findAll();
     }
 
-    @Transactional(readOnly = true)
+    //Busca un carrito por su ID
     @Override
-    public Boletas findById(Long idBoletas) {
-        return boletasRepository.findById(idBoletas)
-                .orElseThrow(() -> new BoletasException("La boleta con id " + idBoletas + " no se encuentra en la base de datos"));
+    public Boletas findById(Long id) {
+        return boletasRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -39,7 +37,7 @@ public class BoletaServiceImpl implements BoletasService{
 
     @Override
     @Transactional
-    public Boletas update(Long idBoletas, Boletas boletaActualizada) {
+    public Boletas actualizarBoletas(Long idBoletas, Boletas boletaActualizada) {
 
         Boletas boletaExistente = boletasRepository.findById(idBoletas)
                 .orElseThrow(() -> new BoletasException("Boleta no encontrada con id " + idBoletas));
