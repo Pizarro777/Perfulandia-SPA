@@ -22,11 +22,11 @@ public class ProveedorController {
 
     @GetMapping
     public ResponseEntity<List<Proveedor>> findAll() {
-        List<Proveedor> Proveedor = proveedorService.findAll();
-        if (Proveedor.isEmpty()) {
+        List<Proveedor> Proveedores = proveedorService.findAll();
+        if (Proveedores.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
-        return ResponseEntity.ok(Proveedor);
+        return ResponseEntity.ok(Proveedores);
     }
 
     @GetMapping(value = "/{id}")
@@ -51,9 +51,9 @@ public class ProveedorController {
     }
 
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long id) {
-        proveedorService.eliminarProveedor(id);
+    @DeleteMapping(value = "/{id}")
+    public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long idProveedor) {
+        proveedorService.eliminarProveedor(idProveedor);
         return ResponseEntity.noContent().build();
     }
 
