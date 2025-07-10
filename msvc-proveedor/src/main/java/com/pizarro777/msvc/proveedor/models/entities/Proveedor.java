@@ -7,8 +7,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Entity
-@Table(name = "proveedores")
-@Getter @Setter @NoArgsConstructor @AllArgsConstructor
+@Table(name = "proveedor")
+@Getter @Setter @NoArgsConstructor
 @ToString
 @Schema(description = "Entidad que representa un Proveedor")
 public class Proveedor {
@@ -28,7 +28,7 @@ public class Proveedor {
     @NotNull(message = "El teléfono es obligatorio")
     @Column(name = "telefono", nullable = false)
     @Schema(description = "Teléfono del proveedor", example = "987654321")
-    private Integer telefono;
+    private Long telefono;
 
     @NotBlank(message = "La dirección no puede estar vacía")
     @Column(name = "direccion", nullable = false)
@@ -40,15 +40,15 @@ public class Proveedor {
     @Schema(description = "Servicio que provee", example = "Suministro de materiales")
     private String servicio;
 
-    public Proveedor(String nombreProveedor, Integer telefono, Long idProveedor, String direccion, String servicio) {
+    public Proveedor(Long idProveedor, String nombreProveedor, Long telefono, String direccion, String servicio) {
+        this.idProveedor = idProveedor;
         this.nombreProveedor = nombreProveedor;
         this.telefono = telefono;
-        this.idProveedor = idProveedor;
         this.direccion = direccion;
         this.servicio = servicio;
     }
 
-    public Proveedor(int telefono, String direccion, String servicio) {
+    public Proveedor(Long telefono, String direccion, String servicio) {
         this.telefono = telefono;
         this.direccion = direccion;
         this.servicio = servicio;
@@ -70,11 +70,11 @@ public class Proveedor {
         this.nombreProveedor = nombreProveedor;
     }
 
-    public Integer getTelefono() {
+    public Long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(Integer telefono) {
+    public void setTelefono(Long telefono) {
         this.telefono = telefono;
     }
 

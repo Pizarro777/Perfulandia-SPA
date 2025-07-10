@@ -19,9 +19,10 @@ public class ProveedorServiceImpl implements ProveedorService{
     private ProveedorRepository proveedorRepository;
 
     @Override
-    public Proveedor findById(Long id) throws ProveedorException {
+    @Transactional(readOnly = true)
+    public Proveedor findById(Long id) {
         return proveedorRepository.findById(id)
-                .orElseThrow(() -> new ProveedorException("El proveedor con id " + id + " no se encuentra en la base de datos"));
+                .orElseThrow(() -> new ProveedorException("No existe el proveedor"));
     }
 
     @Override
@@ -46,14 +47,6 @@ public class ProveedorServiceImpl implements ProveedorService{
 
         if (proveedorActualizado.getNombreProveedor() == null || proveedorActualizado.getNombreProveedor().trim().isEmpty()) {
             throw new IllegalArgumentException("El nombre del proveedor es obligatorio para la actualización.");
-        }
-
-        Optional<Proveedor> existingProveedorWithNewNameOpt = proveedorRepository.findByNombreProveedor(proveedorActualizado.getNombreProveedor());
-        if (existingProveedorWithNewNameOpt.isPresent()) {
-            Proveedor proveedorConMismoNombre = existingProveedorWithNewNameOpt.get();
-            if (!proveedorConMismoNombre.getIdProveedor().equals(idProveedor)) {
-                throw new IllegalArgumentException("Ya existe otro proveedor con el nombre: " + proveedorActualizado.getNombreProveedor());
-            }
         }
 
         // Update fields

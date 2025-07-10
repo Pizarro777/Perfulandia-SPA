@@ -1,6 +1,7 @@
 package com.pizarro777.msvc.proveedor.controllers;
 
 import com.pizarro777.msvc.proveedor.dtos.ErrorDTO;
+import com.pizarro777.msvc.proveedor.excepcions.ProveedorException;
 import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
 import com.pizarro777.msvc.proveedor.services.ProveedorService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -18,8 +19,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -31,29 +32,6 @@ public class ProveedorController {
     @Autowired
     private ProveedorService proveedorService;
 
-    @GetMapping ("/api/proveedor")
-    public ResponseEntity<List<Proveedor>> listar() {
-
-        List<Proveedor> proveedoresList = new ArrayList<>();
-
-        proveedoresList.add(new Proveedor(
-                1L,
-                "Proveedor Juan",
-                987654321,
-                "Av. Principal 123",
-                "Servicio Express"
-        ));
-
-        proveedoresList.add(new Proveedor(
-                2L,
-                "Proveedor Pedro",
-                945732864,
-                "Calle Falsa 456",
-                "Servicio Normal"
-        ));
-
-        return ResponseEntity.ok(proveedoresList);
-    }
 
     @PostMapping
     @Operation(
@@ -91,9 +69,9 @@ public class ProveedorController {
     public ResponseEntity<List<Proveedor>> findAll() {
         List<Proveedor> proveedores = proveedorService.findAll();
         if (proveedores.isEmpty()) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.noContent().build(); // 204 No Content si está vacío
         }
-        return ResponseEntity.ok(proveedores);
+        return ResponseEntity.ok(proveedores); // 200 OK con la lista
     }
 
 
@@ -114,15 +92,14 @@ public class ProveedorController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<Proveedor> findById(@PathVariable Long id) {
-        Proveedor proveedor = proveedorService.findById(id);
-        if (proveedor == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(proveedor);
+        Optional<Proveedor> proveedor = proveedorService.findById(id);
+
+        return proveedor.map(ResponseEntity::ok) // Si el Optional contiene un Proveedor, lo devuelve con 200 OK
+                .orElse(ResponseEntity.notFound().build()); // Si el Optional está vacío (no se encontró), devuelve 404 NOT FOUND
     }
 
 
-    @PutMapping("/{id}")
+    @PutMapping("/{id}") // El @PathVariable puede ser 'id' o 'idProveedor', asegúrate de que sea consistente.
     @Operation(
             summary = "Actualizar proveedor",
             description = "Actualiza el proveedor que coincida con el ID proporcionado con la información enviada."
@@ -135,9 +112,20 @@ public class ProveedorController {
     @Parameters({
             @Parameter(name = "id", description = "ID único de proveedor a actualizar", required = true)
     })
-    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
-        Proveedor actualizado = proveedorService.actualizarProveedor(id, proveedor);
-        return ResponseEntity.ok(actualizado);
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) { // Usamos 'id' como PathVariable
+        try {
+            Proveedor actualizado = proveedorService.actualizarProveedor(id, proveedor); // Pasa 'id'
+            return ResponseEntity.ok(actualizado);
+        } catch (ProveedorException e) { // <<-- Captura tu excepción personalizada
+            log.warn("Proveedor no encontrado para actualizar ID {}: {}", id, e.getMessage());
+            return ResponseEntity.notFound().build(); // Retorna 404
+        } catch (IllegalArgumentException e) { // Opcional, si tu servicio lanza esto
+            log.warn("Error al actualizar proveedor debido a argumentos inválidos: {}", e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) { // Captura cualquier otra excepción inesperada
+            log.error("Error inesperado al actualizar proveedor ID {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping("/{id}")
@@ -153,7 +141,15 @@ public class ProveedorController {
             @Parameter(name = "id", description = "ID único de proveedor a eliminar", required = true)
     })
     public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long id) {
-        proveedorService.eliminarProveedor(id);
-        return ResponseEntity.noContent().build();
+        try {
+            proveedorService.eliminarProveedor(id);
+            return ResponseEntity.noContent().build(); // 204 No Content para eliminación exitosa
+        } catch (ProveedorException e) { // <<-- Captura tu excepción personalizada
+            log.warn("Proveedor no encontrado para eliminar ID {}: {}", id, e.getMessage());
+            return ResponseEntity.notFound().build(); // Retorna 404
+        } catch (Exception e) { // Captura cualquier otra excepción inesperada
+            log.error("Error inesperado al eliminar proveedor ID {}", id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 }
