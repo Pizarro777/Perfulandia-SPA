@@ -11,7 +11,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -121,35 +120,6 @@ public class BoletasController {
         Boletas actualizado = boletasService.actualizarBoletas(id, boletas);
         return ResponseEntity.ok(actualizado);
     }
-
-
-    @PutMapping("/{id}")
-    @Operation(
-            summary = "Actualiza una boleta por ID",
-            description = "Este método actualiza una boleta existente en la base de datos usando su ID."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Boleta actualizada correctamente"),
-            @ApiResponse(responseCode = "404", description = "Boleta con ese ID no existe"),
-            @ApiResponse(responseCode = "400", description = "Datos inválidos en la petición")
-    })
-    @Parameters(value = {
-            @Parameter(name = "id", description = "ID de la boleta a actualizar", required = true)
-    })
-
-    public ResponseEntity<Boletas> updateBoletas(
-            @PathVariable("id") Long id,
-            @RequestBody @Valid Boletas boleta) {
-
-        Boletas actualizada = boletasService.actualizarBoletas(id, boleta);
-
-        if (actualizada == null) {
-            return ResponseEntity.notFound().build();
-        }
-
-        return ResponseEntity.ok(actualizada);
-    }
-
 
 
     @DeleteMapping("/{id}")
