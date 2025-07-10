@@ -1,38 +1,27 @@
 package com.pizarro777.msvc.proveedor.dtos;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.time.LocalDateTime;
 import java.util.Map;
 
-public class ErrorDTO {
+@Getter
+@Setter
 
+public class ErrorDTO {
 
     private int status;
     private LocalDateTime date;
     private Map<String, String> errors;
 
-    // Getters y Setters
-    public int getStatus() {
-        return status;
-    }
-
-    public void setStatus(int status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDateTime date) {
-        this.date = date;
-    }
-
-    public Map<String, String> getErrors() {
-        return errors;
-    }
-
-    public void setErrors(Map<String, String> errors) {
-        this.errors = errors;
+    @Override
+    public String toString() {
+        return "ErrorDTO{" +
+                "status=" + status +
+                ", date=" + date +
+                ", errors=" + errors +
+                '}';
     }
 }
 
