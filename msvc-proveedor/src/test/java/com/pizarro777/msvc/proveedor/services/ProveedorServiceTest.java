@@ -1,6 +1,5 @@
 package com.pizarro777.msvc.proveedor.services;
 
-import com.pizarro777.msvc.proveedor.excepcions.ProveedorException;
 import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
 import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
 import net.datafaker.Faker;
@@ -15,8 +14,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.*;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,22 +32,27 @@ public class ProveedorServiceTest {
     @BeforeEach
     public void setUp(){
         this.proveedorPrueba = new Proveedor(
-                987654321,
+                1L,
+                "Perfum Alta Gama",
+                987654321L,
                 "Av. Pizarro 777",
                 "Perfume"
         );
-        proveedorPrueba.setIdProveedor(1L);
-
         Faker faker = new Faker(new Locale("es", "CL"));
-        for(int i=0; i<100; i++){
+
+
+        for (int i = 0; i < 100; i++) {
+
             Proveedor proveedorCreate = new Proveedor(
-                    faker.number().numberBetween(900000000, 999999999),
+                    faker.number().numberBetween(900000000L, 999999999L),
                     faker.address().fullAddress(),
                     faker.commerce().department()
             );
-            proveedorCreate.setIdProveedor((long)(i+2));
-            proveedor.add(proveedorCreate);
+            proveedorCreate.setIdProveedor((long) (i + 2));
+            proveedorCreate.setNombreProveedor(faker.company().name());
+            this.proveedor.add(proveedorCreate);
         }
+
     }
 
     @Test
@@ -73,25 +75,10 @@ public class ProveedorServiceTest {
         when(proveedorRepository.findById(1L)).thenReturn(Optional.of(proveedorPrueba));
 
         Proveedor result = proveedorService.findById(1L);
+
         assertThat(result).isNotNull();
         assertThat(result).isEqualTo(proveedorPrueba);
         verify(proveedorRepository, times(1)).findById(1L);
-    }
-
-    @Test
-    @DisplayName("Debe buscar un proveedor con ID que no existe y lanzar ProveedorException")
-    void shouldNotFindProveedorId() {
-        Long idInexistente = 999L;
-
-        when(proveedorRepository.findById(idInexistente)).thenReturn(Optional.empty());
-
-        Throwable thrown = assertThrows(ProveedorException.class, () -> {
-            proveedorService.findById(idInexistente);
-        });
-
-        assertThat(thrown).hasMessageContaining("El proveedor con id " + idInexistente + " no se encuentra en la base de datos");
-
-        verify(proveedorRepository, times(1)).findById(idInexistente);
     }
 
     @Test

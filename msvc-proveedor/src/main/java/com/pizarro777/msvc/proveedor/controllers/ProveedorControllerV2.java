@@ -23,12 +23,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping("/api/v2/proveedores")
+@RequestMapping("/api/v2/proveedor")
 @Validated
 @Tag(name = "Proveedor V2", description = "Operaciones CRUD de proveedor con HATEOAS")
 public class ProveedorControllerV2 {
@@ -75,8 +74,12 @@ public class ProveedorControllerV2 {
             @Parameter(name = "id", description = "ID único del proveedor", required = true)
     })
     public ResponseEntity<EntityModel<Proveedor>> findById(@PathVariable Long id) {
-        Optional<Proveedor> proveedor = this.proveedorService.findById(id);
-        EntityModel<Proveedor> entityModel = this.proveedorModelAssembler.toModel(proveedor.orElse(null));
+        Proveedor proveedor = this.proveedorService.findById(id);
+        if (proveedor == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        EntityModel<Proveedor> entityModel = this.proveedorModelAssembler.toModel(proveedor);
         return ResponseEntity.ok(entityModel);
     }
 

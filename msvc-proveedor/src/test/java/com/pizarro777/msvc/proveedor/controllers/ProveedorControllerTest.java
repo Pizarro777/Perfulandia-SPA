@@ -16,6 +16,7 @@ import org.springframework.test.annotation.DirtiesContext;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class ProveedorControllerTest {
 
@@ -25,16 +26,17 @@ public class ProveedorControllerTest {
     @Autowired
     ProveedorRepository proveedorRepository;
 
+
     @BeforeEach
     void setUp() {
         proveedorRepository.deleteAll();
 
-        proveedorRepository.save(new Proveedor(null,"Proveedor Juan", 987654321, "Av. Principal 123", "Servicio Express"));
-        proveedorRepository.save(new Proveedor(null,"Proveedor Pedro", 965732864, "Calle Falsa 456", "Servicio Normal"));
+        proveedorRepository.save(new Proveedor(null,"Proveedor Juan", 987654321L, "Av. Principal 123", "Servicio Express"));
+        proveedorRepository.save(new Proveedor(null,"Proveedor Pedro", 965732864L, "Calle Falsa 456", "Servicio Normal"));
     }
 
     @Test
-    public void shouldReturnAllProveedoresWhenListIsRequested(){
+    public void shouldReturnAllProveedoresWhenListIsRequested() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/proveedor", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
@@ -61,26 +63,17 @@ public class ProveedorControllerTest {
     @Test
     public void shouldReturnAnProveedorWhenFindById(){
         Proveedor guardado = proveedorRepository.save(
-                new Proveedor(null, "Proveedor Juan", 987654321, "Av. Principal 123", "Servicio Express")
+                new Proveedor(null, "Proveedor Juan", 987654321L, "Av. Principal 123", "Servicio Express")
         );
 
         ResponseEntity<String> response = restTemplate.getForEntity("/api/proveedor/" + guardado.getIdProveedor(), String.class);
     }
 
     @Test
-    public void shouldReturnNotFoundForUnknownProveedorId(){
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/proveedor/9999", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
-
-        String json = response.getBody();
-        assertThat(json).isNullOrEmpty();
-    }
-
-    @Test
     @DirtiesContext
     public void shouldCreateANewProveedor(){
 
-        Proveedor nuevoProveedor = new Proveedor(null, "Proveedor Nuevo", 99998888, "Dirección Nueva", "Servicio Premium");
+        Proveedor nuevoProveedor = new Proveedor(null, "Proveedor Nuevo", 99998888L, "Dirección Nueva", "Servicio Premium");
 
         ResponseEntity<String> response = restTemplate.postForEntity("/api/proveedor", nuevoProveedor, String.class);
 

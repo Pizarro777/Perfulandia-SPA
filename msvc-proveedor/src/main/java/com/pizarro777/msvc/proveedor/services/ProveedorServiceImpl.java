@@ -9,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProveedorServiceImpl implements ProveedorService{
@@ -20,7 +19,7 @@ public class ProveedorServiceImpl implements ProveedorService{
 
     @Override
     @Transactional(readOnly = true)
-    public Proveedor findById(Long id) {
+    public Proveedor findById(Long id) throws ProveedorException {
         return proveedorRepository.findById(id)
                 .orElseThrow(() -> new ProveedorException("No existe el proveedor"));
     }

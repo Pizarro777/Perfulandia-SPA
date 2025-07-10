@@ -90,12 +90,13 @@ public class ProveedorController {
     @Parameters(value = {
             @Parameter(name = "id", description = "Este es el id único del proveedor", required = true)
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> findById(@PathVariable Long id) {
-        Optional<Proveedor> proveedor = proveedorService.findById(id);
 
-        return proveedor.map(ResponseEntity::ok) // Si el Optional contiene un Proveedor, lo devuelve con 200 OK
-                .orElse(ResponseEntity.notFound().build()); // Si el Optional está vacío (no se encontró), devuelve 404 NOT FOUND
+    public ResponseEntity<Proveedor> findById(@PathVariable("id")Long id) {
+        Proveedor buscarProveedor = proveedorService.findById(id);
+        if (buscarProveedor == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(buscarProveedor);
     }
 
 
