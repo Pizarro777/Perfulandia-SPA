@@ -1,4 +1,4 @@
-package com.pizarro777.msvc.comentario.controllers;
+package com.pizarro777.msvc.comentario.controller;
 
 
 
