@@ -1,8 +1,6 @@
 package com.pizarro777.msvc.proveedor.controllers;
 
 import com.pizarro777.msvc.proveedor.assemblers.ProveedorModelAssembler;
-import com.pizarro777.msvc.proveedor.assemblers.ProveedorProductoDTOModelAssembler;
-import com.pizarro777.msvc.proveedor.dtos.ProveedorProductoDTO;
 import com.pizarro777.msvc.proveedor.dtos.ErrorDTO;
 import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
 import com.pizarro777.msvc.proveedor.services.ProveedorService;
@@ -24,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -65,24 +62,13 @@ public class ProveedorControllerV2 {
     }
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtiene un proveedor por ID", description = "Devuelve un proveedor específico por su ID")
+    @Operation(
+            summary = "Obtener proveedor por ID",
+            description = "Busca y devuelve un proveedor específico utilizando su ID único."
+    )
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Proveedor encontrado",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = Proveedor.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Proveedor no encontrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDTO.class)
-                    )
-            )
+            @ApiResponse(responseCode = "200", description = "Proveedor encontrado"),
+            @ApiResponse(responseCode = "404", description = "Porveedor no encontrado con ese ID")
     })
     @Parameters({
             @Parameter(name = "id", description = "ID único del proveedor", required = true)
@@ -120,7 +106,7 @@ public class ProveedorControllerV2 {
                     schema = @Schema(implementation = Proveedor.class)
             )
     )
-    public ResponseEntity<EntityModel<Proveedor>> save(@Valid @RequestBody Proveedor proveedor) {
+    public ResponseEntity<EntityModel<Proveedor>> crearProveedor(@Valid @RequestBody Proveedor proveedor) {
         Proveedor proveedorNuevo = this.proveedorService.save(proveedor);
         EntityModel<Proveedor> entityModel = this.proveedorModelAssembler.toModel(proveedorNuevo);
 
