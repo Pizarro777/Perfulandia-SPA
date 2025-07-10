@@ -11,15 +11,16 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/proveedores")
 @Validated
@@ -29,73 +30,66 @@ public class ProveedorController {
     @Autowired
     private ProveedorService proveedorService;
 
-    @GetMapping
-    @Operation(
-            summary = "Devuelve todos los proveedores",
-            description = "Este método retorna una lista de proveedores. Si no hay proveedores, retorna una lista vacía."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de proveedores retornada correctamente"),
-            @ApiResponse(responseCode = "204", description = "No existen proveedores")
-    })
-    public ResponseEntity<List<Proveedor>> findAll() {
-        List<Proveedor> Proveedores = proveedorService.findAll();
-        if (Proveedores.isEmpty()) {
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(Proveedores);
-    }
-
-    @GetMapping("/{id}")
-    @Operation(
-            summary = "Obtener proveedor por ID",
-            description = "Busca y devuelve un proveedor específico utilizando su ID único."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Proveedor encontrado"),
-            @ApiResponse(responseCode = "404", description = "Porveedor no encontrado con ese ID")
-    })
-    @Parameters({
-            @Parameter(name = "id", description = "ID único del proveedor", required = true)
-    })
-    public ResponseEntity<Proveedor> findById(@PathVariable Long id) {
-        Proveedor proveedor = proveedorService.findById(id);
-        if (proveedor == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(proveedor);
-    }
-
     @PostMapping
-    @Operation(summary = "Crea un nuevo proveedor", description = "Permite crear un proveedor con sus datos")
+    @Operation(
+            summary = "Crear nuevo proveedor",
+            description = "Crea un nuevo proveedor con la información enviada en el cuerpo de la petición."
+    )
     @ApiResponses(value = {
+            @ApiResponse(responseCode = "201", description = "Proveedor creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida o datos incorrectos")
+    })
+    public ResponseEntity<Proveedor> crearProveedor(@RequestBody Proveedor proveedor) {
+        try {
+            Proveedor nuevoProveedor = proveedorService.save(proveedor);
+            log.info("API: Proveedor creado exitosamente con ID: {} y nombre: {}", nuevoProveedor.getIdProveedor(), nuevoProveedor.getNombreProveedor());
+            return new ResponseEntity<>(nuevoProveedor, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            log.warn("Error al crear proveedor debido a argumentos inválidos: {}", e.getMessage());
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            log.error("Ocurrió un error inesperado al crear el proveedor", e);
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Operation(summary = "Obtiene un proveedor por ID", description = "A través del id suministrado devuelve el proveedor con esa id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operacion exitosa"),
             @ApiResponse(
-                    responseCode = "201",
-                    description = "Proveedor creado exitosamente",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = Proveedor.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Solicitud inválida",
+                    responseCode = "404",
+                    description = "Proveedor no encontrado, con el id suministrado",
                     content = @Content(
                             mediaType = "application/json",
                             schema = @Schema(implementation = ErrorDTO.class)
                     )
             )
     })
-    @io.swagger.v3.oas.annotations.parameters.RequestBody(
-            description = "Proveedor a crear",
-            content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = Proveedor.class)
-            )
+    @Parameters(value = {
+            @Parameter(name = "id", description = "Este es el id único del proveedor", required = true)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Proveedor> findById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.proveedorService.findById(id));
+    }
+
+    @GetMapping
+    @Operation(
+            summary = "Devuelve todos los proveedores",
+            description = "Este metodo debe retornar un List de Proveedores, en caso " +
+                    "de que no encuentre nada retorna List vacia"
     )
-    public ResponseEntity<Proveedor> save(@RequestBody @Valid Proveedor proveedor) {
-        Proveedor nuevoProveedor = proveedorService.save(proveedor);
-        return ResponseEntity.status(201).body(nuevoProveedor);
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Se retornaron todos los proveedores OK")
+    })
+    public ResponseEntity<List<Proveedor>> findAll() {
+        List<Proveedor> proveedores = proveedorService.findAll();
+        if (proveedores.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(proveedores);
     }
 
     @PutMapping("/{id}")
@@ -106,33 +100,30 @@ public class ProveedorController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Proveedor actualizado correctamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud inválida o datos incorrectos"),
-            @ApiResponse(responseCode = "404", description = "Porveedor no encontrado para actualizar")
+            @ApiResponse(responseCode = "404", description = "Proveedor no encontrado para actualizar")
     })
     @Parameters({
             @Parameter(name = "id", description = "ID único de proveedor a actualizar", required = true)
     })
-
-    public ResponseEntity<Proveedor> updateProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
-        Proveedor actualizado = proveedorService.update(id, proveedor);
+    public ResponseEntity<Proveedor> actualizarProveedor(@PathVariable Long id, @RequestBody Proveedor proveedor) {
+        Proveedor actualizado = proveedorService.actualizarProveedor(id, proveedor);
         return ResponseEntity.ok(actualizado);
     }
 
     @DeleteMapping("/{id}")
     @Operation(
             summary = "Eliminar proveedor",
-            description = "Elimina el proveedor identificado por el ID proporcionada."
+            description = "Elimina el proveedor identificado por el ID proporcionado."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Proveedor eliminada correctamente"),
-            @ApiResponse(responseCode = "404", description = "Proveedor no encontrada para eliminar")
+            @ApiResponse(responseCode = "204", description = "Proveedor eliminado correctamente"),
+            @ApiResponse(responseCode = "404", description = "Proveedor no encontrado para eliminar")
     })
     @Parameters({
             @Parameter(name = "id", description = "ID único de proveedor a eliminar", required = true)
     })
-    public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long idProveedor) {
-        proveedorService.eliminarProveedor(idProveedor);
+    public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long id) {
+        proveedorService.eliminarProveedor(id);
         return ResponseEntity.noContent().build();
     }
-
-
 }
