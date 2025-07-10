@@ -23,7 +23,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/proveedores")
+@RequestMapping("/api/proveedor")
 @Validated
 @Tag(name = "Proveedor", description = "Esta seccion contiene los CRUD de proveedor")
 public class ProveedorController {
