@@ -29,12 +29,8 @@ import java.util.List;
 public class BoletasController {
 
 
-    private final BoletasService boletasService;
-
     @Autowired
-    public BoletasController(BoletasService boletasService) {
-        this.boletasService = boletasService;
-    }
+    private BoletasService boletasService;
 
 
     @PostMapping

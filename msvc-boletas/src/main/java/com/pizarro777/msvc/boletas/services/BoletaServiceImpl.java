@@ -23,7 +23,7 @@ public class BoletaServiceImpl implements BoletasService{
         return boletasRepository.findAll();
     }
 
-    //Busca un carrito por su ID
+
     @Override
     public Boletas findById(Long id) {
         return boletasRepository.findById(id).orElse(null);
