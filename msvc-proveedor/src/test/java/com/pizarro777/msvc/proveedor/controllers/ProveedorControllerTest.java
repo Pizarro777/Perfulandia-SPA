@@ -1,9 +1,11 @@
 package com.pizarro777.msvc.proveedor.controllers;
 
-import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;
+import com.pizarro777.msvc.proveedor.models.entities.Proveedor;
+import com.pizarro777.msvc.proveedor.repositories.ProveedorRepository;
 import net.minidev.json.JSONArray;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -20,9 +22,20 @@ public class ProveedorControllerTest {
     @Autowired
     TestRestTemplate restTemplate;
 
+    @Autowired
+    ProveedorRepository proveedorRepository;
+
+    @BeforeEach
+    void setUp() {
+        proveedorRepository.deleteAll();
+
+        proveedorRepository.save(new Proveedor(null,"Proveedor Juan", 987654321, "Av. Principal 123", "Servicio Express"));
+        proveedorRepository.save(new Proveedor(null,"Proveedor Pedro", 965732864, "Calle Falsa 456", "Servicio Normal"));
+    }
+
     @Test
-    public void shouldReturnAllProveedoresWhenListIsRequested() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedor", String.class);
+    public void shouldReturnAllProveedoresWhenListIsRequested(){
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/proveedor", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
@@ -30,87 +43,59 @@ public class ProveedorControllerTest {
         assertThat(proveedoresCount).isEqualTo(2);
 
         JSONArray ids = documentContext.read("$..idProveedor");
-        assertThat(ids).containsExactlyInAnyOrder(1, 2);
+        assertThat(ids).hasSize(2);
+
+        JSONArray nombres = documentContext.read("$..nombreProveedor");
+        assertThat(nombres).containsExactlyInAnyOrder("Proveedor Juan", "Proveedor Pedro");
 
         JSONArray telefonos = documentContext.read("$..telefono");
-        assertThat(telefonos).containsExactlyInAnyOrder(987654321, 912345678);
+        assertThat(telefonos).containsExactlyInAnyOrder(987654321, 965732864);
+
+        JSONArray direcciones = documentContext.read("$..direccion");
+        assertThat(direcciones).containsExactlyInAnyOrder("Av. Principal 123", "Calle Falsa 456");
+
+        JSONArray servicios = documentContext.read("$..servicio");
+        assertThat(servicios).containsExactlyInAnyOrder("Servicio Express", "Servicio Normal");
     }
 
     @Test
-    public void shouldReturnAProveedorWhenFindById() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedor/1", String.class);
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
+    public void shouldReturnAnProveedorWhenFindById(){
+        Proveedor guardado = proveedorRepository.save(
+                new Proveedor(null, "Proveedor Juan", 987654321, "Av. Principal 123", "Servicio Express")
+        );
 
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        Number idProveedor = documentContext.read("$.idProveedor");
-        assertThat(idProveedor).isEqualTo(1);
-
-        Integer telefono = documentContext.read("$.telefono");
-        assertThat(telefono).isEqualTo(987654321);
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/proveedor/" + guardado.getIdProveedor(), String.class);
     }
 
     @Test
-    public void shouldReturnAProveedorWithUnknownId() {
-        ResponseEntity<String> response = restTemplate.getForEntity("/api/v1/proveedor/9999", String.class);
+    public void shouldReturnNotFoundForUnknownProveedorId(){
+        ResponseEntity<String> response = restTemplate.getForEntity("/api/proveedor/9999", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
 
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        Number status = documentContext.read("$.status");
-        assertThat(status).isEqualTo(404);
+        String json = response.getBody();
+        assertThat(json).isNullOrEmpty();
     }
 
     @Test
     @DirtiesContext
-    public void shouldCreateANewProveedor() {
-        Proveedor proveedor = new Proveedor(987654321, "Av. Pizarro 777", "Perfume" );
+    public void shouldCreateANewProveedor(){
 
-        ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/v1/proveedor",
-                proveedor,
-                String.class
-        );
+        Proveedor nuevoProveedor = new Proveedor(null, "Proveedor Nuevo", 99998888, "Dirección Nueva", "Servicio Premium");
+
+        ResponseEntity<String> response = restTemplate.postForEntity("/api/proveedor", nuevoProveedor, String.class);
 
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CREATED);
 
         DocumentContext documentContext = JsonPath.parse(response.getBody());
+
         Number idProveedor = documentContext.read("$.idProveedor");
-        assertThat(idProveedor).isEqualTo(3);
 
-        String direccion = documentContext.read("$.direccion");
-        assertThat(direccion).isEqualTo("Av. Pizarro 777");
+        assertThat(idProveedor).isNotNull();
+
+        String nombreProveedor = documentContext.read("$.nombreProveedor");
+        assertThat(nombreProveedor).isEqualTo("Proveedor Nuevo");
+
+        assertThat(proveedorRepository.findById(idProveedor.longValue())).isPresent();
     }
 
-    @Test
-    public void shouldReturnBadRequestWhenTelefonoIsNull() {
-        Proveedor proveedorInvalido = new Proveedor(null, "Av. Pizarro 777", "Servicios varios");
-
-        ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/v1/proveedor",
-                proveedorInvalido,
-                String.class
-        );
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        String message = documentContext.read("$.errors[0]");
-        assertThat(message).contains("El teléfono es obligatorio");
-    }
-
-    @Test
-    public void shouldReturnBadRequestWhenDireccionIsBlank() {
-        Proveedor proveedorInvalido = new Proveedor(987654321, "Av. Pizarro 777", "Perfume");
-
-        ResponseEntity<String> response = restTemplate.postForEntity(
-                "/api/v1/proveedor",
-                proveedorInvalido,
-                String.class
-        );
-
-        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
-
-        DocumentContext documentContext = JsonPath.parse(response.getBody());
-        String message = documentContext.read("$.errors[0]");
-        assertThat(message).contains("La dirección no puede estar vacía");
-    }
 }

@@ -45,4 +45,44 @@ public class Proveedor {
         this.direccion = direccion;
         this.servicio = servicio;
     }
+
+    public Long getIdProveedor() {
+        return idProveedor;
+    }
+
+    public void setIdProveedor(Long idProveedor) {
+        this.idProveedor = idProveedor;
+    }
+
+    public String getNombreProveedor() {
+        return nombreProveedor;
+    }
+
+    public void setNombreProveedor(String nombreProveedor) {
+        this.nombreProveedor = nombreProveedor;
+    }
+
+    public Integer getTelefono() {
+        return telefono;
+    }
+
+    public void setTelefono(Integer telefono) {
+        this.telefono = telefono;
+    }
+
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
+    public String getServicio() {
+        return servicio;
+    }
+
+    public void setServicio(String servicio) {
+        this.servicio = servicio;
+    }
 }

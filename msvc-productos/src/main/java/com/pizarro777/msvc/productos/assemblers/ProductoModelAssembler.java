@@ -1,10 +1,11 @@
 package com.pizarro777.msvc.productos.assemblers;
 
-import com.pizarro777.msvc.productos.controllers.ProductoController;
+import com.pizarro777.msvc.productos.controllers.ProductoControllerV2; // <== CORREGIDO
 import com.pizarro777.msvc.productos.models.Producto;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
@@ -14,8 +15,8 @@ public class ProductoModelAssembler implements RepresentationModelAssembler<Prod
     @Override
     public EntityModel<Producto> toModel(Producto entity) {
         return EntityModel.of(entity,
-                linkTo(methodOn(ProductoController.class).obtenerProducto(entity.getId())).withSelfRel(),
-                linkTo(methodOn(ProductoController.class).obtenerTodos()).withRel("productos")
+                linkTo(methodOn(ProductoControllerV2.class).obtenerProducto(entity.getId())).withSelfRel(),
+                linkTo(methodOn(ProductoControllerV2.class).obtenerTodos()).withRel("productos")
         );
     }
 }

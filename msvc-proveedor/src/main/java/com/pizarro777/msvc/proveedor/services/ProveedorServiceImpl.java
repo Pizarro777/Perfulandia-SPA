@@ -37,6 +37,7 @@ public class ProveedorServiceImpl implements ProveedorService{
         return proveedorRepository.save(proveedor);
     }
 
+    @Override
     @Transactional
     public Proveedor update(Long idProveedor, Proveedor proveedorActualizado) {
 
@@ -48,7 +49,6 @@ public class ProveedorServiceImpl implements ProveedorService{
             throw new IllegalArgumentException("El nombre del proveedor es obligatorio para la actualización.");
         }
 
-        // Check for duplicate name, excluding the current supplier being updated
         Optional<Proveedor> existingProveedorWithNewNameOpt = proveedorRepository.findByNombreProveedor(proveedorActualizado.getNombreProveedor());
         if (existingProveedorWithNewNameOpt.isPresent()) {
             Proveedor proveedorConMismoNombre = existingProveedorWithNewNameOpt.get();

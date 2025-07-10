@@ -17,8 +17,8 @@ public class BoletasModelAssembler implements RepresentationModelAssembler<Bolet
         Link link = Link.of("http://localhost:8000/api/boletas/" + entity.getIdBoletas()).withRel("boletas");
         return EntityModel.of(
                 entity,
-                linkTo(methodOn(BoletasControllerV2.class).findBoletasProductoDTOById(entity.getIdBoletas())).withSelfRel(),
-                linkTo(methodOn(BoletasControllerV2.class).findAllBoletasProductos()).withRel("boletas")
+                linkTo(methodOn(BoletasControllerV2.class).findById(entity.getIdBoletas())).withSelfRel(),
+                linkTo(methodOn(BoletasControllerV2.class).findAll()).withRel("boletas")
         );
     }
 }

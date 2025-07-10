@@ -1,8 +1,6 @@
 package com.pizarro777.msvc.boletas.controllers;
 
 import com.pizarro777.msvc.boletas.assemblers.BoletasModelAssembler;
-import com.pizarro777.msvc.boletas.assemblers.BoletasProductoDTOModelAssembler;
-import com.pizarro777.msvc.boletas.dtos.BoletasProductoDTO;
 import com.pizarro777.msvc.boletas.dtos.ErrorDTO;
 import com.pizarro777.msvc.boletas.models.entities.Boletas;
 import com.pizarro777.msvc.boletas.services.BoletasService;
@@ -24,7 +22,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -41,25 +38,14 @@ public class BoletasControllerV2 {
     @Autowired
     private BoletasModelAssembler boletasModelAssembler;
 
-    @Autowired
-    private BoletasProductoDTOModelAssembler boletasProductoDTOModelAssembler;
-
-    private final List<BoletasProductoDTO> productosDB = List.of(
-            new BoletasProductoDTO(100L, 1L, "Perfume", "Antonio Banderas", "Blue seduction", 4500.0, 2, LocalDate.now(), 1),
-            new BoletasProductoDTO(101L, 2L, "Perfume", "Antonio Banderas", "Mediterranio", 6500.0, 1, LocalDate.now(), 1)
-    );
-
     @GetMapping
-    @Operation(summary = "Obtiene todas las boletas", description = "Devuelve una lista de boletas en el body")
+    @Operation(
+            summary = "Devuelve todos las boletas",
+            description = "Este método retorna una lista de boletas. Si no hay boletas, retorna una lista vacía."
+    )
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operación exitosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = Boletas.class)
-                    )
-            )
+            @ApiResponse(responseCode = "200", description = "Lista de boletas retornada correctamente"),
+            @ApiResponse(responseCode = "204", description = "No existen boletas")
     })
     public ResponseEntity<CollectionModel<EntityModel<Boletas>>> findAll() {
         List<EntityModel<Boletas>> entityModels = this.boletasService.findAll()
@@ -139,69 +125,6 @@ public class BoletasControllerV2 {
                 .created(linkTo(methodOn(BoletasControllerV2.class).findById(nuevaBoleta.getIdBoletas())).toUri())
                 .body(entityModel);
     }
-
-    @GetMapping("/productos")
-    @Operation(summary = "Obtiene todos los productos de boletas", description = "Devuelve una lista de productos asociados a boletas")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operación exitosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = BoletasProductoDTO.class)
-                    )
-            )
-    })
-    public ResponseEntity<CollectionModel<EntityModel<BoletasProductoDTO>>> findAllBoletasProductos() {
-        List<EntityModel<BoletasProductoDTO>> entityModels = productosDB.stream()
-                .map(boletasProductoDTOModelAssembler::toModel)
-                .toList();
-
-        CollectionModel<EntityModel<BoletasProductoDTO>> collectionModel = CollectionModel.of(
-                entityModels,
-                linkTo(methodOn(BoletasControllerV2.class).findAllBoletasProductos()).withSelfRel()
-        );
-
-        return ResponseEntity.status(HttpStatus.OK).body(collectionModel);
-    }
-
-    @GetMapping("/productos/{id}")
-    @Operation(summary = "Obtiene un producto de boleta por ID", description = "Devuelve un producto de boleta específico por su ID")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Operación exitosa",
-                    content = @Content(
-                            mediaType = MediaTypes.HAL_JSON_VALUE,
-                            schema = @Schema(implementation = BoletasProductoDTO.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Producto no encontrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDTO.class)
-                    )
-            )
-    })
-    @Parameters({
-            @Parameter(name = "id", description = "ID único del producto de boleta", required = true)
-    })
-    public ResponseEntity<EntityModel<BoletasProductoDTO>> findBoletasProductoDTOById(@PathVariable Long id) {
-        BoletasProductoDTO producto = productosDB.stream()
-                .filter(p -> p.getIdProducto().equals(id))
-                .findFirst()
-                .orElseThrow(() -> new RuntimeException("Producto no encontrado"));
-
-        EntityModel<BoletasProductoDTO> entityModel = boletasProductoDTOModelAssembler.toModel(producto);
-
-        return ResponseEntity.ok(entityModel);
-    }
-
-
-
-
-
-
 }
+
+
