@@ -18,17 +18,42 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/proveedores")
+@RequestMapping("/api/proveedor")
 @Validated
 @Tag(name = "Proveedor", description = "Esta seccion contiene los CRUD de proveedor")
 public class ProveedorController {
 
     @Autowired
     private ProveedorService proveedorService;
+
+    @GetMapping ("/api/proveedor")
+    public ResponseEntity<List<Proveedor>> listar() {
+
+        List<Proveedor> proveedoresList = new ArrayList<>();
+
+        proveedoresList.add(new Proveedor(
+                1L,
+                "Proveedor Juan",
+                987654321,
+                "Av. Principal 123",
+                "Servicio Express"
+        ));
+
+        proveedoresList.add(new Proveedor(
+                2L,
+                "Proveedor Pedro",
+                945732864,
+                "Calle Falsa 456",
+                "Servicio Normal"
+        ));
+
+        return ResponseEntity.ok(proveedoresList);
+    }
 
     @PostMapping
     @Operation(
@@ -53,27 +78,6 @@ public class ProveedorController {
         }
     }
 
-    @Operation(summary = "Obtiene un proveedor por ID", description = "A través del id suministrado devuelve el proveedor con esa id")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Operacion exitosa"),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Proveedor no encontrado, con el id suministrado",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ErrorDTO.class)
-                    )
-            )
-    })
-    @Parameters(value = {
-            @Parameter(name = "id", description = "Este es el id único del proveedor", required = true)
-    })
-    @GetMapping("/{id}")
-    public ResponseEntity<Proveedor> findById(@PathVariable Long id) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(this.proveedorService.findById(id));
-    }
 
     @GetMapping
     @Operation(
@@ -91,6 +95,32 @@ public class ProveedorController {
         }
         return ResponseEntity.ok(proveedores);
     }
+
+
+    @Operation(summary = "Obtiene un proveedor por ID", description = "A través del id suministrado devuelve el proveedor con esa id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Operacion exitosa"),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Proveedor no encontrado, con el id suministrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    @Parameters(value = {
+            @Parameter(name = "id", description = "Este es el id único del proveedor", required = true)
+    })
+    @GetMapping("/{id}")
+    public ResponseEntity<Proveedor> findById(@PathVariable Long id) {
+        Proveedor proveedor = proveedorService.findById(id);
+        if (proveedor == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(proveedor);
+    }
+
 
     @PutMapping("/{id}")
     @Operation(

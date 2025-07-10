@@ -40,7 +40,15 @@ public class Proveedor {
     @Schema(description = "Servicio que provee", example = "Suministro de materiales")
     private String servicio;
 
-    public Proveedor(Integer telefono, String direccion, String servicio) {
+    public Proveedor(String nombreProveedor, Integer telefono, Long idProveedor, String direccion, String servicio) {
+        this.nombreProveedor = nombreProveedor;
+        this.telefono = telefono;
+        this.idProveedor = idProveedor;
+        this.direccion = direccion;
+        this.servicio = servicio;
+    }
+
+    public Proveedor(int telefono, String direccion, String servicio) {
         this.telefono = telefono;
         this.direccion = direccion;
         this.servicio = servicio;
