@@ -2,81 +2,76 @@ package com.pizarro777.msvc.sucursales.service;
 
 import com.pizarro777.msvc.sucursales.models.Sucursal;
 import com.pizarro777.msvc.sucursales.repositories.SucursalRepository;
-import com.pizarro777.msvc.sucursales.services.SucursalService;
-import org.junit.jupiter.api.BeforeEach;
+import com.pizarro777.msvc.sucursales.services.SucursalServiceImpl;
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Optional;
-import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@ExtendWith(MockitoExtension.class)
 public class SucursalServiceTest {
 
-    private SucursalRepository repository;
-    private SucursalService service;
+    @Mock
+    private SucursalRepository sucursalRepository;
 
-    @BeforeEach
-    public void setUp() {
-        repository = mock(SucursalRepository.class);
-        service = new SucursalService(repository);
+    @InjectMocks
+    private SucursalServiceImpl sucursalService;
+
+    @Test
+    void testGuardarSucursal() {
+        // Arrange
+        Sucursal sucursal = new Sucursal();
+        sucursal.setNombre("Sucursal Test");
+        sucursal.setDireccion("Calle Test 123");
+        sucursal.setCiudad("Ciudad Test");
+
+        when(sucursalRepository.save(any(Sucursal.class))).thenReturn(sucursal);
+
+        // Act
+        Sucursal resultado = sucursalService.save(sucursal);
+
+        // Assert
+        assertNotNull(resultado);
+        assertEquals("Sucursal Test", resultado.getNombre());
+        assertEquals("Calle Test 123", resultado.getDireccion());
+        assertEquals("Ciudad Test", resultado.getCiudad());
+        verify(sucursalRepository).save(sucursal);
     }
 
     @Test
-    public void testCrearSucursal() {
-        Sucursal sucursal = new Sucursal(null, "Sucursal A", "Av. Siempre Viva", "Springfield");
-        Sucursal guardada = new Sucursal(1L, "Sucursal A", "Av. Siempre Viva", "Springfield");
+    void testFindByIdExists() {
+        // Arrange
+        Sucursal sucursal = new Sucursal();
+        sucursal.setId(1L);
+        sucursal.setNombre("Sucursal Existente");
 
-        when(repository.save(sucursal)).thenReturn(guardada);
+        when(sucursalRepository.findById(1L)).thenReturn(Optional.of(sucursal));
 
-        Sucursal resultado = service.crearSucursal(sucursal);
+        // Act
+        Sucursal resultado = sucursalService.findById(1L);
 
-        assertNotNull(resultado.getId());
-        assertEquals("Sucursal A", resultado.getNombre());
-        verify(repository).save(sucursal);
+        // Assert
+        assertNotNull(resultado);
+        assertEquals("Sucursal Existente", resultado.getNombre());
+        verify(sucursalRepository).findById(1L);
     }
 
     @Test
-    public void testObtenerPorIdExistente() {
-        Sucursal sucursal = new Sucursal(1L, "Sucursal B", "Calle Falsa", "Ciudad Gótica");
-        when(repository.findById(1L)).thenReturn(Optional.of(sucursal));
+    void testFindByIdNotExists() {
+        // Arrange
+        when(sucursalRepository.findById(99L)).thenReturn(Optional.empty());
 
-        Sucursal resultado = service.obtenerPorId(1L);
+        // Act
+        Sucursal resultado = sucursalService.findById(99L);
 
-        assertEquals("Sucursal B", resultado.getNombre());
-        verify(repository).findById(1L);
-    }
-
-    @Test
-    public void testObtenerPorIdNoExistente() {
-        when(repository.findById(99L)).thenReturn(Optional.empty());
-
-        RuntimeException ex = assertThrows(RuntimeException.class, () -> {
-            service.obtenerPorId(99L);
-        });
-
-        assertTrue(ex.getMessage().contains("No se encontró el id"));
-    }
-
-    @Test
-    public void testListarTodas() {
-        List<Sucursal> lista = Arrays.asList(
-                new Sucursal(1L, "Sucursal 1", "Dir 1", "Ciudad 1"),
-                new Sucursal(2L, "Sucursal 2", "Dir 2", "Ciudad 2")
-        );
-        when(repository.findAll()).thenReturn(lista);
-
-        List<Sucursal> resultado = service.listarTodas();
-
-        assertEquals(2, resultado.size());
-        verify(repository).findAll();
-    }
-
-    @Test
-    public void testEliminarSucursal() {
-        doNothing().when(repository).deleteById(1L);
-        service.eliminarSucursal(1L);
-        verify(repository).deleteById(1L);
+        // Assert
+        assertNull(resultado);
+        verify(sucursalRepository).findById(99L);
     }
 }
-

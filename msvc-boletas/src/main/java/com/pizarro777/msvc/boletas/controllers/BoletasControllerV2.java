@@ -117,14 +117,73 @@ public class BoletasControllerV2 {
                     schema = @Schema(implementation = Boletas.class)
             )
     )
-    public ResponseEntity<EntityModel<Boletas>> save(@Valid @RequestBody Boletas boletas) {
-        Boletas nuevaBoleta = this.boletasService.save(boletas);
-        EntityModel<Boletas> entityModel = this.boletasModelAssembler.toModel(nuevaBoleta);
+
+    public ResponseEntity<EntityModel<Boletas>> create(@Valid @RequestBody Boletas boletas) {
+        Boletas boletaNuevo = this.boletasService.save(boletas);
+        EntityModel<Boletas> entityModel = this.boletasModelAssembler.toModel(boletaNuevo);
 
         return ResponseEntity
-                .created(linkTo(methodOn(BoletasControllerV2.class).findById(nuevaBoleta.getIdBoletas())).toUri())
+                .created(linkTo(methodOn(BoletasControllerV2.class).findById(boletaNuevo.getIdBoletas())).toUri())
                 .body(entityModel);
     }
+
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Actualiza una boleta existente",
+            description = "Permite actualizar una boleta específico por su ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "boleta actualizada exitosamente",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Boletas.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Boleta no encontrada",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de boleta a actualizar", required = true)
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Boleta actualizada",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Boletas.class)
+            )
+    )
+    public ResponseEntity<EntityModel<Boletas>> actualizarBoletas(
+            @PathVariable Long id,
+            @Valid @RequestBody Boletas boletas
+    ) {
+        Boletas actualizado = boletasService.actualizarBoletas(id, boletas);
+
+        if (actualizado == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        EntityModel<Boletas> entityModel = boletasModelAssembler.toModel(actualizado);
+
+        return ResponseEntity.ok(entityModel);
+    }
+
 }
 
 

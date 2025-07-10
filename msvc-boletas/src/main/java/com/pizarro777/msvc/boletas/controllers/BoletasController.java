@@ -28,12 +28,8 @@ import java.util.List;
 public class BoletasController {
 
 
-    private final BoletasService boletasService;
-
     @Autowired
-    public BoletasController(BoletasService boletasService) {
-        this.boletasService = boletasService;
-    }
+    private BoletasService boletasService;
 
 
     @PostMapping
@@ -120,8 +116,8 @@ public class BoletasController {
             @Parameter(name = "id", description = "ID único de boleta a actualizar", required = true)
     })
 
-    public ResponseEntity<Boletas> updateBoletas(@PathVariable Long id, @RequestBody Boletas boletas) {
-        Boletas actualizado = boletasService.update(id, boletas);
+    public ResponseEntity<Boletas> actualizarBoletas(@PathVariable Long id, @RequestBody Boletas boletas) {
+        Boletas actualizado = boletasService.actualizarBoletas(id, boletas);
         return ResponseEntity.ok(actualizado);
     }
 

@@ -1,9 +1,9 @@
-package com.pizarro777.msvc.boletas.dtos;
+package com.pizarro777.msvc.sucursales.dtos;
 
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Map;
 
 @Getter
@@ -11,17 +11,17 @@ import java.util.Map;
 
 public class ErrorDTO {
 
-    private int status;
-    private LocalDateTime date;
+    private Integer status;
+    private Date date;
     private Map<String, String> errors;
-
 
     @Override
     public String toString() {
-        return "ErrorDTO{" +
+        return "{" +
                 "status=" + status +
                 ", date=" + date +
                 ", errors=" + errors +
                 '}';
     }
+
 }

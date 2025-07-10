@@ -27,6 +27,10 @@ public class Inventario {
 
         private Integer cantidad;
 
+        private String nombreProducto;
+
+        private String nombreSucursal;
+
 
 
         public Inventario() {}

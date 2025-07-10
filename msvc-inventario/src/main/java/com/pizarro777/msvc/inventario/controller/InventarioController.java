@@ -1,15 +1,14 @@
 package com.pizarro777.msvc.inventario.controller;
 
-
 import com.pizarro777.msvc.inventario.model.Inventario;
 import com.pizarro777.msvc.inventario.services.InventarioService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -21,97 +20,87 @@ import java.util.List;
 @Validated
 @Tag(name = "Inventario", description = "Esta sección contiene los CRUD de inventarios")
 public class InventarioController {
+
     @Autowired
     private InventarioService inventarioService;
-    @Autowired
 
-    public InventarioController(InventarioService inventarioService) {
-        this.inventarioService = inventarioService;
-    }
-
-    /* Crear nuevo inventario */
-    @PostMapping
-    @Operation(
-            summary = "Crear nuevo inventario",
-            description = "Crea un nuevo inventario con la información enviada en el cuerpo de la petición."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Inventario creado exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud inválida o datos incorrectos")
-    })
-    public ResponseEntity<Inventario> crearInventario(@RequestBody Inventario inventario) {
-        Inventario creado = inventarioService.crearInventario(inventario);
-        return ResponseEntity.status(201).body(creado);
-    }
-
-    /* Obtener inventario por ID */
-    @GetMapping("/{id}")
-    @Operation(
-            summary = "Obtener inventario por ID",
-            description = "Busca y devuelve un inventario específico utilizando su ID único."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Inventario encontrado"),
-            @ApiResponse(responseCode = "404", description = "Inventario no encontrado con ese ID")
-    })
-    @Parameters({
-            @Parameter(name = "id", description = "ID único del inventario", required = true)
-    })
-    public ResponseEntity<Inventario> obtenerInventario(@PathVariable Long id) {
-        Inventario inventario = inventarioService.obtenerPorId(id);
-        return ResponseEntity.ok(inventario);
-    }
-
-    /* Listar todos los inventarios */
+    // Obtener todos los inventarios
     @GetMapping
-    @Operation(
-            summary = "Devuelve todos los inventarios",
-            description = "Este método retorna una lista de inventarios. Si no hay inventarios, retorna una lista vacía."
-    )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Se retornaron todos los inventarios correctamente"),
-            @ApiResponse(responseCode = "400", description = "Error - No existen inventarios")
+    @Operation(summary = "Devuelve todos los inventarios",
+            description = "Retorna una lista de inventarios, o vacía si no hay datos")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Inventarios obtenidos correctamente"),
+            @ApiResponse(responseCode = "204", description = "No se encontraron inventarios")
     })
-    public ResponseEntity<List<Inventario>> listarInventarios() {
-        List<Inventario> inventarios = inventarioService.listarTodos();
+    public ResponseEntity<List<Inventario>> findAll() {
+        List<Inventario> inventarios = inventarioService.findAll();
         if (inventarios.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(inventarios);
-
     }
 
-    /* Actualizar inventario por ID */
+    // Obtener inventario por ID
+    @GetMapping("/{id}")
+    @Operation(summary = "Devuelve un inventario por ID",
+            description = "Retorna un inventario cuando se consulta por su ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Inventario encontrado"),
+            @ApiResponse(responseCode = "404", description = "Inventario no encontrado")
+    })
+    public ResponseEntity<Inventario> findById(@PathVariable Long id) {
+        Inventario inventario = inventarioService.findById(id);
+        if (inventario == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(inventario);
+    }
+
+    // Crear nuevo inventario
+    @PostMapping
+    @Operation(
+            summary = "Crear un nuevo inventario",
+            description = "Permite crear un nuevo inventario en el sistema"
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Inventario creado exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos en la solicitud")
+    })
+
+    public ResponseEntity<Inventario> save(@RequestBody @Valid Inventario inventario) {
+        // Podrías agregar validaciones adicionales aquí si quieres
+        Inventario creado = inventarioService.save(inventario);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creado);
+    }
+
+    // Actualizar inventario por ID
     @PutMapping("/{id}")
     @Operation(
-            summary = "Actualizar inventario",
-            description = "Actualiza el inventario que coincida con el ID proporcionado con la información enviada."
+            summary = "Actualizar un inventario existente",
+            description = "Actualiza los datos de un inventario especificado por su ID"
     )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Inventario actualizado correctamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud inválida o datos incorrectos"),
-            @ApiResponse(responseCode = "404", description = "Inventario no encontrado para actualizar")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Inventario actualizado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Inventario no encontrado para el ID proporcionado"),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos en la solicitud")
     })
-    @Parameters({
-            @Parameter(name = "id", description = "ID único del inventario a actualizar", required = true)
-    })
-    public ResponseEntity<Inventario> actualizarInventario(@PathVariable Long id, @RequestBody Inventario inventario) {
+    public ResponseEntity<Inventario> actualizarInventario(@PathVariable Long id, @RequestBody @Valid Inventario inventario) {
         Inventario actualizado = inventarioService.actualizarInventario(id, inventario);
+        if (actualizado == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(actualizado);
     }
 
-    /* Eliminar inventario por ID */
+    // Eliminar inventario por ID
     @DeleteMapping("/{id}")
     @Operation(
-            summary = "Eliminar inventario",
-            description = "Elimina el inventario identificado por el ID proporcionado."
+            summary = "Eliminar un inventario por ID",
+            description = "Elimina un inventario específico usando su ID"
     )
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Inventario eliminado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Inventario no encontrado para eliminar")
-    })
-    @Parameters({
-            @Parameter(name = "id", description = "ID único del inventario a eliminar", required = true)
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Inventario eliminado exitosamente"),
+            @ApiResponse(responseCode = "404", description = "Inventario no encontrado para el ID proporcionado")
     })
     public ResponseEntity<Void> eliminarInventario(@PathVariable Long id) {
         inventarioService.eliminarInventario(id);

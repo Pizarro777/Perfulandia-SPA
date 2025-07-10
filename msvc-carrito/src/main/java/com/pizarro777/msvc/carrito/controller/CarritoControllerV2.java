@@ -89,9 +89,14 @@ public class CarritoControllerV2 {
     })
     public ResponseEntity<EntityModel<Carrito>> findById(@PathVariable Long id) {
         Carrito carrito = this.carritoService.findById(id);
+        if (carrito == null) {
+            return ResponseEntity.notFound().build();
+        }
+
         EntityModel<Carrito> entityModel = this.carritoModelAssembler.toModel(carrito);
         return ResponseEntity.ok(entityModel);
     }
+
 
     @PostMapping
     @Operation(summary = "Crea un nuevo carrito", description = "Permite crear un carrito con sus items")

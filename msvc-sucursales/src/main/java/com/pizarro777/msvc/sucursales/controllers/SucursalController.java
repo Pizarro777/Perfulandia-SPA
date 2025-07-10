@@ -1,89 +1,102 @@
 package com.pizarro777.msvc.sucursales.controllers;
 
 import com.pizarro777.msvc.sucursales.models.Sucursal;
-import com.pizarro777.msvc.sucursales.repositories.SucursalRepository;
 import com.pizarro777.msvc.sucursales.services.SucursalService;
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/v2/sucursales")
+@RequestMapping("/api/sucursales")
+@Validated
+@Tag(name = "Sucursal", description = "CRUD para sucursales")
 public class SucursalController {
 
-    private final SucursalService service;
-    private final SucursalRepository sucursalRepository;
+    @Autowired
+    private SucursalService sucursalService;
 
-    public SucursalController(SucursalService service, SucursalRepository sucursalRepository) {
-        this.service = service;
-        this.sucursalRepository = sucursalRepository;
-    }
-
-    @Operation(summary = "Crear una nueva sucursal",
-            description = "Este endpoint permite crear una nueva sucursal en el sistema.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "201", description = "Sucursal creada exitosamente"),
-            @ApiResponse(responseCode = "400", description = "Solicitud inválida")
+    @GetMapping
+    @Operation(summary = "Obtiene todas las sucursales", description = "Retorna una lista de todas las sucursales registradas")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Listado de sucursales obtenido correctamente"),
+            @ApiResponse(responseCode = "204", description = "No se encontraron sucursales")
     })
-    @PostMapping("/make")
-    public ResponseEntity<Sucursal> crearSucursal(@RequestBody @Valid Sucursal sucursal) {
-        Sucursal nueva = service.crearSucursal(sucursal);
-        return ResponseEntity.status(201).body(nueva);
+    public ResponseEntity<List<Sucursal>> findAll() {
+        List<Sucursal> sucursales = sucursalService.findAll();
+        if (sucursales.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(sucursales);
     }
 
-    @Operation(summary = "Obtener una sucursal por su ID",
-            description = "Retorna una sucursal específica a partir de su identificador único.")
-    @ApiResponses(value = {
+    @GetMapping("/{id}")
+    @Operation(summary = "Obtiene una sucursal por ID", description = "Devuelve una sucursal específica según su ID")
+    @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Sucursal encontrada"),
             @ApiResponse(responseCode = "404", description = "Sucursal no encontrada")
     })
-    @GetMapping("/{id}")
-    public ResponseEntity<Sucursal> obtenerSucursal(
-            @Parameter(description = "ID único de la sucursal") @PathVariable("id") Long id) {
-        Sucursal sucursal = service.obtenerPorId(id);
+    public ResponseEntity<Sucursal> findById(
+            @Parameter(description = "ID de la sucursal a buscar", required = true)
+            @PathVariable Long id) {
+        Sucursal sucursal = sucursalService.findById(id);
+        if (sucursal == null) {
+            return ResponseEntity.notFound().build();
+        }
         return ResponseEntity.ok(sucursal);
     }
 
-    @Operation(summary = "Listar todas las sucursales",
-            description = "Devuelve un listado de todas las sucursales registradas.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Lista de sucursales obtenida correctamente")
+    @PostMapping
+    @Operation(summary = "Crea una nueva sucursal", description = "Guarda una nueva sucursal en la base de datos")
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Sucursal creada exitosamente"),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida", content = @Content(schema = @Schema(implementation = Sucursal.class)))
     })
-    @GetMapping("/todas")
-    public List<Sucursal> obtenerTodas() {
-        return service.listarTodas();
+    public ResponseEntity<Sucursal> save(
+            @RequestBody @Valid Sucursal sucursal) {
+        Sucursal creada = sucursalService.save(sucursal);
+        return ResponseEntity.status(HttpStatus.CREATED).body(creada);
     }
 
-    @Operation(summary = "Eliminar una sucursal por ID",
-            description = "Elimina la sucursal correspondiente al ID proporcionado.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Sucursal eliminada con éxito"),
+    @PutMapping("/{id}")
+    @Operation(summary = "Actualiza una sucursal", description = "Actualiza los datos de una sucursal existente")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Sucursal actualizada correctamente"),
             @ApiResponse(responseCode = "404", description = "Sucursal no encontrada")
     })
+    public ResponseEntity<Sucursal> actualizarSucursal(
+            @PathVariable Long id,
+            @RequestBody @Valid Sucursal sucursal) {
+        Sucursal actualizada = sucursalService.actualizarSucursal(id, sucursal);
+        if (actualizada == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(actualizada);
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarSucursal(
-            @Parameter(description = "ID único de la sucursal a eliminar") @PathVariable Long id) {
-        service.eliminarSucursal(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @Operation(summary = "Obtener sucursal directamente desde el repositorio",
-            description = "Busca una sucursal por su ID directamente desde la capa del repositorio.")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Sucursal encontrada"),
+    @Operation(summary = "Elimina una sucursal", description = "Elimina una sucursal por su ID")
+    @ApiResponses({
+            @ApiResponse(responseCode = "204", description = "Sucursal eliminada correctamente"),
             @ApiResponse(responseCode = "404", description = "Sucursal no encontrada")
     })
-    @GetMapping("/id/{id}")
-    public ResponseEntity<Sucursal> obtenerPorId(
-            @Parameter(description = "ID de la sucursal") @PathVariable Long id) {
-        return sucursalRepository.findById(id)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+    public ResponseEntity<Void> eliminarSucursal(@PathVariable Long id) {
+        Sucursal existente = sucursalService.findById(id);
+        if (existente == null) {
+            return ResponseEntity.notFound().build();
+        }
+        sucursalService.eliminarSucursal(id);
+        return ResponseEntity.noContent().build();
     }
 }
