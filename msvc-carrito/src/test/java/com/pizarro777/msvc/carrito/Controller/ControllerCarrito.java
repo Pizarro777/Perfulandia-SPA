@@ -53,10 +53,10 @@ public class ControllerCarrito {
 
         DocumentContext context = JsonPath.parse(response.getBody());
 
-        List<Integer> ids = context.read("$[*].idCarrito");
+        List<Integer> ids = context.read("$._embedded.carritoList[*].idCarrito");
         assertThat(ids).isNotEmpty();
 
-        List<String> nombresProductos = context.read("$[*].items[*].nombre");
+        List<String> nombresProductos = context.read("$._embedded.carritoList[*].items[*].nombre");
         assertThat(nombresProductos).contains("Producto 1", "Producto 2");
     }
 

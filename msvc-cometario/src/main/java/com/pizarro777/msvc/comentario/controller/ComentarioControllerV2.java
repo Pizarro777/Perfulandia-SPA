@@ -1,4 +1,4 @@
-package com.pizarro777.msvc.comentario.controllers;
+package com.pizarro777.msvc.comentario.controller;
 
 
 
@@ -75,7 +75,28 @@ public class ComentarioControllerV2 {
         return ResponseEntity.ok(entityModel);
     }
 
-    @PostMapping
+    @PutMapping
+    @Operation(summary = "Actualiza un comentario", description = "Permite actualizar un comentario existente")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Comentario actualizado exitosamente",
+                    content = @Content(mediaType = MediaTypes.HAL_JSON_VALUE, schema = @Schema(implementation = Comentario.class))),
+            @ApiResponse(responseCode = "400", description = "Datos inválidos",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class))),
+            @ApiResponse(responseCode = "404", description = "Comentario no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorDTO.class)))
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Comentario a actualizar",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Comentario.class))
+    )
+    public ResponseEntity<EntityModel<Comentario>> update(@PathVariable Long idComentario, @Valid @RequestBody Comentario comentario) {
+        comentario.setIdComentario(idComentario);
+        Comentario actualizado = comentarioService.update(idComentario, comentario);
+        EntityModel<Comentario> entityModel = comentarioModelAssembler.toModel(actualizado);
+        return ResponseEntity.ok(entityModel);
+    }
+
+    @PostMapping("/{id}")
     @Operation(summary = "Crea un nuevo comentario", description = "Permite registrar un nuevo comentario")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Comentario creado exitosamente",

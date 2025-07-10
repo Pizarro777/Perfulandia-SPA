@@ -98,6 +98,12 @@
             <groupId>com.oracle.database.jdbc</groupId>
             <artifactId>ojdbc8</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.pizarro777.msvc.productos</groupId>
+            <artifactId>msvc-productos</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 	<dependencyManagement>
 		<dependencies>

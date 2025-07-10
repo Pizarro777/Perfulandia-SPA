@@ -193,6 +193,41 @@ public class CarritoControllerV2 {
         return ResponseEntity.ok(entityModel);
     }
 
+    @DeleteMapping("/{id}")
+    @Operation(summary = "Elimina un carrito por ID", description = "Permite eliminar un carrito específico por su ID")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Total calculado exitosamente",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(type = "number", format = "double")
+                    )
+            ), @ApiResponse(
+            responseCode = "404",
+            description = "Carrito no encontrado",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDTO.class)
+            )
+    ), @ApiResponse(
+            responseCode = "204",
+            description = "Carrito eliminado exitosamente"
+    ), @ApiResponse(
+            responseCode = "404",
+            description = "Carrito no encontrado",
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = ErrorDTO.class)
+            )
+    )})
+    public ResponseEntity<Double> eliminarCarrito(@PathVariable Long id) {
+        boolean eliminado = this.carritoService.eliminarCarrito(id);
+        if (!eliminado) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
 
     @GetMapping("/{id}/total")
     @Operation(summary = "Obtiene el total del carrito", description = "Calcula y devuelve el total en CLP del carrito")

@@ -65,8 +65,9 @@ public class CarritoServiceImpl implements CarritoService{
 
     //Elimina un carrito por su ID
     @Override
-    public void eliminarCarrito(Long id) {
+    public boolean eliminarCarrito(Long id) {
         repositoryCarrito.deleteById(id);
+        return false;
     }
 
     //Calcula el precio total de un carrito
