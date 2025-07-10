@@ -14,5 +14,5 @@ public interface SucursalService {
 
     Sucursal actualizarSucursal(Long id, Sucursal sucursal);
 
-    boolean eliminarSucursal(Long id);
+    void eliminarSucursal(Long id);
 }
