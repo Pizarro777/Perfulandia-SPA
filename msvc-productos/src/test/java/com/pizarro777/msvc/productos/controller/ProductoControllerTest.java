@@ -51,7 +51,7 @@ public class ProductoControllerTest {
     }
 
     @Test
-    public void shouldReturnAllProductosWhenListIsRequested() {
+    public void DeberiaDevolverTodosLosProductosCuandoListIsRequested() {
         ResponseEntity<String> response = restTemplate.getForEntity("/api/v2/productos", String.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
 

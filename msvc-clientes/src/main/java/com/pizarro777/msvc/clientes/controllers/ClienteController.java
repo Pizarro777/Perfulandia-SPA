@@ -34,7 +34,7 @@ public class ClienteController {
             summary = "Crea un nuevo Cliente.",
             description = "Este metodo debe crear un cliente nuevo.")
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "El cliente ha sido creado."),
+            @ApiResponse(responseCode = "201", description = "El cliente ha sido creado."),
             @ApiResponse(responseCode = "400", description = "Error - Cliente no se logro crear.")
     })
     public ResponseEntity<Cliente> crearCliente(@RequestBody @Validated Cliente cliente){

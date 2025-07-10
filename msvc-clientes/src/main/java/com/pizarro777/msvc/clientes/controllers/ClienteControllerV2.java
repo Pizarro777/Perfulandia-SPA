@@ -72,7 +72,7 @@ public class ClienteControllerV2 {
             @ApiResponse(responseCode = "400", description = "Error - Cliente con ID no existente")
     })
     public ResponseEntity<List<Cliente>> obtenerTodos(){
-        return ResponseEntity.status(201).body(clienteService.listarTodos());
+        return ResponseEntity.ok(clienteService.listarTodos());
 
     }
 
