@@ -122,7 +122,7 @@ public class BoletasController {
     })
 
     public ResponseEntity<Boletas> actualizarBoletas(@PathVariable Long id, @RequestBody Boletas boletas) {
-        Boletas actualizado = boletasService.update(id, boletas);
+        Boletas actualizado = boletasService.actualizarBoletas(id, boletas);
         return ResponseEntity.ok(actualizado);
     }
 
