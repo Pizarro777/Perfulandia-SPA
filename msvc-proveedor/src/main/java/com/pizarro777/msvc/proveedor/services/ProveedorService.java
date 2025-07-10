@@ -10,7 +10,7 @@ public interface ProveedorService {
 
     Proveedor save(Proveedor proveedor);
     Proveedor actualizarProveedor(Long id, Proveedor proveedor);
-    void eliminarProveedor(Long id) ;
+    boolean eliminarProveedor(Long id) ;
 
     Proveedor findById(Long id) throws ProveedorException;
 
