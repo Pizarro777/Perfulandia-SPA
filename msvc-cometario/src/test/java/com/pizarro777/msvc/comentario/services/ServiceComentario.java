@@ -9,6 +9,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,7 +32,7 @@ public class ServiceComentario {
         Comentario comentario = new Comentario();
         comentario.setComentario("Buen producto");
         comentario.setIdProducto(10L);
-        comentario.setFechaCreacion(LocalDateTime.now());
+        comentario.setFechaCreacion(LocalDate.now());
 
         when(comentarioRepository.save(any(Comentario.class))).thenReturn(comentario);
 

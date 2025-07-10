@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 @Transactional
@@ -30,8 +31,10 @@ public class CarritoServiceImpl implements CarritoService{
     //Busca un carrito por su ID
     @Override
     public Carrito findById(Long id) {
-        return repositoryCarrito.findById(id).orElse(null);
+        return repositoryCarrito.findById(id)
+                .orElseThrow(() -> new NoSuchElementException("Carrito con ID " + id + " no encontrado"));
     }
+
 
     //Crear un carrito en la base de datos
     @Override
@@ -71,6 +74,7 @@ public class CarritoServiceImpl implements CarritoService{
     public Double precioTotal(Long idCarrito) {
         return repositoryCarrito.findById(idCarrito)
                 .map(Carrito::calcularPrecioTotal)
-                .orElse(0.0);
+                .orElse(null);
     }
+
 }

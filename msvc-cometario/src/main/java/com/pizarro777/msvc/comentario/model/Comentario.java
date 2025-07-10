@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "comentarios")
@@ -33,7 +33,7 @@ public class Comentario {
     // Fecha de creacion del comentario
     @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(nullable = false, length = 100)
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
+    private LocalDate fechaCreacion = LocalDate.now();
 
     // Id del Producto al que pertenece el comentario
     @Column(nullable = false)
