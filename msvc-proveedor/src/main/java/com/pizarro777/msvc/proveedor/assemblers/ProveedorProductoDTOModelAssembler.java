@@ -17,8 +17,8 @@ public class ProveedorProductoDTOModelAssembler implements RepresentationModelAs
     public  EntityModel<ProveedorProductoDTO> toModel(ProveedorProductoDTO productoDTO) {
         return EntityModel.of(
                 productoDTO,
-                linkTo(methodOn(ProveedorControllerV2.class).findProveedorProductoById(productoDTO.getIdProducto())).withSelfRel(),
-                linkTo(methodOn(ProveedorControllerV2.class).findAllProveedorProductos()).withRel("productos-proveedor")
+                linkTo(methodOn(ProveedorControllerV2.class).findById(productoDTO.getIdProducto())).withSelfRel(),
+                linkTo(methodOn(ProveedorControllerV2.class).findAll()).withRel("productos-proveedor")
         );
     }
 }

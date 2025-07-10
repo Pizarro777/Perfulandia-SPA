@@ -39,7 +39,7 @@ public class BoletasController {
     @PostMapping
     @Operation(
             summary = "Crear nueva boleta",
-            description = "Crea uns nueva boleta con la información enviada en el cuerpo de la petición."
+            description = "Crea una nueva boleta con la información enviada en el cuerpo de la petición."
     )
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Boleta creada exitosamente"),
@@ -112,7 +112,7 @@ public class BoletasController {
             description = "Actualiza la boleta que coincida con el ID proporcionada con la información enviada."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "Boleta actualizado correctamente"),
+            @ApiResponse(responseCode = "200", description = "Boleta actualizada correctamente"),
             @ApiResponse(responseCode = "400", description = "Solicitud inválida o datos incorrectos"),
             @ApiResponse(responseCode = "404", description = "Boleta no encontrada para actualizar")
     })
@@ -132,8 +132,8 @@ public class BoletasController {
             description = "Elimina la boleta identificada por el ID proporcionada."
     )
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "204", description = "Boleta eliminado correctamente"),
-            @ApiResponse(responseCode = "404", description = "Boleta no encontrado para eliminar")
+            @ApiResponse(responseCode = "204", description = "Boleta eliminada correctamente"),
+            @ApiResponse(responseCode = "404", description = "Boleta no encontrada para eliminar")
     })
     @Parameters({
             @Parameter(name = "id", description = "ID único de boleta a eliminar", required = true)
