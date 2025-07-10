@@ -37,8 +37,9 @@ public class ProductoService {
 
     /* Listar Por Id */
     public ProductoOutputDTO obtenerPorId(Long id){
-        Optional<Producto> producto = repository.findById(id);
-        return EntityToDTO(producto.orElseThrow());
+        Producto producto = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+        return EntityToDTO(producto);
     }
 
     /* Listar todos */
@@ -65,8 +66,10 @@ public class ProductoService {
     }
 
     /* Eliminar Producto */
-    public void eliminarProducto(long id){
-        repository.deleteById(id);
+    public void eliminarProducto(long id) {
+        Producto producto = repository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado"));
+        repository.delete(producto);
     }
 
     /* Convierte la entidad al DTO */
