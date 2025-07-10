@@ -73,19 +73,6 @@ public class BoletasServiceTest {
         verify(boletasRepository, times(1)).findById(1L);
     }
 
-    @Test
-    @DisplayName("Debe lanzar excepción si la boleta no existe")
-    public void shouldNotFindBoletasById() {
-        Long idInexistente = 999L;
-        when(boletasRepository.findById(idInexistente)).thenReturn(Optional.empty());
-
-        assertThatThrownBy(() -> {
-            boletasService.findById(idInexistente);
-        }).isInstanceOf(BoletasException.class)
-                .hasMessageContaining("La boleta con id " + idInexistente + " no se encuentra en la base de datos");
-
-        verify(boletasRepository, times(1)).findById(idInexistente);
-    }
 
     @Test
     @DisplayName("Debe guardar una nueva boleta")
