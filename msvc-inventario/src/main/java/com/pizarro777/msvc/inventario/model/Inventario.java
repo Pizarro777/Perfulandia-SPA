@@ -26,10 +26,10 @@ public class Inventario {
         @Min(value = 0, message = "La cantidad no puede ser negativa.")
 
         private Integer cantidad;
-        @NotNull(message = "El nombre es obligatorio.")
+
         private String nombreProducto;
-        @NotNull(message = "La direccion es obligatoria.")
-        private String NombreSucursal;
+
+        private String nombreSucursal;
 
 
 

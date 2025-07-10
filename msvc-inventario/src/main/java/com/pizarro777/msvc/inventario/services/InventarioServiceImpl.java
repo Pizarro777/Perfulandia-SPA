@@ -68,10 +68,18 @@ public class InventarioServiceImpl implements InventarioService {
                     existingInventario.setIdProducto(inventario.getIdProducto());
                     existingInventario.setIdSucursal(inventario.getIdSucursal());
                     existingInventario.setCantidad(inventario.getCantidad());
+
+                    ProductoDto producto = productoClient.obtenerProducto(inventario.getIdProducto());
+                    SucursalDto sucursal = sucursalClient.obtenerSucursal(inventario.getIdSucursal());
+
+                    existingInventario.setNombreProducto(producto.getNombre());
+                    existingInventario.setNombreSucursal(sucursal.getNombre());
+
                     return inventarioRepository.save(existingInventario);
                 })
                 .orElse(null);
     }
+
 
     // Elimina un inventario por su ID
     @Override
