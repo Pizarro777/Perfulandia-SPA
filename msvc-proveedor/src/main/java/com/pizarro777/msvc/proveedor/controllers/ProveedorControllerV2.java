@@ -106,7 +106,7 @@ public class ProveedorControllerV2 {
                     schema = @Schema(implementation = Proveedor.class)
             )
     )
-    public ResponseEntity<EntityModel<Proveedor>> crearProveedor(@Valid @RequestBody Proveedor proveedor) {
+    public ResponseEntity<EntityModel<Proveedor>> create(@Valid @RequestBody Proveedor proveedor) {
         Proveedor proveedorNuevo = this.proveedorService.save(proveedor);
         EntityModel<Proveedor> entityModel = this.proveedorModelAssembler.toModel(proveedorNuevo);
 
@@ -114,5 +114,63 @@ public class ProveedorControllerV2 {
                 .created(linkTo(methodOn(ProveedorControllerV2.class).findById(proveedorNuevo.getIdProveedor())).toUri())
                 .body(entityModel);
     }
+
+    @PutMapping("/{id}")
+    @Operation(
+            summary = "Actualiza un proveedor existente",
+            description = "Permite actualizar un proveedor específico por su ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "proveedor actualizado exitosamente",
+                    content = @Content(
+                            mediaType = MediaTypes.HAL_JSON_VALUE,
+                            schema = @Schema(implementation = Proveedor.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Proveedor no encontrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Datos inválidos",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    @Parameters({
+            @Parameter(name = "id", description = "ID de proveedor a actualizar", required = true)
+    })
+    @io.swagger.v3.oas.annotations.parameters.RequestBody(
+            description = "Proveedor actualizado",
+            required = true,
+            content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = Proveedor.class)
+            )
+    )
+    public ResponseEntity<EntityModel<Proveedor>> actualizarProveedor(
+            @PathVariable Long id,
+            @Valid @RequestBody Proveedor proveedor
+    ) {
+        Proveedor actualizado = proveedorService.actualizarProveedor(id, proveedor);
+
+        if (actualizado == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        EntityModel<Proveedor> entityModel = proveedorModelAssembler.toModel(actualizado);
+
+        return ResponseEntity.ok(entityModel);
+    }
+
 
 }
