@@ -42,11 +42,7 @@ public class SucursalServiceImpl implements SucursalService {
     }
 
     @Override
-    public boolean eliminarSucursal(Long id) {
-        if (sucursalRepository.existsById(id)) {
-            sucursalRepository.deleteById(id);
-            return true;
-        }
-        return false;
+    public void eliminarSucursal(Long id) {
+        sucursalRepository.deleteById(id);
     }
 }
