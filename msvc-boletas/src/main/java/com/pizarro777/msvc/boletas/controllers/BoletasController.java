@@ -140,6 +140,6 @@ public class BoletasController {
         return ResponseEntity.noContent().build();
     }
 
-    //Wena po waton re culiao pasao a sobaco
+
 
 }
