@@ -19,15 +19,16 @@ public class ProveedorServiceImpl implements ProveedorService{
     private ProveedorRepository proveedorRepository;
 
     @Override
+    public Proveedor findById(Long id) throws ProveedorException {
+        return proveedorRepository.findById(id)
+                .orElseThrow(() -> new ProveedorException("El proveedor con id " + id + " no se encuentra en la base de datos"));
+    }
+
+    @Override
     public List<Proveedor> findAll() {
         return proveedorRepository.findAll();
     }
 
-
-    @Override
-    public Proveedor findById(Long id) {
-        return proveedorRepository.findById(id).orElse(null);
-    }
 
     @Override
     @Transactional
