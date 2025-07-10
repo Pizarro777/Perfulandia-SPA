@@ -1,18 +1,19 @@
 package com.pizarro777.msvc.comentario.dtos;
 
+import lombok.Builder;
+import lombok.Data;
 
-import lombok.*;
+import java.time.LocalDate;
 
-@Getter
-@Setter
-@ToString
-@AllArgsConstructor
-@NoArgsConstructor
+@Data
+@Builder
 public class ProductoDTO {
+
     private Long id;
     private String nombre;
+    private String marca;
     private String descripcion;
     private Double precio;
+    private LocalDate fechaCreacion;
     private Integer stock;
-    private Boolean activo;
 }

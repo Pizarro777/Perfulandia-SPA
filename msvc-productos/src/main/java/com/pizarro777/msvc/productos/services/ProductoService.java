@@ -4,6 +4,7 @@ import com.pizarro777.msvc.productos.dtos.ProductoInputDTO;
 import com.pizarro777.msvc.productos.dtos.ProductoOutputDTO;
 import com.pizarro777.msvc.productos.models.Producto;
 import com.pizarro777.msvc.productos.repositories.ProductoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -12,6 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class ProductoService {
 
+    @Autowired
     private final ProductoRepository repository;
 
     public ProductoService(ProductoRepository repository) {

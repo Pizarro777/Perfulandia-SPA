@@ -9,10 +9,9 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 
 @Entity
-@Table(name="Cliente")
-@Getter @Setter @ToString
-@NoArgsConstructor
-@AllArgsConstructor
+@Table(name="Clientes")
+@Data @NoArgsConstructor
+@AllArgsConstructor @Builder
 public class Cliente {
 
     @Id

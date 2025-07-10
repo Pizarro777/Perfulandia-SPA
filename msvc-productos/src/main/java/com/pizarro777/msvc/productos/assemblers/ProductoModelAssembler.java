@@ -1,6 +1,6 @@
 package com.pizarro777.msvc.productos.assemblers;
 
-import com.pizarro777.msvc.productos.controllers.ProductoControllerV2; // <== CORREGIDO
+import com.pizarro777.msvc.productos.controllers.ProductoControllerV2;
 import com.pizarro777.msvc.productos.models.Producto;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
