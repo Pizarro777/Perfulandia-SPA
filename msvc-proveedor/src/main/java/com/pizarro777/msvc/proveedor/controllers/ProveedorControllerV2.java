@@ -23,6 +23,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -74,8 +75,8 @@ public class ProveedorControllerV2 {
             @Parameter(name = "id", description = "ID único del proveedor", required = true)
     })
     public ResponseEntity<EntityModel<Proveedor>> findById(@PathVariable Long id) {
-        Proveedor proveedor = this.proveedorService.findById(id);
-        EntityModel<Proveedor> entityModel = this.proveedorModelAssembler.toModel(proveedor);
+        Optional<Proveedor> proveedor = this.proveedorService.findById(id);
+        EntityModel<Proveedor> entityModel = this.proveedorModelAssembler.toModel(proveedor.orElse(null));
         return ResponseEntity.ok(entityModel);
     }
 
