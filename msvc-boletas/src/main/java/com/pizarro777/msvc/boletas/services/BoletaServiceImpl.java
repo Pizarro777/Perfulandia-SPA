@@ -13,7 +13,7 @@ import java.util.Optional;
 
 @Service
 @Transactional
-public class BoletaServiceImpl implements BoletasService{
+public class BoletaServiceImpl implements BoletasService {
 
     @Autowired
     private BoletasRepository boletasRepository;
@@ -31,7 +31,7 @@ public class BoletaServiceImpl implements BoletasService{
 
     @Override
     @Transactional
-    public Boletas save (Boletas boletas) {
+    public Boletas save(Boletas boletas) {
         return boletasRepository.save(boletas);
     }
 
@@ -65,13 +65,13 @@ public class BoletaServiceImpl implements BoletasService{
     }
 
     @Override
-    @Transactional
-    public void eliminarBoletas(Long idBoletas) {
-        if (!boletasRepository.existsById(idBoletas)) {
-            throw new BoletasException("Boleta no encontrada para eliminar con ID: " + idBoletas);
+    public boolean eliminarBoletas(Long id) {
+        if (!boletasRepository.existsById(id)) {
+            return false;
         }
-        boletasRepository.deleteById(idBoletas);
-        System.out.println("DEBUG Service: Boleta eliminada con ID: " + idBoletas);
+        boletasRepository.deleteById(id);
+        return true;
     }
 
 }
+
