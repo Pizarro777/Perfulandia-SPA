@@ -23,12 +23,11 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
-@RequestMapping("/api/v2/proveedores")
+@RequestMapping("/api/v2/proveedor")
 @Validated
 @Tag(name = "Proveedor V2", description = "Operaciones CRUD de proveedor con HATEOAS")
 public class ProveedorControllerV2 {
