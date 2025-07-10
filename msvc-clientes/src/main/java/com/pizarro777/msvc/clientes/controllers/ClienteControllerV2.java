@@ -18,10 +18,10 @@ import java.util.List;
 public class ClienteControllerV2 {
 
     @Autowired
-    private final ClienteService service;
+    private final ClienteService clienteService;
 
-    public ClienteService(ClienteService clienteService) {
-        this.service = clienteService;
+    public ClienteControllerV2(ClienteService clienteService) {
+        this.clienteService = clienteService;
     }
 
     /* Crear un nuevo Cliente */
