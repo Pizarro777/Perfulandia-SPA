@@ -20,7 +20,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -91,16 +90,15 @@ public class ProveedorController {
             @Parameter(name = "id", description = "Este es el id único del proveedor", required = true)
     })
 
-    public ResponseEntity<Proveedor> findById(@PathVariable("id")Long id) {
-        Proveedor buscarProveedor = proveedorService.findById(id);
-        if (buscarProveedor == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(buscarProveedor);
+    @GetMapping("/{id}")
+    public ResponseEntity<Proveedor> findById(@PathVariable Long id) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(this.proveedorService.findById(id));
     }
 
 
-    @PutMapping("/{id}") // El @PathVariable puede ser 'id' o 'idProveedor', asegúrate de que sea consistente.
+    @PutMapping("/{id}")
     @Operation(
             summary = "Actualizar proveedor",
             description = "Actualiza el proveedor que coincida con el ID proporcionado con la información enviada."
@@ -142,15 +140,7 @@ public class ProveedorController {
             @Parameter(name = "id", description = "ID único de proveedor a eliminar", required = true)
     })
     public ResponseEntity<Void> eliminarProveedor(@PathVariable("id") Long id) {
-        try {
-            proveedorService.eliminarProveedor(id);
-            return ResponseEntity.noContent().build(); // 204 No Content para eliminación exitosa
-        } catch (ProveedorException e) { // <<-- Captura tu excepción personalizada
-            log.warn("Proveedor no encontrado para eliminar ID {}: {}", id, e.getMessage());
-            return ResponseEntity.notFound().build(); // Retorna 404
-        } catch (Exception e) { // Captura cualquier otra excepción inesperada
-            log.error("Error inesperado al eliminar proveedor ID {}", id, e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+        proveedorService.eliminarProveedor(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -73,12 +73,11 @@ public class ProveedorServiceImpl implements ProveedorService{
     }
 
     @Override
-    @Transactional
-    public void eliminarProveedor(Long idProveedor) {
-        if (!proveedorRepository.existsById(idProveedor)) {
-            throw new ProveedorException("Proveedor no encontrado para eliminar con ID: " + idProveedor);
+    public boolean eliminarProveedor(Long id) {
+        if (!proveedorRepository.existsById(id)) {
+            return false;
         }
-        proveedorRepository.deleteById(idProveedor);
-        System.out.println("DEBUG Service: Proveedor eliminado con ID: " + idProveedor);
+        proveedorRepository.deleteById(id);
+        return true;
     }
 }

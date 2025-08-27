@@ -177,4 +177,32 @@ public class ProveedorControllerV2 {
     }
 
 
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Elimina un proveedor por ID",
+            description = "Permite eliminar un proveedor específico por su ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Proveedor eliminado exitosamente"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Proveedor no encontrado",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    public ResponseEntity<Void> eliminarProveedor(@PathVariable Long id) {
+        boolean eliminado = this.proveedorService.eliminarProveedor(id);
+        if (!eliminado) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+
 }

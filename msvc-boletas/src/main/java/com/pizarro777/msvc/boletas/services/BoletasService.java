@@ -8,6 +8,6 @@ public interface BoletasService {
     Boletas findById(Long id);
     Boletas save (Boletas boletas);
     Boletas actualizarBoletas(Long id, Boletas boletas);
-    void eliminarBoletas(Long id);
+    boolean eliminarBoletas(Long id);
 
 }

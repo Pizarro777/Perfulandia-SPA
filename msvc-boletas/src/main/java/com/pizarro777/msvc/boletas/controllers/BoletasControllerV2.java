@@ -184,6 +184,36 @@ public class BoletasControllerV2 {
         return ResponseEntity.ok(entityModel);
     }
 
+
+    @DeleteMapping("/{id}")
+    @Operation(
+            summary = "Elimina una boleta por ID",
+            description = "Permite eliminar una boleta específica por su ID"
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "204",
+                    description = "Boleta eliminada exitosamente"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Boleta no encontrada",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ErrorDTO.class)
+                    )
+            )
+    })
+    public ResponseEntity<Void> eliminarBoletas(@PathVariable Long id) {
+        boolean eliminado = this.boletasService.eliminarBoletas(id);
+        if (!eliminado) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.noContent().build();
+    }
+
+
+
 }
 
 
